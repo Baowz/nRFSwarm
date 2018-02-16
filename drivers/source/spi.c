@@ -14,7 +14,7 @@ static const nrf_drv_spi_t spi_shield  = NRF_DRV_SPI_INSTANCE(2);
 
 void spi_transfer(nrf_drv_spi_t *spi_instance, uint8_t tx_data, uint8_t rx_data)
 {
-  APP_ERROR_CHECK(nrf_drv_spi_transfer(&spi_instance, tx_data, sizeof(tx_data), rx_data, sizeof(rx_data)));
+  APP_ERROR_CHECK(nrf_drv_spi_transfer(spi_instance, &tx_data, sizeof(tx_data), &rx_data, sizeof(rx_data)));
 }
 
 void spi_init(void)

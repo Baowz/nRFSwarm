@@ -19,7 +19,7 @@ int VL53L0X_i2c_init(void) {
   const nrf_drv_twi_config_t tof_twi_config = {
      .scl                = TOF_SCL_PIN,
      .sda                = TOF_SDA_PIN,
-     .frequency          = NRF_TWI_FREQ_100K,
+     .frequency          = NRF_TWI_FREQ_400K,
      .interrupt_priority = APP_IRQ_PRIORITY_LOW,
      .clear_bus_init     = false
   };
@@ -32,14 +32,16 @@ int VL53L0X_i2c_init(void) {
   NRF_LOG_RAW_INFO("[SUCCESS] Time-of-flight TWI enabled. \n");
 }
 
-int VL53L0X_write_multi(uint8_t deviceAddress, uint8_t index, uint8_t *pdata, uint32_t count) {
+int VL53L0X_write_multi(uint8_t deviceAddress, uint8_t index, uint8_t *pdata, uint32_t count) 
+{
+  static uint8_t merge_array[32] = {0};
 
   uint32_t err_code;
   uint8_t i;
 
   merge_array[0] = index;
 
-  for(i = 0; i < length; i++)
+  for(i = 0; i < count; i++)
   {
     merge_array[i+1] = pdata[i];
   }

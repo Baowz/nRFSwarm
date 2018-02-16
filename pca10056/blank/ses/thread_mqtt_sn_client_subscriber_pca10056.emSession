@@ -1,0 +1,48 @@
+<!DOCTYPE CrossStudio_Session_File>
+<session>
+ <Bookmarks/>
+ <Breakpoints groups="Breakpoints" active_group="Breakpoints"/>
+ <ExecutionProfileWindow/>
+ <FrameBufferWindow>
+  <FrameBufferWindow bufferHeight="-1" addressSpace="" addressText="" bufferWidth="-1"/>
+ </FrameBufferWindow>
+ <Memory1/>
+ <Memory2/>
+ <Memory3/>
+ <Memory4/>
+ <Project>
+  <ProjectSessionItem path="thread_mqtt_sn_client_subscriber_pca10056"/>
+  <ProjectSessionItem path="thread_mqtt_sn_client_subscriber_pca10056;thread_mqtt_sn_client_subscriber_pca10056"/>
+  <ProjectSessionItem path="thread_mqtt_sn_client_subscriber_pca10056;thread_mqtt_sn_client_subscriber_pca10056;Application"/>
+  <ProjectSessionItem path="thread_mqtt_sn_client_subscriber_pca10056;thread_mqtt_sn_client_subscriber_pca10056;nRF_Thread"/>
+  <ProjectSessionItem path="thread_mqtt_sn_client_subscriber_pca10056;thread_mqtt_sn_client_subscriber_pca10056;nRF-Thread"/>
+ </Project>
+ <Register1/>
+ <Register2/>
+ <Register3/>
+ <Register4/>
+ <TraceWindow>
+  <Trace enabled="Yes"/>
+ </TraceWindow>
+ <Watch1>
+  <Watches active="1" update="Never"/>
+ </Watch1>
+ <Watch2>
+  <Watches active="0" update="Never"/>
+ </Watch2>
+ <Watch3>
+  <Watches active="0" update="Never"/>
+ </Watch3>
+ <Watch4>
+  <Watches active="0" update="Never"/>
+ </Watch4>
+ <Files>
+  <SessionOpenFile windowGroup="DockEditLeft" x="6" y="405" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" debugPath="../../../main.c" selected="1" top="393" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="45" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.c" debugPath="../../../../../../../components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.c" selected="0" top="153" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="20" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_transport_ot.c" debugPath="../../../../../../../components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_transport_ot.c" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="98" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.h" debugPath="../../../../../../../components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.h" selected="0" top="67" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="62" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/thread/experimental/utils/thread_utils.h" debugPath="../../../../../../../components/thread/experimental/utils/thread_utils.h" selected="0" top="12" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="89" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/bsp/experimental/bsp_thread.h" debugPath="../../../../../../../components/libraries/bsp/experimental/bsp_thread.h" selected="0" top="58" codecName="Default"/>
+ </Files>
+ <ARMCrossStudioWindow activeProject="thread_mqtt_sn_client_subscriber_pca10056" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
+</session>

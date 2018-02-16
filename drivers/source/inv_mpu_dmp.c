@@ -27,7 +27,7 @@
 #include "nrf_delay.h"
 #include "nrf_log.h"
 
-#include "twi.h"
+#include "mpu_twi.h"
 #include "real_time_clock.h"
 #include "app_mpu.h"
 

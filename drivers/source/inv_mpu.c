@@ -28,7 +28,7 @@
 #include "min_max.h"
 
 #include "app_mpu.h"
-#include "twi.h"
+#include "mpu_twi.h"
 
 /* The following functions must be defined for this platform:
  * i2c_write(unsigned char slave_addr, unsigned char reg_addr,

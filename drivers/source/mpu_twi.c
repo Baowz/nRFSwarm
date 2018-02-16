@@ -18,7 +18,7 @@ void twi_init()
     const nrf_drv_twi_config_t twi_config = {
        .scl                = MPU_SCL_PIN,
        .sda                = MPU_SDA_PIN,
-       .frequency          = NRF_TWI_FREQ_100K,
+       .frequency          = NRF_TWI_FREQ_400K,
        .interrupt_priority = APP_IRQ_PRIORITY_LOW,
        .clear_bus_init     = false
     };

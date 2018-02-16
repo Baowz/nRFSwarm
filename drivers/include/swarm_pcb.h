@@ -5,12 +5,12 @@
 #include "pca10056.h"
 
 #define LED_ONE_R_PIN     13
-#define LED_ONE_G_PIN     15
-#define LED_ONE_B_PIN     17
+#define LED_ONE_G_PIN     17
+#define LED_ONE_B_PIN     15
 
 #define LED_TWO_R_PIN     20
-#define LED_TWO_G_PIN     22
-#define LED_TWO_B_PIN     24
+#define LED_TWO_G_PIN     24
+#define LED_TWO_B_PIN     22
 
 #define RGB_ONE_DEFAULT_RED     255 // Tomato
 #define RGB_ONE_DEFAULT_GREEN   255
