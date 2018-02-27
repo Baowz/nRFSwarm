@@ -14,7 +14,7 @@
 
 #define RGB_ONE_DEFAULT_RED     255 // Tomato
 #define RGB_ONE_DEFAULT_GREEN   255
-#define RGB_ONE_DEFAULT_BLUE    255
+#define RGB_ONE_DEFAULT_BLUE    0
 
 #define RGB_TWO_DEFAULT_RED     0 // Tomato
 #define RGB_TWO_DEFAULT_GREEN   0

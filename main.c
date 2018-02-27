@@ -17,6 +17,7 @@
 #include "real_time_clock.h"
 #include "swarm_pcb.h"
 #include "batt_meas.h"
+#include "app_tof.h"
 
 #include "mqttsn_client.h"
 #include "thread_utils.h"
@@ -27,7 +28,7 @@
 
 #define PRINT_MEASURED_VOLTAGE 0
 
-#define ALGORITHM_INTERVAL_MS   1000
+#define ALGORITHM_INTERVAL_MS   100
 #define BOOT_DELAY_MS           100
 
 #define LED_ON_REQUEST      1                                               /**< LED ON command. */
@@ -37,6 +38,7 @@
  * @brief Start of main.
  */
 
+static char                 m_client_id[6];                                 /**< The MQTT-SN Client's ID. */
 static mqttsn_client_t      m_client;                                       /**< An MQTT-SN client instance. */
 static mqttsn_remote_t      m_gateway_addr;                                 /**< A gateway address. */
 static uint8_t              m_gateway_id;                                   /**< A gateway ID. */
@@ -44,8 +46,7 @@ static mqttsn_connect_opt_t m_connect_opt;                                  /**<
 static bool                 m_subscribed       = 0;                         /**< Current subscription state. */
 static bool                 m_connected        = 0;                         /**< Current connection state. */
 static uint16_t             m_msg_id           = 0;                         /**< Message ID thrown with MQTTSN_EVENT_TIMEOUT. */
-static char                 m_client_id[]      = "nRF52840_Swarm";          /**< The MQTT-SN Client's ID. */
-static char                 m_topic_name[]     = "nRF52840_resources/led3"; /**< Name of the topic corresponding to LED toggling. */
+static char                 m_topic_name[]     = "Swarm/Common"; /**< Name of the topic corresponding to LED toggling. */
 static bool                 m_gateway_found    = false;                     /**< Stores whether a gateway has been found. */
 static mqttsn_topic_t       m_topic            =                            /**< Topic corresponding to subscriber's LED. */
 {
@@ -57,6 +58,8 @@ static const nrf_drv_timer_t application_timer = NRF_DRV_TIMER_INSTANCE(1); // M
 static nrf_drv_timer_t rtc_timer = NRF_DRV_TIMER_INSTANCE(2); // Timer used for real time sensitive data
 
 bool main_algorithm_interrupt_flag = false;
+static motor_t motor;
+
 
 ////////////////////////////////////////////////////////////////////
 /////////////////////////// Peripherals ////////////////////////////
@@ -64,27 +67,23 @@ bool main_algorithm_interrupt_flag = false;
 
 void main_algorithm(void)
 {
-  if(m_gateway_found && m_connected && m_subscribed) // Connected, perform normal operations
+  if(m_gateway_found && m_client.client_state == MQTTSN_CLIENT_CONNECTED && m_subscribed) // Connected, perform normal operations
   {
       static float angle_measurement[3] = {0};
       static float accel[3] = {0};
-      static motor_t motor;
 
       // TODO: Add code to interface with data gotten from network. The main algorithm should be here.
       app_mpu_get_angles(angle_measurement, accel);
       update_motor_values(&motor);
   }
-  else if(!m_gateway_found)
+  else if(!m_gateway_found && m_client.client_state != MQTTSN_CLIENT_SEARCHING_GATEWAY) // Sends a gateway search message in which the gateway will respond.
   {
     if(mqttsn_client_search_gateway(&m_client) != NRF_SUCCESS)
     {
-      NRF_LOG_RAW_INFO("Searching for GATEWAY..\n");
-    }
-    else{
-      m_gateway_found = true;
+      NRF_LOG_RAW_INFO("[FAIL] Could not send gateway search message. \n");
     }
   }
-  else if(m_gateway_found && !m_client.client_state == MQTTSN_CLIENT_CONNECTED && !m_subscribed)
+  else if(m_gateway_found && m_client.client_state != MQTTSN_CLIENT_CONNECTED && !m_subscribed)
   {
     if(mqttsn_client_connect(&m_client, &m_gateway_addr, m_gateway_id, &m_connect_opt) != NRF_SUCCESS)
     {
@@ -116,10 +115,14 @@ static void led_update(uint8_t * p_data)
    if (*p_data == LED_ON_REQUEST)
    {
        rgb_update_led_color(2,255,165,0);
+       motor.output_motor_a = 400;
+       motor.output_motor_b = 400;
    }
    else if (*p_data == LED_OFF_REQUEST)
    {
        rgb_update_led_color(2,0,0,0);
+       motor.output_motor_a = 0;
+       motor.output_motor_b = 0;
    }
 
    return;
@@ -185,8 +188,6 @@ static void connected_callback(void)
     {
         NRF_LOG_ERROR("REGISTER message could not be sent. Error code: 0x%x\r\n", err_code);
     }
-
-
 }
 
 
@@ -351,16 +352,31 @@ void log_init(void)
 void timer_event_handler(nrf_timer_event_t event_type, void* p_context)
 {
   static uint32_t advertising_count = 0;
+  static uint32_t adv_led_green = 255;
+  static uint32_t adv_led_blue  = 0;
   static bool led_flag = false;
 
   main_algorithm_interrupt_flag = true;
 
+  /// Code here will only be used if the system is not connected to gateway
 
-   // Some code to make LED1 blink when trying to connect to a gateway
+  if(m_client.client_state != MQTTSN_CLIENT_CONNECTED)
+    {
 
-  if(m_client.client_state == MQTTSN_CLIENT_SEARCHING_GATEWAY)
-  {
-    if(advertising_count % 200 == 0)
+    // Code to restart search if gateway is not found. IMPORTANT
+
+    if(m_client.client_state == MQTTSN_CLIENT_SEARCHING_GATEWAY && advertising_count % 10 == 0)
+      m_client.client_state = MQTTSN_CLIENT_DISCONNECTED;
+
+     // Some code to make LED1 blink when trying to connect to a gateway, indicating a connection process.
+
+    if(m_gateway_found) // Changes the color of the LED if the gateway is found but no connection to the broker is established.
+    {
+      adv_led_green = 0;
+      adv_led_blue  = 255;
+    }
+
+    if(advertising_count % 5 == 0)
       {
         if(led_flag)
         {
@@ -369,11 +385,12 @@ void timer_event_handler(nrf_timer_event_t event_type, void* p_context)
         }
         else
         {
-          rgb_update_led_color(1, 0, 255, 0);
+          rgb_update_led_color(1, 0, adv_led_green, adv_led_blue);
           led_flag = true;
         }
       }
-  }
+    }
+    advertising_count++;
 }
 
 //Init function for initiation of the main timer.
@@ -419,6 +436,18 @@ void batt_callback(float voltage)
  #endif
 }
 
+// Fetches the MAC address of the device to use it as a unique client ID.
+
+void get_device_address()
+{
+  m_client_id[0] = (NRF_FICR->DEVICEADDR[0])       & 0xFF;
+  m_client_id[1] = (NRF_FICR->DEVICEADDR[0] >> 8)  & 0xFF;
+  m_client_id[2] = (NRF_FICR->DEVICEADDR[0] >> 16) & 0xFF;
+  m_client_id[3] = (NRF_FICR->DEVICEADDR[0] >> 24) & 0xFF;
+  m_client_id[4] = (NRF_FICR->DEVICEADDR[1])       & 0xFF;
+  m_client_id[5] = (NRF_FICR->DEVICEADDR[1] >> 8)  & 0xFF;
+}
+
 ////////////////////////////////////////////////////////////////////
 /////////////////////////// Main ///////////////////////////////////
 ////////////////////////////////////////////////////////////////////
@@ -426,8 +455,10 @@ void batt_callback(float voltage)
 int main(void)
 {
   log_init();
+  get_device_address();
 
-  NRF_LOG_RAW_INFO("\n \n nRF Swarm revision 0.2 online. \n \n");
+  NRF_LOG_RAW_INFO("\n \n nRF Swarm revision 0.2.1 online. \n \n");
+  NRF_LOG_RAW_INFO("The device MAC address is given by: 0x%x%x%x%x%x%x \n", m_client_id[5], m_client_id[4], m_client_id[3], m_client_id[2], m_client_id[1], m_client_id[0]);
   NRF_LOG_RAW_INFO("Initializing all systems in %d ms. \n", BOOT_DELAY_MS);
 
   nrf_delay_ms(BOOT_DELAY_MS); // Delay must be here since the MPU-9250 needs a small time interval in order to be ready for TWI-communication.
@@ -440,7 +471,7 @@ int main(void)
   twi_init(); // Initialize two wire interface used to communicate with the MPU 9250.
   app_mpu_init(); // Initialize MPU 9250, flashing DMP firmware to the unit.
 
-    // app_tof_init(); TODO: Add LIDAR init
+  //app_tof_init(); //TODO: Add LIDAR init
 
   batt_mon_enable(batt_callback); // Battery voltage monitoring.
   motor_pwm_init(); // PWM used to control the motors of the vessel.
@@ -450,9 +481,9 @@ int main(void)
   mqttsn_init();
 
   rgb_update_led_color(1,0,255,0);
-  
+
   NRF_LOG_RAW_INFO("All systems online. \n \n");
-  
+
   while (true)
     {
       thread_process();

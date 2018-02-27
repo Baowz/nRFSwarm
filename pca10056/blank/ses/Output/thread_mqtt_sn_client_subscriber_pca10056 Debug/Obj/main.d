@@ -59,7 +59,15 @@ Output/thread_mqtt_sn_client_subscriber_pca10056\ Debug/Obj/main.o: \
  C:/SDKThread/components/drivers_nrf/timer/nrf_drv_timer.h \
  C:/SDKThread/components/drivers_nrf/hal/nrf_timer.h \
  ../../../drivers/include/swarm_pcb.h \
- ../../../drivers/include/batt_meas.h \
+ ../../../drivers/include/batt_meas.h ../../../drivers/include/app_tof.h \
+ ../../../drivers/include/tof_api/vl53l0x_api.h \
+ ../../../drivers/include/tof_api/vl53l0x_api_strings.h \
+ ../../../drivers/include/tof_api/vl53l0x_def.h \
+ ../../../drivers/include/tof_api/vl53l0x_device.h \
+ ../../../drivers/include/tof_api/vl53l0x_types.h \
+ ../../../drivers/include/tof_api/vl53l0x_platform.h \
+ ../../../drivers/include/tof_api/vl53l0x_platform_log.h \
+ ../../../drivers/include/tof_api/vl53l0x_i2c_platform.h \
  C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.h \
  C:/SDKThread/components/thread/experimental/utils/thread_utils.h \
  C:/SDKThread/external/openthread/include/openthread/openthread.h \
