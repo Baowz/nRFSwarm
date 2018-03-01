@@ -12,7 +12,7 @@
 // Prototypes used in twi.c
 
 // Initializes the twi driver
-void twi_init(void);
+void mpu_twi_init(void);
 
 // Writes data on the twi-channel, returns 0 if successful
 

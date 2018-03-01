@@ -132,8 +132,8 @@ void batt_mon_enable(batt_mon_cb_t callback)
     saadc_sampling_event_init();
     saadc_sampling_event_enable();
 
-    //nrf_gpio_cfg_output(BATT_MON_EN); // Configure pin BATT_MON_EN as output
-    //nrf_gpio_pin_set(BATT_MON_EN); // Set pin BATT_MON_EN high, enabling battery monitoring
+    nrf_gpio_cfg_output(BATT_MON_EN); // Configure pin BATT_MON_EN as output
+    nrf_gpio_pin_set(BATT_MON_EN); // Set pin BATT_MON_EN high, enabling battery monitoring
 
     NRF_LOG_RAW_INFO("[SUCCESS] Battery monitoring enabled. \n")
 }

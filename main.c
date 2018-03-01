@@ -11,6 +11,8 @@
 #include "nrf_log_default_backends.h"
 #include "nrf_delay.h"
 
+#include "vl53l0x_def.h"
+
 #include "motor.h"
 #include "mpu_twi.h"
 #include "app_mpu.h"
@@ -26,8 +28,6 @@
 #include <openthread/cli.h>
 #include <openthread/platform/platform.h>
 
-#define PRINT_MEASURED_VOLTAGE 0
-
 #define ALGORITHM_INTERVAL_MS   100
 #define BOOT_DELAY_MS           100
 
@@ -37,6 +37,9 @@
 /**
  * @brief Start of main.
  */
+
+
+// States used by the MQTT-SN API.
 
 static char                 m_client_id[6];                                 /**< The MQTT-SN Client's ID. */
 static mqttsn_client_t      m_client;                                       /**< An MQTT-SN client instance. */
@@ -54,29 +57,20 @@ static mqttsn_topic_t       m_topic            =                            /**<
    .topic_id     = 0,
 };
 
+// Timer instance declaration.
+
 static const nrf_drv_timer_t application_timer = NRF_DRV_TIMER_INSTANCE(1); // Main timer
 static nrf_drv_timer_t rtc_timer = NRF_DRV_TIMER_INSTANCE(2); // Timer used for real time sensitive data
 
-bool main_algorithm_interrupt_flag = false;
-static motor_t motor;
-
+static state_machine_t s_state;
 
 ////////////////////////////////////////////////////////////////////
 /////////////////////////// Peripherals ////////////////////////////
 ////////////////////////////////////////////////////////////////////
 
-void main_algorithm(void)
+void connection_check(void)
 {
-  if(m_gateway_found && m_client.client_state == MQTTSN_CLIENT_CONNECTED && m_subscribed) // Connected, perform normal operations
-  {
-      static float angle_measurement[3] = {0};
-      static float accel[3] = {0};
-
-      // TODO: Add code to interface with data gotten from network. The main algorithm should be here.
-      app_mpu_get_angles(angle_measurement, accel);
-      update_motor_values(&motor);
-  }
-  else if(!m_gateway_found && m_client.client_state != MQTTSN_CLIENT_SEARCHING_GATEWAY) // Sends a gateway search message in which the gateway will respond.
+  if(!m_gateway_found && m_client.client_state != MQTTSN_CLIENT_SEARCHING_GATEWAY) // Sends a gateway search message in which the gateway will respond.
   {
     if(mqttsn_client_search_gateway(&m_client) != NRF_SUCCESS)
     {
@@ -102,7 +96,22 @@ void main_algorithm(void)
       m_subscribed = true;
     }
   }
-  main_algorithm_interrupt_flag = false;
+}
+
+void main_algorithm(void)
+{
+  // TODO: Add code to interface with data gotten from network. The main algorithm should be here.
+  app_mpu_get_angles(s_state.angle_measurement, s_state.accel);
+  app_tof_get_range_all(&s_state.lidarOne, &s_state.lidarTwo, &s_state.lidarThree, &s_state.lidarFour);
+  update_motor_values(&s_state.motor);
+
+  NRF_LOG_RAW_INFO("Range measurement: %dmm - %dmm\n", s_state.lidarOne.RangeMilliMeter, s_state.lidarTwo.RangeMilliMeter); //TODO:fix this
+
+  // Poll a connection scheme until a subscription to a broker is obtained.
+  if(!m_subscribed)
+    connection_check();
+
+  s_state.interrupt_flag = false;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -114,19 +123,36 @@ static void led_update(uint8_t * p_data)
 {
    if (*p_data == LED_ON_REQUEST)
    {
-       rgb_update_led_color(2,255,165,0);
-       motor.output_motor_a = 400;
-       motor.output_motor_b = 400;
+      s_state.led_two_red   = 255;
+      s_state.led_two_green = 165;
+      s_state.led_two_blue  = 0;
+
+      s_state.motor.output_motor_a = 400;
+      s_state.motor.output_motor_b = 400;
    }
    else if (*p_data == LED_OFF_REQUEST)
    {
-       rgb_update_led_color(2,0,0,0);
-       motor.output_motor_a = 0;
-       motor.output_motor_b = 0;
+      s_state.led_two_red   = 0;
+      s_state.led_two_green = 0;
+      s_state.led_two_blue  = 0;
+
+      s_state.motor.output_motor_a = 0;
+      s_state.motor.output_motor_b = 0;
    }
 
+   rgb_update_led_color(2,s_state.led_two_red,s_state.led_two_green,s_state.led_two_blue);
    return;
 }
+
+/**@brief Callback for received RSSI data.
+*
+*/
+
+static void rssi_callback(uint16_t id, int8_t rssi)
+{
+   NRF_LOG_RAW_INFO("ID and RSSI: %d - %d \n", id, rssi);
+}
+
 
 /**@brief Processes data published by a broker.
  *
@@ -178,8 +204,12 @@ static void gateway_info_callback(mqttsn_event_t * p_event)
  */
 static void connected_callback(void)
 {
+    s_state.led_one_red   = 0;
+    s_state.led_one_green = 0;
+    s_state.led_one_blue  = 255;
 
-    rgb_update_led_color(1,0,0,255);
+    rgb_update_led_color(1,s_state.led_one_red,s_state.led_one_green,s_state.led_one_blue);
+
     uint32_t err_code = mqttsn_client_topic_register(&m_client,
                                                      m_topic.p_topic_name,
                                                      strlen(m_topic_name),
@@ -194,7 +224,10 @@ static void connected_callback(void)
 /**@brief Processes DISCONNECT message from a gateway. */
 static void disconnected_callback(void)
 {
-    rgb_update_led_color(1,0,255,0);
+    s_state.led_one_red   = 0;
+    s_state.led_one_green = 255;
+    s_state.led_one_blue  = 0;
+    rgb_update_led_color(1,s_state.led_one_red,s_state.led_one_green,s_state.led_one_blue);
 }
 
 
@@ -320,7 +353,6 @@ static void thread_instance_init(void)
     NRF_LOG_RAW_INFO("Thread protocol enabled. \n");
 }
 
-
 /**@brief Function for initializing the MQTTSN client.
  */
 static void mqttsn_init(void)
@@ -328,7 +360,8 @@ static void mqttsn_init(void)
     uint32_t err_code = mqttsn_client_init(&m_client,
                                            MQTTSN_DEFAULT_CLIENT_PORT,
                                            mqttsn_evt_handler,
-                                           thread_ot_instance_get());
+                                           thread_ot_instance_get(),
+                                           rssi_callback);
     APP_ERROR_CHECK(err_code);
     NRF_LOG_RAW_INFO("MQTT-SN client initialized. \n");
 }
@@ -356,7 +389,7 @@ void timer_event_handler(nrf_timer_event_t event_type, void* p_context)
   static uint32_t adv_led_blue  = 0;
   static bool led_flag = false;
 
-  main_algorithm_interrupt_flag = true;
+  s_state.interrupt_flag = true;
 
   /// Code here will only be used if the system is not connected to gateway
 
@@ -419,21 +452,18 @@ void timer_init()
    NRF_LOG_RAW_INFO("[SUCCESS] Main timer enabled. \n");
 }
 
-// Callback function in order to read battery voltage
+// Callback function for battery voltage reading
 
 void batt_callback(float voltage)
 {
-   /*if(voltage < VOLTAGE_LEVEL_CUTOFF)
+  s_state.voltage = voltage
+   /*if(s_state.voltage < VOLTAGE_LEVEL_CUTOFF)
    {
    uint32_t err_code;
 
-   low_voltage = true;				// low_voltage flag has no function at this moment, uncomment this comment if that changes.
    err_code = sd_power_system_off();
    APP_ERROR_CHECK(err_code);      //put nRF52 in sleep mode / power off
  }*/
- #if PRINT_MEASURED_VOLTAGE
-         NRF_LOG_RAW_INFO("Measured voltage: "NRF_LOG_FLOAT_MARKER" V\r\n", NRF_LOG_FLOAT(voltage));
- #endif
 }
 
 // Fetches the MAC address of the device to use it as a unique client ID.
@@ -457,7 +487,7 @@ int main(void)
   log_init();
   get_device_address();
 
-  NRF_LOG_RAW_INFO("\n \n nRF Swarm revision 0.2.1 online. \n \n");
+  NRF_LOG_RAW_INFO("\n \n nRF Swarm revision 0.3.1 online. \n \n");
   NRF_LOG_RAW_INFO("The device MAC address is given by: 0x%x%x%x%x%x%x \n", m_client_id[5], m_client_id[4], m_client_id[3], m_client_id[2], m_client_id[1], m_client_id[0]);
   NRF_LOG_RAW_INFO("Initializing all systems in %d ms. \n", BOOT_DELAY_MS);
 
@@ -468,11 +498,9 @@ int main(void)
   pcb_peripherals_init(); // Initializes RGB LEDs and GPIO
 
   rtc_init(&rtc_timer); // Real time clock used for configuration and timing of the MPU 9250 and additional real time sensitive data
-  twi_init(); // Initialize two wire interface used to communicate with the MPU 9250.
+  mpu_twi_init(); // Initialize two wire interface used to communicate with the MPU 9250.
   app_mpu_init(); // Initialize MPU 9250, flashing DMP firmware to the unit.
-
-  //app_tof_init(); //TODO: Add LIDAR init
-
+  app_tof_init(); // Initialize all VL53L0X LIDAR units.
   batt_mon_enable(batt_callback); // Battery voltage monitoring.
   motor_pwm_init(); // PWM used to control the motors of the vessel.
   timer_init(); // Main timer used to run the swarm algorithm.
@@ -493,7 +521,7 @@ int main(void)
           thread_sleep();
       }
 
-      if(main_algorithm_interrupt_flag)
+      if(s_state.interrupt_flag)
         {
           main_algorithm();
         }

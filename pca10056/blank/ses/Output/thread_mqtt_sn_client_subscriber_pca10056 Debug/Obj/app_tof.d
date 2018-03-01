@@ -50,4 +50,5 @@ Output/thread_mqtt_sn_client_subscriber_pca10056\ Debug/Obj/app_tof.o: \
  C:/SDKThread/components/libraries/strerror/nrf_strerror.h \
  C:/SDKThread/components/libraries/util/sdk_errors.h \
  C:/SDKThread/components/libraries/experimental_log/src/nrf_log_internal.h \
- C:/SDKThread/components/libraries/util/app_util.h
+ C:/SDKThread/components/libraries/util/app_util.h \
+ C:/SDKThread/components/drivers_nrf/delay/nrf_delay.h

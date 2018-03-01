@@ -11,7 +11,7 @@
 
 const nrf_drv_twi_t twi = NRF_DRV_TWI_INSTANCE(0);
 
-void twi_init()
+void mpu_twi_init()
 {
     ret_code_t err_code;
 

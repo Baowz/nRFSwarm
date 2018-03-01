@@ -52,6 +52,9 @@ Output/thread_mqtt_sn_client_subscriber_pca10056\ Debug/Obj/main.o: \
  C:/SDKThread/components/libraries/util/nrf_assert.h \
  C:/SDKThread/components/libraries/experimental_log/nrf_log_default_backends.h \
  C:/SDKThread/components/drivers_nrf/delay/nrf_delay.h \
+ ../../../drivers/include/tof_api/vl53l0x_def.h \
+ ../../../drivers/include/tof_api/vl53l0x_device.h \
+ ../../../drivers/include/tof_api/vl53l0x_types.h \
  ../../../drivers/include/motor.h ../../../drivers/include/mpu_twi.h \
  C:/SDKThread/components/boards/pca10056.h \
  ../../../drivers/include/app_mpu.h \
@@ -63,8 +66,6 @@ Output/thread_mqtt_sn_client_subscriber_pca10056\ Debug/Obj/main.o: \
  ../../../drivers/include/tof_api/vl53l0x_api.h \
  ../../../drivers/include/tof_api/vl53l0x_api_strings.h \
  ../../../drivers/include/tof_api/vl53l0x_def.h \
- ../../../drivers/include/tof_api/vl53l0x_device.h \
- ../../../drivers/include/tof_api/vl53l0x_types.h \
  ../../../drivers/include/tof_api/vl53l0x_platform.h \
  ../../../drivers/include/tof_api/vl53l0x_platform_log.h \
  ../../../drivers/include/tof_api/vl53l0x_i2c_platform.h \

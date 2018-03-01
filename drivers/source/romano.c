@@ -12,14 +12,16 @@
 #include <openthread/cli.h>
 #include <openthread/platform/platform.h>
 
+static char mac_adress[6];
 static mqttsn_client_t      *m_client_pointer;                                       /**< An MQTT-SN client instance pointer. */
+static motor_t              *motor_pointer;                                          /**< A pointer for the motor state machine. */
 static char m_topic_name[]                     = DEFAULT_TOPIC_NAME;
 static mqttsn_topic_t       m_topic            =
 {
    .p_topic_name = 0,
    .topic_id     = 0,
 };
-static uint8_t publish_data[] = 0;
+
 
 
 void romano_subscribe(mqttsn_topic_t m_topic)
@@ -49,9 +51,9 @@ void romano_message_received(uint8_t *p_data)
 
     case MQTT_SUBSCRIBE:
       NRF_LOG_RAW_INFO("Subscribe request receieved, subscribing to topic: ");
-      for(uint8_t i = 2; i < p_data[1] + 2; i++)
+      for(uint8_t i = 0; i < p_data[1]; i++)
         {
-          m_topic_name[i-2] = p_data[i]; // Obtaining topic name from received data.
+          m_topic_name[i] = p_data[i+2]; // Obtaining topic name from received data.
           NRF_LOG_RAW_INFO("%d", p_data[i]);
         }
       NRF_LOG_RAW_INFO("\n");
@@ -61,9 +63,9 @@ void romano_message_received(uint8_t *p_data)
 
     case MQTT_UNSUBSCRIBE:
       NRF_LOG_RAW_INFO("Unsubscribe request receieved, unsubscribing to topic: ");
-      for(uint8_t i = 2; i < p_data[1] + 2; i++)
+      for(uint8_t i = 0; i < p_data[1]; i++)
         {
-          m_topic_name[i-2] = p_data[i]; // Obtaining topic name from received data.
+          m_topic_name[i] = p_data[i+2]; // Obtaining topic name from received data.
           NRF_LOG_RAW_INFO("%d", p_data[i]);
         }
       NRF_LOG_RAW_INFO("\n");
@@ -71,28 +73,40 @@ void romano_message_received(uint8_t *p_data)
       romano_unsubscribe(mqttsn_topic_t m_topic);
     break;
 
-    case PUBLISH_REQUEST:
-      NRF_LOG_RAW_INFO("Publish request received. Publishing on topic: ");
-      uint16_t topic_length =  ((uint16_t)p_data[2]) << 8 | p_data[1];
-      for(uint8_t i = 4; i < topic_length + 4; i++)
-        {
-          m_topic_name[i-4] = p_data[i]; // Obtaining topic name from received data.
-          NRF_LOG_RAW_INFO("%d", p_data[i]);
-        }
-        NRF_LOG_RAW_INFO("\n");
-      for(uint8_t i = 4 + topic_length; i < p_data[1]; i++)
-        {
-          publish_data[i - 4 + topic_length] = p_data[i];
-        }
-        mqttsn_client_publish(&m_client, m_topic.topic_id, publish_data, 1, &m_msg_id); // TODO: Fix this
-      break;
-
     case MOVEMENT_CONTROL:
-      NRF_LOG_RAW_INFO("Movement control data received.");
+      NRF_LOG_RAW_INFO("Movement control data received."); //TODO: Add functionality for PFC/Compass rather than assume direct control
+      if(p_data[1] == DIRECT_CONTROL) // Checks if the movement control type demands direct control rather than regulatory control
+      {
+        motor_pointer->output_motor_a = p_data[3] << 8 || p_data[2];
+        motor_pointer->output_motor_b = p_data[5] << 8 || p_data[4];
+        motor_pointer->direction_motor_a = p_data[6];
+        motor_pointer->direction_motor_b = p_data[7];
+        // TODO: add code that will stop the regulator
+      }
+    break;
+
+    case SENSOR_DATA:
+
+    break;
+
+    case REQUEST_CONNECTED_NODES_INFO:
+    break;
+
+    case CONNECTED_NODES_INFO:
+    break;
+
+    case HEARTBEAT_MESSAGE:
+    break;
+
+
   }
 }
 
-void romano_init(mqttsn_client_t *m_client)
+void romano_init(mqttsn_client_t *m_client, char *m_client_id, motor_t *motor)
 {
   m_client_pointer = m_client;
+  mac_adress       = m_client_id;
+
+  motor_pointer    = motor;
+
 }

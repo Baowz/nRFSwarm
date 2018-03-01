@@ -5,6 +5,7 @@
 #include "vl53l0x_api.h"
 #include "app_tof.h"
 #include "nrf_log.h"
+#include "nrf_delay.h"
 
 static VL53L0X_Dev_t  tof_sensor_1;
 static VL53L0X_Dev_t  tof_sensor_2;
@@ -34,6 +35,17 @@ void app_tof_get_range(VL53L0X_RangingMeasurementData_t *RangingMeasurementData,
   }
 }
 
+void app_tof_get_range_all(VL53L0VL53L0X_RangingMeasurementData_t *sensor_one, VL53L0VL53L0X_RangingMeasurementData_t *sensor_two, VL53L0VL53L0X_RangingMeasurementData_t *sensor_three, VL53L0VL53L0X_RangingMeasurementData_t *sensor_four)
+{
+  app_tof_get_range(sensor_one, 1);
+  app_tof_get_range(sensor_two, 2);
+
+  /*TODO: ADD this
+  app_tof_get_range(sensor_three, 3);
+  app_tof_get_range(sensor_four, 4);
+  */
+}
+
 void app_tof_setAddress(VL53L0X_Dev_t * device, uint8_t newAddr)
 {
   newAddr &= 0x7F;
@@ -53,7 +65,7 @@ void init_sensor(VL53L0X_Dev_t* device, VL53L0X_DeviceInfo_t* info, uint8_t i2cA
   VL53L0X_DataInit(device);
 
   if(i2cAddr != 0x29)
-    VL53L0X_SetDeviceAddress(device, i2cAddr);
+    app_tof_setAddress(device, i2cAddr);
 
   VL53L0X_GetDeviceInfo(device, info);
 
@@ -79,10 +91,10 @@ void app_tof_init(void)
 {
   // Initialize Comms
 
-  tof_sensor_1.I2cDevAddr = VL53L0X_I2C_ADDR_1;
-  tof_sensor_2.I2cDevAddr = VL53L0X_I2C_ADDR_1;
-  tof_sensor_3.I2cDevAddr = VL53L0X_I2C_ADDR_1;
-  tof_sensor_4.I2cDevAddr = VL53L0X_I2C_ADDR_1;
+  tof_sensor_1.I2cDevAddr = VL53L0X_I2C_DEFAULT_ADDR;
+  tof_sensor_2.I2cDevAddr = VL53L0X_I2C_DEFAULT_ADDR;
+  tof_sensor_3.I2cDevAddr = VL53L0X_I2C_DEFAULT_ADDR;
+  tof_sensor_4.I2cDevAddr = VL53L0X_I2C_DEFAULT_ADDR;
 
   tof_sensor_1.comms_type = 1;
   tof_sensor_2.comms_type = 1;
@@ -93,7 +105,6 @@ void app_tof_init(void)
   tof_sensor_2.comms_speed_khz = 400;
   tof_sensor_3.comms_speed_khz = 400;
   tof_sensor_4.comms_speed_khz = 400;
-
 
   VL53L0X_i2c_init();
 
@@ -109,26 +120,31 @@ void app_tof_init(void)
   nrf_gpio_pin_clear(XSHUT_PIN_3);
   nrf_gpio_pin_clear(XSHUT_PIN_4);
 
-
   // Init sensor 1
 
   nrf_gpio_pin_set(XSHUT_PIN_1); // Wake up sensor 1
+  nrf_delay_ms(WAKE_UP_TIME);
   init_sensor(&tof_sensor_1, &tof_info_1, VL53L0X_I2C_ADDR_1);
 
   // Init sensor 2
 
-  nrf_gpio_pin_set(XSHUT_PIN_2); // Wake up sensor 2
+  nrf_gpio_pin_set(XSHUT_PIN_3); // Wake up sensor 2
+  nrf_delay_ms(WAKE_UP_TIME);
   init_sensor(&tof_sensor_2, &tof_info_2, VL53L0X_I2C_ADDR_2);
 
+
+  //TODO: Add this
   // Init sensor 3
 
-  nrf_gpio_pin_set(XSHUT_PIN_3); // Wake up sensor 3
-  init_sensor(&tof_sensor_3, &tof_info_3, VL53L0X_I2C_ADDR_3);
+  /*nrf_gpio_pin_set(XSHUT_PIN_3); // Wake up sensor 3
+  nrf_delay_ms(WAKE_UP_TIME);
+  init_sensor(&tof_sensor_3, &tof_info_3, VL53L0X_I2C_ADDR_3);*/
 
   // Init sensor 4
 
-  nrf_gpio_pin_set(XSHUT_PIN_4); // Wake up sensor 4
-  init_sensor(&tof_sensor_4, &tof_info_4, VL53L0X_I2C_ADDR_4);
+  /*nrf_gpio_pin_set(XSHUT_PIN_4); // Wake up sensor 4
+  nrf_delay_ms(WAKE_UP_TIME);
+  init_sensor(&tof_sensor_4, &tof_info_4, VL53L0X_I2C_ADDR_4);*/
 
-  NRF_LOG_RAW_INFO("[SUCCESS] Light Detection and Ranging system operative. (LIDAR)")
+  NRF_LOG_RAW_INFO("[SUCCESS] Light Detection and Ranging system operative. (LIDAR) \n")
 }
