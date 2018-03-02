@@ -13,7 +13,7 @@
 
 #include "vl53l0x_def.h"
 
-#include "motor.h"
+#include "state.h"
 #include "mpu_twi.h"
 #include "app_mpu.h"
 #include "real_time_clock.h"
@@ -28,8 +28,11 @@
 #include <openthread/cli.h>
 #include <openthread/platform/platform.h>
 
-#define ALGORITHM_INTERVAL_MS   100
-#define BOOT_DELAY_MS           100
+#define ALGORITHM_INTERVAL_MS   50
+#define BOOT_DELAY_MS           10
+
+#define SEARCH_GATEWAY_FREQUENCY 10
+#define ADVERTISING_LED_FREQUENCY 10
 
 #define LED_ON_REQUEST      1                                               /**< LED ON command. */
 #define LED_OFF_REQUEST     0                                               /**< LED OFF command. */
@@ -46,23 +49,29 @@ static mqttsn_client_t      m_client;                                       /**<
 static mqttsn_remote_t      m_gateway_addr;                                 /**< A gateway address. */
 static uint8_t              m_gateway_id;                                   /**< A gateway ID. */
 static mqttsn_connect_opt_t m_connect_opt;                                  /**< Connect options for the MQTT-SN client. */
-static bool                 m_subscribed       = 0;                         /**< Current subscription state. */
-static bool                 m_connected        = 0;                         /**< Current connection state. */
-static uint16_t             m_msg_id           = 0;                         /**< Message ID thrown with MQTTSN_EVENT_TIMEOUT. */
-static char                 m_topic_name[]     = "Swarm/Common"; /**< Name of the topic corresponding to LED toggling. */
-static bool                 m_gateway_found    = false;                     /**< Stores whether a gateway has been found. */
-static mqttsn_topic_t       m_topic            =                            /**< Topic corresponding to subscriber's LED. */
+static bool                 m_subscribed              = 0;                  /**< Current subscription state. */
+static bool                 m_connected               = 0;                  /**< Current connection state. */
+static uint16_t             m_msg_id                  = 0;                  /**< Message ID thrown with MQTTSN_EVENT_TIMEOUT. */
+static char                 m_topic_common_name[]     = "Swarm/Common";     /**< Name of the topic corresponding to LED toggling. */
+static char                 m_topic_client_name[6];
+static bool                 m_gateway_found           = false;              /**< Stores whether a gateway has been found. */
+static mqttsn_topic_t       m_topic_common            =                     /**< Topic corresponding to subscriber's LED. */
 {
-   .p_topic_name = (unsigned char *)m_topic_name,
+   .p_topic_name = (unsigned char *)m_topic_common_name,
    .topic_id     = 0,
 };
+static mqttsn_topic_t      m_topic_client             =
+{
+   .p_topic_name = 0,
+   .topic_id     = 0,
+};
+
+static state_machine_t s_state;
 
 // Timer instance declaration.
 
 static const nrf_drv_timer_t application_timer = NRF_DRV_TIMER_INSTANCE(1); // Main timer
 static nrf_drv_timer_t rtc_timer = NRF_DRV_TIMER_INSTANCE(2); // Timer used for real time sensitive data
-
-static state_machine_t s_state;
 
 ////////////////////////////////////////////////////////////////////
 /////////////////////////// Peripherals ////////////////////////////
@@ -86,8 +95,8 @@ void connection_check(void)
   }
   else if(m_gateway_found && m_client.client_state == MQTTSN_CLIENT_CONNECTED && !m_subscribed)
   {
-    uint8_t  topic_name_len = strlen(m_topic_name);
-    if(mqttsn_client_subscribe(&m_client, m_topic.p_topic_name, topic_name_len, &m_msg_id) != NRF_SUCCESS)
+    uint8_t  topic_name_len = strlen(m_topic_common_name);
+    if(mqttsn_client_subscribe(&m_client, m_topic_common.p_topic_name, topic_name_len, &m_msg_id) != NRF_SUCCESS)
     {
       NRF_LOG_RAW_INFO("Could not send a subscribe message. Retrying.. \n")
     }
@@ -98,6 +107,39 @@ void connection_check(void)
   }
 }
 
+void state_printing(void)
+{
+  #if PRINT_STATE_MAC_ADDRESS
+  NRF_LOG_RAW_INFO("MAC: 0x%x%x%x%x%x%x - ", s_state.mac_address[5], s_state.mac_address[4], s_state.mac_address[3], s_state.mac_address[2], s_state.mac_address[1], s_state.mac_address[0]);
+  #endif
+
+  #if PRINT_STATE_ANGLE_VALUES
+  NRF_LOG_RAW_INFO("Angles: R "NRF_LOG_FLOAT_MARKER" ", NRF_LOG_FLOAT(s_state.angle_measurement[0]));
+  NRF_LOG_RAW_INFO("P "NRF_LOG_FLOAT_MARKER" ",         NRF_LOG_FLOAT(s_state.angle_measurement[1]));
+  NRF_LOG_RAW_INFO("Y "NRF_LOG_FLOAT_MARKER" - ",       NRF_LOG_FLOAT(s_state.angle_measurement[2]));
+  #endif
+
+  #if PRINT_STATE_ACCELEROMETER_VALUES
+  NRF_LOG_RAW_INFO("Acc: X %7d Y %7d Z: %7d - ", s_state.accel[0], s_state.accel[1], s_state.accel[2]);
+  #endif
+
+  #if PRINT_STATE_RANGE_MEASUREMENT
+  NRF_LOG_RAW_INFO("Range: %dmm - %dmm - %dmm - ", s_state.lidarOne.RangeMilliMeter, s_state.lidarTwo.RangeMilliMeter, s_state.lidarThree.RangeMilliMeter); //TODO:fix this
+  #endif
+
+  #if PRINT_STATE_RSSI_VALUE
+  NRF_LOG_RAW_INFO("RSSI: %d - ", s_state.RSSI);
+  #endif
+
+  #if PRINT_STATE_LED_VALUE
+  NRF_LOG_RAW_INFO("LED: 1.%d %d %d 2.%d %d %d - ", s_state.led_one_red, s_state.led_one_green, s_state.led_one_blue, s_state.led_two_red, s_state.led_two_green, s_state.led_two_blue);
+  #endif
+
+  #if PRINT_STATE_VOLTAGE_VALUE
+  NRF_LOG_RAW_INFO("Voltage: "NRF_LOG_FLOAT_MARKER" \n", NRF_LOG_FLOAT(s_state.voltage));
+  #endif
+}
+
 void main_algorithm(void)
 {
   // TODO: Add code to interface with data gotten from network. The main algorithm should be here.
@@ -105,14 +147,32 @@ void main_algorithm(void)
   app_tof_get_range_all(&s_state.lidarOne, &s_state.lidarTwo, &s_state.lidarThree, &s_state.lidarFour);
   update_motor_values(&s_state.motor);
 
-  NRF_LOG_RAW_INFO("Range measurement: %dmm - %dmm\n", s_state.lidarOne.RangeMilliMeter, s_state.lidarTwo.RangeMilliMeter); //TODO:fix this
 
   // Poll a connection scheme until a subscription to a broker is obtained.
   if(!m_subscribed)
     connection_check();
 
+  // If connected, print state values for debugging
+  if(m_subscribed)
+    state_printing();
+
   s_state.interrupt_flag = false;
 }
+
+// Callback function for battery voltage reading
+
+void batt_callback(float voltage)
+{
+  s_state.voltage = voltage;
+   /*if(s_state.voltage < VOLTAGE_LEVEL_CUTOFF)
+   {
+   uint32_t err_code;
+
+   err_code = sd_power_system_off();
+   APP_ERROR_CHECK(err_code);      //put nRF52 in sleep mode / power off
+ }*/
+}
+
 
 ////////////////////////////////////////////////////////////////////
 /////////////////////////// Thread /////////////////////////////////
@@ -123,8 +183,8 @@ static void led_update(uint8_t * p_data)
 {
    if (*p_data == LED_ON_REQUEST)
    {
-      s_state.led_two_red   = 255;
-      s_state.led_two_green = 165;
+      s_state.led_two_red   = 0;
+      s_state.led_two_green = 0;
       s_state.led_two_blue  = 0;
 
       s_state.motor.output_motor_a = 400;
@@ -150,7 +210,15 @@ static void led_update(uint8_t * p_data)
 
 static void rssi_callback(uint16_t id, int8_t rssi)
 {
-   NRF_LOG_RAW_INFO("ID and RSSI: %d - %d \n", id, rssi);
+   s_state.RSSI = rssi;
+
+   uint8_t led_percentage = (100 - (abs(s_state.RSSI) - 30));
+   s_state.led_one_blue = 1000;
+   float led_strength_indicator = (float)s_state.led_one_blue * ((float)led_percentage / 100.0f);
+
+   rgb_update_led_color(1, s_state.led_one_red, s_state.led_one_green, (uint16_t)led_strength_indicator);
+
+   //NRF_LOG_RAW_INFO("ID and RSSI: %d - %d \n", id, rssi);
 }
 
 
@@ -160,7 +228,7 @@ static void rssi_callback(uint16_t id, int8_t rssi)
  */
 static void received_callback(mqttsn_event_t * p_event)
 {
-    if (p_event->event_data.published.packet.topic.topic_id == m_topic.topic_id)
+    if (p_event->event_data.published.packet.topic.topic_id == m_topic_common.topic_id)
     {
         //NRF_LOG_RAW_INFO("MQTT-SN event: Content to subscribed topic received.\r\n");
         led_update(p_event->event_data.published.p_payload);
@@ -206,14 +274,26 @@ static void connected_callback(void)
 {
     s_state.led_one_red   = 0;
     s_state.led_one_green = 0;
-    s_state.led_one_blue  = 255;
+    s_state.led_one_blue  = 1000;
 
     rgb_update_led_color(1,s_state.led_one_red,s_state.led_one_green,s_state.led_one_blue);
 
     uint32_t err_code = mqttsn_client_topic_register(&m_client,
-                                                     m_topic.p_topic_name,
-                                                     strlen(m_topic_name),
+                                                     m_topic_common.p_topic_name,
+                                                     strlen(m_topic_common_name),
                                                      &m_msg_id);
+
+    if (err_code != NRF_SUCCESS)
+    {
+        NRF_LOG_ERROR("REGISTER message could not be sent. Error code: 0x%x\r\n", err_code);
+    }
+
+
+     err_code = mqttsn_client_topic_register(&m_client,
+                                             m_topic_client.p_topic_name,
+                                             strlen(m_topic_client_name),
+                                             &m_msg_id);
+
     if (err_code != NRF_SUCCESS)
     {
         NRF_LOG_ERROR("REGISTER message could not be sent. Error code: 0x%x\r\n", err_code);
@@ -225,7 +305,7 @@ static void connected_callback(void)
 static void disconnected_callback(void)
 {
     s_state.led_one_red   = 0;
-    s_state.led_one_green = 255;
+    s_state.led_one_green = 1000;
     s_state.led_one_blue  = 0;
     rgb_update_led_color(1,s_state.led_one_red,s_state.led_one_green,s_state.led_one_blue);
 }
@@ -237,7 +317,7 @@ static void disconnected_callback(void)
  */
 static void regack_callback(mqttsn_event_t * p_event)
 {
-    m_topic.topic_id = p_event->event_data.registered.packet.topic.topic_id;
+    m_topic_common.topic_id = p_event->event_data.registered.packet.topic.topic_id;
     NRF_LOG_RAW_INFO("MQTT-SN event: Topic has been registered with ID: %d.\n",
                  p_event->event_data.registered.packet.topic.topic_id);
 }
@@ -305,37 +385,6 @@ static void state_changed_callback(uint32_t flags, void * p_context)
                  flags, otThreadGetDeviceRole(p_context));
 }
 
-static void subscribe(void)
-{
-    uint8_t  topic_name_len = strlen(m_topic_name);
-    uint32_t err_code       = NRF_SUCCESS;
-
-    if (m_subscribed)
-    {
-        err_code = mqttsn_client_unsubscribe(&m_client, m_topic.p_topic_name, topic_name_len, &m_msg_id);
-        if (err_code != NRF_SUCCESS)
-        {
-            NRF_LOG_ERROR("UNSUBSCRIBE message could not be sent.\r\n");
-        }
-        else
-        {
-            m_subscribed = false;
-        }
-    }
-    else
-    {
-        err_code = mqttsn_client_subscribe(&m_client, m_topic.p_topic_name, topic_name_len, &m_msg_id);
-        if (err_code != NRF_SUCCESS)
-        {
-            NRF_LOG_ERROR("SUBSCRIBE message could not be sent.\r\n");
-        }
-        else
-        {
-            m_subscribed = true;
-        }
-    }
-}
-
 /**@brief Function for initializing the Thread Stack.
  */
 static void thread_instance_init(void)
@@ -385,7 +434,7 @@ void log_init(void)
 void timer_event_handler(nrf_timer_event_t event_type, void* p_context)
 {
   static uint32_t advertising_count = 0;
-  static uint32_t adv_led_green = 255;
+  static uint32_t adv_led_green = 1000;
   static uint32_t adv_led_blue  = 0;
   static bool led_flag = false;
 
@@ -398,7 +447,7 @@ void timer_event_handler(nrf_timer_event_t event_type, void* p_context)
 
     // Code to restart search if gateway is not found. IMPORTANT
 
-    if(m_client.client_state == MQTTSN_CLIENT_SEARCHING_GATEWAY && advertising_count % 10 == 0)
+    if(m_client.client_state == MQTTSN_CLIENT_SEARCHING_GATEWAY && (advertising_count % SEARCH_GATEWAY_FREQUENCY)  == 0)
       m_client.client_state = MQTTSN_CLIENT_DISCONNECTED;
 
      // Some code to make LED1 blink when trying to connect to a gateway, indicating a connection process.
@@ -406,10 +455,10 @@ void timer_event_handler(nrf_timer_event_t event_type, void* p_context)
     if(m_gateway_found) // Changes the color of the LED if the gateway is found but no connection to the broker is established.
     {
       adv_led_green = 0;
-      adv_led_blue  = 255;
+      adv_led_blue  = 1000;
     }
 
-    if(advertising_count % 5 == 0)
+    if(advertising_count % ADVERTISING_LED_FREQUENCY == 0)
       {
         if(led_flag)
         {
@@ -452,20 +501,6 @@ void timer_init()
    NRF_LOG_RAW_INFO("[SUCCESS] Main timer enabled. \n");
 }
 
-// Callback function for battery voltage reading
-
-void batt_callback(float voltage)
-{
-  s_state.voltage = voltage
-   /*if(s_state.voltage < VOLTAGE_LEVEL_CUTOFF)
-   {
-   uint32_t err_code;
-
-   err_code = sd_power_system_off();
-   APP_ERROR_CHECK(err_code);      //put nRF52 in sleep mode / power off
- }*/
-}
-
 // Fetches the MAC address of the device to use it as a unique client ID.
 
 void get_device_address()
@@ -476,6 +511,9 @@ void get_device_address()
   m_client_id[3] = (NRF_FICR->DEVICEADDR[0] >> 24) & 0xFF;
   m_client_id[4] = (NRF_FICR->DEVICEADDR[1])       & 0xFF;
   m_client_id[5] = (NRF_FICR->DEVICEADDR[1] >> 8)  & 0xFF;
+
+  memcpy(s_state.mac_address, m_client_id, 6);
+  memcpy(m_topic_client.p_topic_name, m_client_id, 6);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -488,7 +526,7 @@ int main(void)
   get_device_address();
 
   NRF_LOG_RAW_INFO("\n \n nRF Swarm revision 0.3.1 online. \n \n");
-  NRF_LOG_RAW_INFO("The device MAC address is given by: 0x%x%x%x%x%x%x \n", m_client_id[5], m_client_id[4], m_client_id[3], m_client_id[2], m_client_id[1], m_client_id[0]);
+  NRF_LOG_RAW_INFO("The device MAC address is given by: 0x%x%x%x%x%x%x \n", s_state.mac_address[5], s_state.mac_address[4], s_state.mac_address[3], s_state.mac_address[2], s_state.mac_address[1], s_state.mac_address[0]);
   NRF_LOG_RAW_INFO("Initializing all systems in %d ms. \n", BOOT_DELAY_MS);
 
   nrf_delay_ms(BOOT_DELAY_MS); // Delay must be here since the MPU-9250 needs a small time interval in order to be ready for TWI-communication.
@@ -508,7 +546,7 @@ int main(void)
   thread_instance_init();
   mqttsn_init();
 
-  rgb_update_led_color(1,0,255,0);
+  rgb_update_led_color(1,0,1000,0);
 
   NRF_LOG_RAW_INFO("All systems online. \n \n");
 

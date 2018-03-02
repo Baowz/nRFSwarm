@@ -2,10 +2,14 @@
 #include <stdint.h>
 
 #include "nrf_gpio.h"
-#include "vl53l0x_api.h"
-#include "app_tof.h"
 #include "nrf_log.h"
 #include "nrf_delay.h"
+
+#include "vl53l0x_api.h"
+#include "app_tof.h"
+
+#include "min_max.h"
+#include "swarm_pcb.h"
 
 static VL53L0X_Dev_t  tof_sensor_1;
 static VL53L0X_Dev_t  tof_sensor_2;
@@ -35,15 +39,25 @@ void app_tof_get_range(VL53L0X_RangingMeasurementData_t *RangingMeasurementData,
   }
 }
 
-void app_tof_get_range_all(VL53L0VL53L0X_RangingMeasurementData_t *sensor_one, VL53L0VL53L0X_RangingMeasurementData_t *sensor_two, VL53L0VL53L0X_RangingMeasurementData_t *sensor_three, VL53L0VL53L0X_RangingMeasurementData_t *sensor_four)
+void app_tof_get_range_all(VL53L0X_RangingMeasurementData_t *sensor_one, VL53L0X_RangingMeasurementData_t *sensor_two, VL53L0X_RangingMeasurementData_t *sensor_three, VL53L0X_RangingMeasurementData_t *sensor_four)
 {
   app_tof_get_range(sensor_one, 1);
   app_tof_get_range(sensor_two, 2);
-
-  /*TODO: ADD this
   app_tof_get_range(sensor_three, 3);
+
+  /*TODO: Add this
   app_tof_get_range(sensor_four, 4);
   */
+
+  // Compute indicator value for nearest obstacle, to be indicated on LED 2.
+  float red_obstacle_value_percentage   = (float)(((min(min(sensor_one->RangeMilliMeter, sensor_two->RangeMilliMeter), sensor_three->RangeMilliMeter))-20.0f)/(RED_INDICATION_RANGE)); // 100% if no obstacle within range
+  float green_obstacle_value_percentage = (float)(((min(min(sensor_one->RangeMilliMeter, sensor_two->RangeMilliMeter), sensor_three->RangeMilliMeter))-20.0f)/(GREEN_INDICATION_RANGE)); // 100% if no obstacle within range
+
+  uint16_t red_obstacle_value    = (uint16_t)(1000.0f * (1.0f - check_lower_upper_range(red_obstacle_value_percentage, 0.0f, 1.0f)));
+  uint16_t green_obstacle_value  = (uint16_t)(1000.0f * (1.0f - check_lower_upper_range(green_obstacle_value_percentage, 0.0f, 1.0f)));
+
+  //TODO: Move this somewhere else to ensure modularity
+  rgb_update_led_color(2, red_obstacle_value, green_obstacle_value - red_obstacle_value, 0);
 }
 
 void app_tof_setAddress(VL53L0X_Dev_t * device, uint8_t newAddr)
@@ -128,17 +142,15 @@ void app_tof_init(void)
 
   // Init sensor 2
 
-  nrf_gpio_pin_set(XSHUT_PIN_3); // Wake up sensor 2
+  nrf_gpio_pin_set(XSHUT_PIN_2); // Wake up sensor 2
   nrf_delay_ms(WAKE_UP_TIME);
   init_sensor(&tof_sensor_2, &tof_info_2, VL53L0X_I2C_ADDR_2);
 
-
-  //TODO: Add this
   // Init sensor 3
 
-  /*nrf_gpio_pin_set(XSHUT_PIN_3); // Wake up sensor 3
+  nrf_gpio_pin_set(XSHUT_PIN_3); // Wake up sensor 3
   nrf_delay_ms(WAKE_UP_TIME);
-  init_sensor(&tof_sensor_3, &tof_info_3, VL53L0X_I2C_ADDR_3);*/
+  init_sensor(&tof_sensor_3, &tof_info_3, VL53L0X_I2C_ADDR_3);
 
   // Init sensor 4
 

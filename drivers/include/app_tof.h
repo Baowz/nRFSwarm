@@ -4,6 +4,10 @@
 #include "vl53l0x_api.h"
 #include "pca10056.h"
 
+
+#define RED_INDICATION_RANGE     500.0f  //In mm
+#define GREEN_INDICATION_RANGE   1000.0f //In mm
+
 #define WAKE_UP_TIME             300
 
 #define VL53L0X_I2C_DEFAULT_ADDR 0x29
@@ -22,4 +26,4 @@
 
 void app_tof_init(void);
 void app_tof_get_range(VL53L0X_RangingMeasurementData_t *RangingMeasurementData, uint8_t sensor);
-void app_tof_get_range_all(VL53L0VL53L0X_RangingMeasurementData_t *sensor_one, VL53L0VL53L0X_RangingMeasurementData_t *sensor_two, VL53L0VL53L0X_RangingMeasurementData_t *sensor_three, VL53L0VL53L0X_RangingMeasurementData_t *sensor_four);
+void app_tof_get_range_all(VL53L0X_RangingMeasurementData_t *sensor_one, VL53L0X_RangingMeasurementData_t *sensor_two, VL53L0X_RangingMeasurementData_t *sensor_three, VL53L0X_RangingMeasurementData_t *sensor_four);

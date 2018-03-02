@@ -27,23 +27,13 @@ Output/thread_mqtt_sn_client_subscriber_pca10056\ Debug/Obj/app_tof.o: \
  C:/SDKThread/components/libraries/util/nordic_common.h \
  C:/SDKThread/components/libraries/util/app_error_weak.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdlib.h \
- ../../../drivers/include/tof_api/vl53l0x_api.h \
- ../../../drivers/include/tof_api/vl53l0x_api_strings.h \
- ../../../drivers/include/tof_api/vl53l0x_def.h \
- ../../../drivers/include/tof_api/vl53l0x_device.h \
- ../../../drivers/include/tof_api/vl53l0x_types.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stddef.h \
- ../../../drivers/include/tof_api/vl53l0x_platform.h \
- ../../../drivers/include/tof_api/vl53l0x_platform_log.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/string.h \
- ../../../drivers/include/tof_api/vl53l0x_i2c_platform.h \
- C:/SDKThread/components/boards/pca10056.h \
- ../../../drivers/include/app_tof.h \
  C:/SDKThread/components/libraries/experimental_log/nrf_log.h \
  C:/SDKThread/components/libraries/util/sdk_common.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/string.h \
  C:/SDKThread/components/device/compiler_abstraction.h \
  C:/SDKThread/components/libraries/util/sdk_os.h \
  C:/SDKThread/components/libraries/util/app_util.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stddef.h \
  C:/SDKThread/components/libraries/util/sdk_macros.h \
  C:/SDKThread/components/libraries/experimental_section_vars/nrf_section.h \
  C:/SDKThread/components/libraries/util/nordic_common.h \
@@ -51,4 +41,15 @@ Output/thread_mqtt_sn_client_subscriber_pca10056\ Debug/Obj/app_tof.o: \
  C:/SDKThread/components/libraries/util/sdk_errors.h \
  C:/SDKThread/components/libraries/experimental_log/src/nrf_log_internal.h \
  C:/SDKThread/components/libraries/util/app_util.h \
- C:/SDKThread/components/drivers_nrf/delay/nrf_delay.h
+ C:/SDKThread/components/drivers_nrf/delay/nrf_delay.h \
+ ../../../drivers/include/tof_api/vl53l0x_api.h \
+ ../../../drivers/include/tof_api/vl53l0x_api_strings.h \
+ ../../../drivers/include/tof_api/vl53l0x_def.h \
+ ../../../drivers/include/tof_api/vl53l0x_device.h \
+ ../../../drivers/include/tof_api/vl53l0x_types.h \
+ ../../../drivers/include/tof_api/vl53l0x_platform.h \
+ ../../../drivers/include/tof_api/vl53l0x_platform_log.h \
+ ../../../drivers/include/tof_api/vl53l0x_i2c_platform.h \
+ C:/SDKThread/components/boards/pca10056.h \
+ ../../../drivers/include/app_tof.h ../../../drivers/include/min_max.h \
+ ../../../drivers/include/swarm_pcb.h

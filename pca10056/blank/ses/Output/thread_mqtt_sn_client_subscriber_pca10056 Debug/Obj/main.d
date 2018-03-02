@@ -55,7 +55,8 @@ Output/thread_mqtt_sn_client_subscriber_pca10056\ Debug/Obj/main.o: \
  ../../../drivers/include/tof_api/vl53l0x_def.h \
  ../../../drivers/include/tof_api/vl53l0x_device.h \
  ../../../drivers/include/tof_api/vl53l0x_types.h \
- ../../../drivers/include/motor.h ../../../drivers/include/mpu_twi.h \
+ ../../../drivers/include/state.h ../../../drivers/include/motor.h \
+ ../../../drivers/include/mpu_twi.h \
  C:/SDKThread/components/boards/pca10056.h \
  ../../../drivers/include/app_mpu.h \
  ../../../drivers/include/real_time_clock.h \
