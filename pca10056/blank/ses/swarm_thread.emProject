@@ -1,9 +1,6 @@
 <!DOCTYPE CrossStudio_Project_File>
-<solution
-  Name="thread_mqtt_sn_client_subscriber_pca10056"
-  target="8"
-  version="2">
-  <project Name="thread_mqtt_sn_client_subscriber_pca10056">
+<solution Name="swarm_thread" target="8" version="2">
+  <project Name="swarm_thread">
     <configuration
       Name="Common"
       arm_architecture="v7EM"
@@ -148,6 +145,9 @@
       <file file_name="../../../drivers/source/batt_meas.c" />
       <file file_name="../../../drivers/source/eulerconversion.c" />
       <file file_name="../../../drivers/source/inv_mpu.c" />
+      <file file_name="../../../drivers/source/ascii_converter.c" />
+      <file file_name="../../../drivers/source/pfc.c" />
+      <file file_name="../../../drivers/source/pid.c" />
     </folder>
     <configuration Name="Debug" c_preprocessor_definitions="" />
   </project>

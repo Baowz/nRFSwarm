@@ -55,7 +55,6 @@ Output/thread_mqtt_sn_client_subscriber_pca10056\ Debug/Obj/main.o: \
  ../../../drivers/include/tof_api/vl53l0x_def.h \
  ../../../drivers/include/tof_api/vl53l0x_device.h \
  ../../../drivers/include/tof_api/vl53l0x_types.h \
- ../../../drivers/include/state.h ../../../drivers/include/motor.h \
  ../../../drivers/include/mpu_twi.h \
  C:/SDKThread/components/boards/pca10056.h \
  ../../../drivers/include/app_mpu.h \
@@ -70,6 +69,8 @@ Output/thread_mqtt_sn_client_subscriber_pca10056\ Debug/Obj/main.o: \
  ../../../drivers/include/tof_api/vl53l0x_platform.h \
  ../../../drivers/include/tof_api/vl53l0x_platform_log.h \
  ../../../drivers/include/tof_api/vl53l0x_i2c_platform.h \
+ ../../../drivers/include/romano.h ../../../drivers/include/state.h \
+ ../../../drivers/include/motor.h \
  C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.h \
  C:/SDKThread/components/thread/experimental/utils/thread_utils.h \
  C:/SDKThread/external/openthread/include/openthread/openthread.h \

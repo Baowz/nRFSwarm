@@ -2,7 +2,8 @@
 <session>
  <Bookmarks/>
  <Breakpoints groups="Breakpoints" active_group="Breakpoints">
-  <BreakpointListItem trigger="" line="118" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../../../main.c" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="170" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../../../main.c" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="314" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../../../main.c" useHWbreakpoint="false"/>
  </Breakpoints>
  <ExecutionProfileWindow/>
  <FrameBufferWindow>
@@ -10,44 +11,65 @@
  </FrameBufferWindow>
  <Memory1>
   <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="" refreshPeriod="0" name="thread_mqtt_sn_client_subscriber_pca10056" radix="16" sizeText="" addressText=""/>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="" refreshPeriod="0" name="swarm_thread" radix="16" sizeText="" addressText=""/>
  </Memory1>
  <Memory2>
   <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="" refreshPeriod="0" name="thread_mqtt_sn_client_subscriber_pca10056" radix="16" sizeText="" addressText=""/>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="" refreshPeriod="0" name="swarm_thread" radix="16" sizeText="" addressText=""/>
  </Memory2>
  <Memory3>
   <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="" refreshPeriod="0" name="thread_mqtt_sn_client_subscriber_pca10056" radix="16" sizeText="" addressText=""/>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="" refreshPeriod="0" name="swarm_thread" radix="16" sizeText="" addressText=""/>
  </Memory3>
  <Memory4>
   <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="" refreshPeriod="0" name="thread_mqtt_sn_client_subscriber_pca10056" radix="16" sizeText="" addressText=""/>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="" refreshPeriod="0" name="swarm_thread" radix="16" sizeText="" addressText=""/>
  </Memory4>
  <Project>
-  <ProjectSessionItem path="thread_mqtt_sn_client_subscriber_pca10056"/>
-  <ProjectSessionItem path="thread_mqtt_sn_client_subscriber_pca10056;thread_mqtt_sn_client_subscriber_pca10056"/>
-  <ProjectSessionItem path="thread_mqtt_sn_client_subscriber_pca10056;thread_mqtt_sn_client_subscriber_pca10056;Application"/>
-  <ProjectSessionItem path="thread_mqtt_sn_client_subscriber_pca10056;thread_mqtt_sn_client_subscriber_pca10056;Board Support"/>
-  <ProjectSessionItem path="thread_mqtt_sn_client_subscriber_pca10056;thread_mqtt_sn_client_subscriber_pca10056;Device"/>
-  <ProjectSessionItem path="thread_mqtt_sn_client_subscriber_pca10056;thread_mqtt_sn_client_subscriber_pca10056;Drivers"/>
-  <ProjectSessionItem path="thread_mqtt_sn_client_subscriber_pca10056;thread_mqtt_sn_client_subscriber_pca10056;nRF_Drivers"/>
-  <ProjectSessionItem path="thread_mqtt_sn_client_subscriber_pca10056;thread_mqtt_sn_client_subscriber_pca10056;nRF_Libraries"/>
-  <ProjectSessionItem path="thread_mqtt_sn_client_subscriber_pca10056;thread_mqtt_sn_client_subscriber_pca10056;nRF_Thread"/>
+  <ProjectSessionItem path="swarm_thread"/>
+  <ProjectSessionItem path="swarm_thread;swarm_thread"/>
+  <ProjectSessionItem path="swarm_thread;swarm_thread;Application"/>
+  <ProjectSessionItem path="swarm_thread;swarm_thread;Board Definition"/>
+  <ProjectSessionItem path="swarm_thread;swarm_thread;Board Support"/>
+  <ProjectSessionItem path="swarm_thread;swarm_thread;Device"/>
+  <ProjectSessionItem path="swarm_thread;swarm_thread;Drivers"/>
+  <ProjectSessionItem path="swarm_thread;swarm_thread;Drivers;tof_api"/>
+  <ProjectSessionItem path="swarm_thread;swarm_thread;nRF_Drivers"/>
+  <ProjectSessionItem path="swarm_thread;swarm_thread;nRF_Libraries"/>
+  <ProjectSessionItem path="swarm_thread;swarm_thread;nRF_Log"/>
+  <ProjectSessionItem path="swarm_thread;swarm_thread;nRF_Thread"/>
+  <ProjectSessionItem path="swarm_thread;swarm_thread;openthread"/>
  </Project>
  <Register1>
   <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/msp;CPU/psp;CPU/cfbp" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="thread_mqtt_sn_client_subscriber_pca10056" decimalNodes="" octalNodes="" unsignedNodes=""/>
+  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/msp;CPU/psp;CPU/cfbp" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="swarm_thread" decimalNodes="" octalNodes="" unsignedNodes=""/>
  </Register1>
  <Register2>
   <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/msp;CPU/psp;CPU/cfbp" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="thread_mqtt_sn_client_subscriber_pca10056" decimalNodes="" octalNodes="" unsignedNodes=""/>
+  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/msp;CPU/psp;CPU/cfbp" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="swarm_thread" decimalNodes="" octalNodes="" unsignedNodes=""/>
  </Register2>
  <Register3>
   <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/msp;CPU/psp;CPU/cfbp" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="thread_mqtt_sn_client_subscriber_pca10056" decimalNodes="" octalNodes="" unsignedNodes=""/>
+  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/msp;CPU/psp;CPU/cfbp" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="swarm_thread" decimalNodes="" octalNodes="" unsignedNodes=""/>
  </Register3>
  <Register4>
   <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/msp;CPU/psp;CPU/cfbp" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="thread_mqtt_sn_client_subscriber_pca10056" decimalNodes="" octalNodes="" unsignedNodes=""/>
+  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/msp;CPU/psp;CPU/cfbp" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="swarm_thread" decimalNodes="" octalNodes="" unsignedNodes=""/>
  </Register4>
  <TraceWindow>
   <Trace enabled="Yes"/>
  </TraceWindow>
  <Watch1>
-  <Watches active="1" update="Never"/>
+  <Watches active="1" update="Never">
+   <Watchpoint numelements="0" expression=" romano_sensor_message[17]" evalMode="0" name=" romano_sensor_message[17]" radix="-1" linenumber="239" filename="../../../main.c" list=""/>
+   <Watchpoint numelements="0" expression="&amp;p_event->event_data.registered.packet.topic.p_topic_name" evalMode="1" name="&amp;p_event->event_data.registered.packet.topic.p_topic_name" radix="-1" linenumber="405" filename="../../../main.c" list=""/>
+   <Watchpoint numelements="0" expression="((uint8_t)s_state.RSSI) >> 4" evalMode="0" name="((uint8_t)s_state.RSSI) >> 4" radix="-1" linenumber="238" filename="../../../main.c" list=""/>
+   <Watchpoint numelements="0" expression="ascii_array" evalMode="3" name="ascii_array" radix="16" linenumber="16" filename="../../../drivers/source/min_max.c" list=""/>
+   <Watchpoint numelements="0" expression="hex_array" evalMode="3" name="hex_array" radix="-1" linenumber="9" filename="../../../drivers/source/min_max.c" list=""/>
+   <Watchpoint numelements="13" expression="m_topic_common_name" evalMode="2" name="m_topic_common_name" radix="-1" linenumber="405" filename="../../../main.c" list=""/>
+   <Watchpoint numelements="0" expression="p_event->event_data.registered.packet.topic.p_topic_name" evalMode="1" name="p_event->event_data.registered.packet.topic.p_topic_name" radix="-1" linenumber="405" filename="../../../main.c" list=""/>
+   <Watchpoint numelements="0" expression="romano_sensor_message[16]" evalMode="0" name="romano_sensor_message[16]" radix="-1" linenumber="238" filename="../../../main.c" list=""/>
+  </Watches>
  </Watch1>
  <Watch2>
   <Watches active="0" update="Never"/>
@@ -59,37 +81,21 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="483" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" debugPath="../../../main.c" selected="1" top="450" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="78" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/drivers_nrf/timer/nrf_drv_timer.h" debugPath="C:/SDKThread/components/drivers_nrf/timer/nrf_drv_timer.h" selected="0" top="28" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="3169" useTextEdit="1" useBinaryEdit="0" left="0" path="../config/sdk_config.h" debugPath="../config/sdk_config.h" selected="0" top="3121" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="43" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/tof_api/Adafruit_VL53L0X.h" debugPath="../../../drivers/include/tof_api/Adafruit_VL53L0X.h" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/app_tof.c" debugPath="../../../drivers/source/app_tof.c" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="30" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/batt_meas.c" debugPath="../../../drivers/source/batt_meas.c" selected="0" top="16" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="86" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/drivers_nrf/spi_master/nrf_drv_spi.h" debugPath="C:/SDKThread/components/drivers_nrf/spi_master/nrf_drv_spi.h" selected="0" top="53" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="57" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/inv_mpu.c" debugPath="../../../drivers/source/inv_mpu.c" selected="0" top="7" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="737" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDK14/components/drivers_nrf/spi_master/nrf_drv_spi.c" debugPath="C:/SDK14/components/drivers_nrf/spi_master/nrf_drv_spi.c" selected="0" top="689" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="1638" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/toolchain/cmsis/include/core_cm4.h" debugPath="C:/SDKThread/components/toolchain/cmsis/include/core_cm4.h" selected="0" top="1602" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="1242" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDK14/components/drivers_nrf/twi_master/nrf_drv_twi.c" debugPath="C:/SDK14/components/drivers_nrf/twi_master/nrf_drv_twi.c" selected="0" top="1222" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="335" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDK14/components/drivers_nrf/saadc/nrf_drv_saadc.c" debugPath="C:/SDK14/components/drivers_nrf/saadc/nrf_drv_saadc.c" selected="0" top="300" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="28" y="55" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_platform.c" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_platform.c" selected="0" top="44" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="38" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/mpu_twi.c" debugPath="../../../drivers/source/mpu_twi.c" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="50" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/spi.c" debugPath="../../../drivers/source/spi.c" selected="0" top="2" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="42" y="575" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.c" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.c" selected="0" top="539" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="22" y="83" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_packet_sender.c" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_packet_sender.c" selected="0" top="75" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="63" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/utils/thread_utils.c" debugPath="C:/SDKThread/components/thread/experimental/utils/thread_utils.c" selected="0" top="39" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/utils/thread_utils.h" debugPath="C:/SDKThread/components/thread/experimental/utils/thread_utils.h" selected="0" top="99" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="206" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/libraries/bsp/experimental/bsp_thread.c" debugPath="C:/SDKThread/components/libraries/bsp/experimental/bsp_thread.c" selected="0" top="174" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="12" y="129" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.h" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.h" selected="0" top="101" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="545" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/drivers_nrf/hal/nrf_pwm.h" debugPath="C:/SDKThread/components/drivers_nrf/hal/nrf_pwm.h" selected="0" top="516" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="94" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/motor.c" debugPath="../../../drivers/source/motor.c" selected="0" top="65" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="42" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_packet_fifo.c" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_packet_fifo.c" selected="0" top="18" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="39" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/toolchain/ses/ses_nrf52840_Vectors.s" debugPath="C:/SDKThread/components/toolchain/ses/ses_nrf52840_Vectors.s" selected="0" top="3" codecName=""/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="47" y="85" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_packet_internal.h" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_packet_internal.h" selected="0" top="62" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="224" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_packet_receiver.c" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_packet_receiver.c" selected="0" top="157" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="68" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_transport.h" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_transport.h" selected="0" top="40" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="127" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_transport_ot.c" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_transport_ot.c" selected="0" top="99" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="171" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/drivers_nrf/delay/nrf_delay.h" debugPath="C:/SDKThread/components/drivers_nrf/delay/nrf_delay.h" selected="0" top="143" codecName=""/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="163" useTextEdit="1" useBinaryEdit="0" left="0" path="swarm_thread.emProject" debugPath="swarm_thread.emProject" selected="0" top="138" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="22" y="415" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" debugPath="../../../main.c" selected="1" top="387" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="33" y="6" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/motor.h" debugPath="../../../drivers/include/motor.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="32" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/state.h" debugPath="../../../drivers/include/state.h" selected="0" top="9" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="20" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/romano.h" debugPath="../../../drivers/include/romano.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="54" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/libraries/util/sdk_common.h" debugPath="C:/SDKThread/components/libraries/util/sdk_common.h" selected="0" top="2" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="51" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/libraries/experimental_log/nrf_log.h" debugPath="C:/SDKThread/components/libraries/experimental_log/nrf_log.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="5" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/romano.h." debugPath="../../../drivers/include/romano.h." selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="59" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/app_tof.c" debugPath="../../../drivers/source/app_tof.c" selected="0" top="0" codecName=""/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="417" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.c" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.c" selected="0" top="395" codecName=""/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="13" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/min_max.c" debugPath="../../../drivers/source/min_max.c" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="157" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/drivers_nrf/delay/nrf_delay.h" debugPath="C:/SDKThread/components/drivers_nrf/delay/nrf_delay.h" selected="0" top="141" codecName=""/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="502" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/libraries/experimental_log/src/nrf_log_frontend.c" debugPath="C:/SDKThread/components/libraries/experimental_log/src/nrf_log_frontend.c" selected="0" top="498" codecName=""/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="879" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_packet_receiver.c" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_packet_receiver.c" selected="0" top="853" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="6" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/ascii_converter.h" debugPath="../../../drivers/include/ascii_converter.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="20" y="105" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.h" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.h" selected="0" top="93" codecName="Default"/>
  </Files>
  <ARMCrossStudioWindow activeProject="thread_mqtt_sn_client_subscriber_pca10056" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3711"/>
 </session>

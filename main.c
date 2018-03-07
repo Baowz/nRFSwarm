@@ -13,13 +13,16 @@
 
 #include "vl53l0x_def.h"
 
-#include "state.h"
 #include "mpu_twi.h"
 #include "app_mpu.h"
 #include "real_time_clock.h"
 #include "swarm_pcb.h"
 #include "batt_meas.h"
 #include "app_tof.h"
+#include "state.h"
+#include "romano.h"
+#include "ascii_converter.h"
+
 
 #include "mqttsn_client.h"
 #include "thread_utils.h"
@@ -52,7 +55,8 @@ static mqttsn_connect_opt_t m_connect_opt;                                  /**<
 static bool                 m_subscribed              = 0;                  /**< Current subscription state. */
 static bool                 m_connected               = 0;                  /**< Current connection state. */
 static uint16_t             m_msg_id                  = 0;                  /**< Message ID thrown with MQTTSN_EVENT_TIMEOUT. */
-static char                 m_topic_common_name[]     = "Swarm/Common";     /**< Name of the topic corresponding to LED toggling. */
+static char                 m_topic_common_name[]     = "Swarm/Common";     /**< Name of the topic corresponding to Swarm common data. */
+static char                 m_topic_heartbeat_name[]  = "Swarm/Heartbeat";  /**< Name of the topic corresponding to Swarm heartbeat messaging. Used for RSSI polling. */
 static char                 m_topic_client_name[6];
 static bool                 m_gateway_found           = false;              /**< Stores whether a gateway has been found. */
 static mqttsn_topic_t       m_topic_common            =                     /**< Topic corresponding to subscriber's LED. */
@@ -63,10 +67,18 @@ static mqttsn_topic_t       m_topic_common            =                     /**<
 static mqttsn_topic_t      m_topic_client             =
 {
    .p_topic_name = 0,
-   .topic_id     = 0,
+   .topic_id     = 1,
 };
 
+static mqttsn_topic_t      m_topic_heartbeat             =
+{
+   .p_topic_name = (unsigned char *)m_topic_heartbeat_name,
+   .topic_id     = 2,
+};
+
+
 static state_machine_t s_state;
+void romano_pub_heartbeat_msg(void); // Prototype needed as main algorithm exist upon ROMANO declaration.
 
 // Timer instance declaration.
 
@@ -74,7 +86,7 @@ static const nrf_drv_timer_t application_timer = NRF_DRV_TIMER_INSTANCE(1); // M
 static nrf_drv_timer_t rtc_timer = NRF_DRV_TIMER_INSTANCE(2); // Timer used for real time sensitive data
 
 ////////////////////////////////////////////////////////////////////
-/////////////////////////// Peripherals ////////////////////////////
+///////////////// Algorithm / Abstraction Layer ////////////////////
 ////////////////////////////////////////////////////////////////////
 
 void connection_check(void)
@@ -96,9 +108,9 @@ void connection_check(void)
   else if(m_gateway_found && m_client.client_state == MQTTSN_CLIENT_CONNECTED && !m_subscribed)
   {
     uint8_t  topic_name_len = strlen(m_topic_common_name);
-    if(mqttsn_client_subscribe(&m_client, m_topic_common.p_topic_name, topic_name_len, &m_msg_id) != NRF_SUCCESS)
+    if(mqttsn_client_subscribe(&m_client, m_topic_common.p_topic_name, topic_name_len, &m_msg_id) != NRF_SUCCESS) // TODO: Add subscription to all topics.
     {
-      NRF_LOG_RAW_INFO("Could not send a subscribe message. Retrying.. \n")
+      NRF_LOG_RAW_INFO("[FAIL] Could not send a subscribe message. Retrying.. \n")
     }
     else
     {
@@ -123,8 +135,12 @@ void state_printing(void)
   NRF_LOG_RAW_INFO("Acc: X %7d Y %7d Z: %7d - ", s_state.accel[0], s_state.accel[1], s_state.accel[2]);
   #endif
 
+  #if PRINT_MOTOR_VALUES
+  NRF_LOG_RAW_INFO("M1: %d M2: %d - M1D: %d M2D: %d - \n", s_state.motor.output_motor_a, s_state.motor.output_motor_b, s_state.motor.direction_motor_a, s_state.motor.direction_motor_b);
+  #endif
+
   #if PRINT_STATE_RANGE_MEASUREMENT
-  NRF_LOG_RAW_INFO("Range: %dmm - %dmm - %dmm - ", s_state.lidarOne.RangeMilliMeter, s_state.lidarTwo.RangeMilliMeter, s_state.lidarThree.RangeMilliMeter); //TODO:fix this
+  NRF_LOG_RAW_INFO("Range: %dmm - %dmm - %dmm - %dmm - ", s_state.lidarOne.RangeMilliMeter, s_state.lidarTwo.RangeMilliMeter, s_state.lidarThree.RangeMilliMeter, s_state.lidarFour.RangeMilliMeter);
   #endif
 
   #if PRINT_STATE_RSSI_VALUE
@@ -136,25 +152,33 @@ void state_printing(void)
   #endif
 
   #if PRINT_STATE_VOLTAGE_VALUE
-  NRF_LOG_RAW_INFO("Voltage: "NRF_LOG_FLOAT_MARKER" \n", NRF_LOG_FLOAT(s_state.voltage));
+  NRF_LOG_RAW_INFO("Voltage: "NRF_LOG_FLOAT_MARKER" ", NRF_LOG_FLOAT(s_state.voltage));
   #endif
 }
 
 void main_algorithm(void)
 {
-  // TODO: Add code to interface with data gotten from network. The main algorithm should be here.
-  app_mpu_get_angles(s_state.angle_measurement, s_state.accel);
-  app_tof_get_range_all(&s_state.lidarOne, &s_state.lidarTwo, &s_state.lidarThree, &s_state.lidarFour);
-  update_motor_values(&s_state.motor);
+  static uint32_t heartbeat_count = 0;
+  static float delta_time = 0;
+  static float range_measurement[4] = {0};
 
+  app_mpu_get_angles(s_state.angle_measurement, s_state.accel);
+  app_tof_get_range_all(&s_state.lidarOne, &s_state.lidarTwo, &s_state.lidarThree, &s_state.lidarFour, range_measurement);
+  rtc_get_delta_time_sec(&delta_time);
+  update_pfc_controller(&s_state.motor, range_measurement, delta_time);
+  update_motor_values(&s_state.motor);
 
   // Poll a connection scheme until a subscription to a broker is obtained.
   if(!m_subscribed)
     connection_check();
 
   // If connected, print state values for debugging
-  if(m_subscribed)
+  if(m_subscribed){
+    if(heartbeat_count % 100 == 0)
+      romano_pub_heartbeat_msg(); //TODO: Add this
     state_printing();
+    heartbeat_count++;
+  }
 
   s_state.interrupt_flag = false;
 }
@@ -177,6 +201,85 @@ void batt_callback(float voltage)
 ////////////////////////////////////////////////////////////////////
 /////////////////////////// Thread /////////////////////////////////
 ////////////////////////////////////////////////////////////////////
+
+
+// Publish a heartbeat message.
+void romano_pub_heartbeat_msg(void)
+{
+  uint8_t romano_message[] = {HEARTBEAT_MESSAGE};
+  mqttsn_client_publish(&m_client, m_topic_heartbeat.topic_id, romano_message, sizeof(romano_message), NULL);
+}
+// Checks data that has been received and acts upon it.
+
+void romano_message_received(uint8_t *p_data)
+{
+  switch(p_data[0])
+  {
+    case NORMAL_DATA:
+      NRF_LOG_RAW_INFO("Normal data received: ");
+      p_data[1] = p_data[1] - 0x30; // Hack to make this byte represent the msg_length instead of the ASCII.
+      for(uint8_t i = 2; i < p_data[1] + 2; i++)
+          NRF_LOG_RAW_INFO("%c", p_data[i]);
+      NRF_LOG_RAW_INFO("\n");
+    break;
+    case MOVEMENT_CONTROL:
+      NRF_LOG_RAW_INFO("Movement control data received."); //TODO: Add functionality for PFC/Compass rather than assume direct control
+      if(p_data[1] == DIRECT_CONTROL) // Checks if the movement control type demands direct control rather than regulatory control
+      {
+        s_state.motor.output_motor_a = p_data[3] << 8 || p_data[2];
+        s_state.motor.output_motor_b = p_data[5] << 8 || p_data[4];
+        s_state.motor.direction_motor_a = p_data[6];
+        s_state.motor.direction_motor_b = p_data[7];
+        // TODO: add code that will stop the regulator
+      }
+    break;
+    case REQUEST_SENSOR_DATA:               //TODO: Clean up of this one. We need all sensor data here.
+      NRF_LOG_RAW_INFO("Sensor data request received. Publishing available sensor data. \n ");
+      uint8_t romano_sensor_message[20];
+      uint8_t rssi_value = abs(s_state.RSSI);
+      uint8_t hex_to_ascii_number_table[] = {0x30, 0x31, 0x31, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46};
+
+      romano_sensor_message[0] = SENSOR_DATA;
+      romano_sensor_message[1] = 0x20;
+      memcpy(&romano_sensor_message[2], s_state.mac_address_ascii, 12);
+      romano_sensor_message[14] = 0x20;
+      romano_sensor_message[15] = 0x2D;
+      romano_sensor_message[16] = 0x30;
+      romano_sensor_message[17] = 0x78;
+      romano_sensor_message[18] = hex_to_ascii_number_table[rssi_value >> 4];
+      romano_sensor_message[19] = hex_to_ascii_number_table[rssi_value & 0xF];
+
+      mqttsn_client_publish(&m_client, m_topic_common.topic_id, romano_sensor_message, sizeof(romano_sensor_message), NULL);
+    break;
+    case SENSOR_DATA:
+      NRF_LOG_RAW_INFO("Sensor data received: ");
+      for(uint8_t i = 2; i < SIZE_SENSOR_DATA; i++)
+        NRF_LOG_RAW_INFO("%c", p_data[i]);
+      NRF_LOG_RAW_INFO("\n");
+    break;
+    case REQUEST_CONNECTED_NODES_INFO:
+      NRF_LOG_RAW_INFO("Node info request received. Publishing MAC address. \n ");
+      uint8_t romano_node_message[14];
+      romano_node_message[0] = CONNECTED_NODES_INFO;
+      romano_node_message[1] = 0x20; // Space
+      for(uint8_t i = 0; i < sizeof(romano_node_message); i++)
+      {
+        romano_node_message[i+2] = s_state.mac_address_ascii[i];
+      }
+      mqttsn_client_publish(&m_client, m_topic_common.topic_id, romano_node_message, sizeof(romano_node_message), NULL);
+    break;
+    case CONNECTED_NODES_INFO:
+      NRF_LOG_RAW_INFO("Node info received. MAC address: ");
+      for(uint8_t i = 2; i < SIZE_CONNECTED_NODES_INFO; i++)
+        NRF_LOG_RAW_INFO("%c", p_data[i]);
+      NRF_LOG_RAW_INFO("\n");
+
+    break;
+    case HEARTBEAT_MESSAGE:
+      NRF_LOG_RAW_INFO("Heartbeat message received. \n");
+    break;
+  }
+}
 
 /**@brief Toggles LED2 based on received LED command. */
 static void led_update(uint8_t * p_data)
@@ -230,12 +333,8 @@ static void received_callback(mqttsn_event_t * p_event)
 {
     if (p_event->event_data.published.packet.topic.topic_id == m_topic_common.topic_id)
     {
-        //NRF_LOG_RAW_INFO("MQTT-SN event: Content to subscribed topic received.\r\n");
         led_update(p_event->event_data.published.p_payload);
-    }
-    else
-    {
-        //NRF_LOG_RAW_INFO("MQTT-SN event: Content to unsubscribed topic received. Dropping packet.\r\n");
+        romano_message_received(p_event->event_data.published.p_payload);
     }
 }
 
@@ -278,26 +377,20 @@ static void connected_callback(void)
 
     rgb_update_led_color(1,s_state.led_one_red,s_state.led_one_green,s_state.led_one_blue);
 
-    uint32_t err_code = mqttsn_client_topic_register(&m_client,
-                                                     m_topic_common.p_topic_name,
-                                                     strlen(m_topic_common_name),
-                                                     &m_msg_id);
+    uint32_t err_code = mqttsn_client_topic_register(&m_client, m_topic_common.p_topic_name, strlen(m_topic_common_name), &m_msg_id); // Important that the register order is maintained since REGACK assumes this is the case.
 
     if (err_code != NRF_SUCCESS)
-    {
         NRF_LOG_ERROR("REGISTER message could not be sent. Error code: 0x%x\r\n", err_code);
-    }
 
-
-     err_code = mqttsn_client_topic_register(&m_client,
-                                             m_topic_client.p_topic_name,
-                                             strlen(m_topic_client_name),
-                                             &m_msg_id);
+    /*err_code = mqttsn_client_topic_register(&m_client, m_topic_client.p_topic_name, strlen(m_topic_client_name), &m_msg_id);
 
     if (err_code != NRF_SUCCESS)
-    {
+        NRF_LOG_ERROR("REGISTER message could not be sent. Error code: 0x%x\r\n", err_code); */ //TODO: Add this.
+
+    err_code = mqttsn_client_topic_register(&m_client, m_topic_heartbeat.p_topic_name, strlen(m_topic_heartbeat_name), &m_msg_id);
+
+    if (err_code != NRF_SUCCESS)
         NRF_LOG_ERROR("REGISTER message could not be sent. Error code: 0x%x\r\n", err_code);
-    }
 }
 
 
@@ -317,9 +410,19 @@ static void disconnected_callback(void)
  */
 static void regack_callback(mqttsn_event_t * p_event)
 {
-    m_topic_common.topic_id = p_event->event_data.registered.packet.topic.topic_id;
-    NRF_LOG_RAW_INFO("MQTT-SN event: Topic has been registered with ID: %d.\n",
+    if(m_topic_common.topic_id  == 0)
+    {
+      m_topic_common.topic_id = p_event->event_data.registered.packet.topic.topic_id;
+      NRF_LOG_RAW_INFO("MQTT-SN event: Common topic has been registered with ID: %d.\n",
                  p_event->event_data.registered.packet.topic.topic_id);
+    }
+    else if(m_topic_heartbeat.topic_id == 0) //NOTE: This is not a good solution and should be seen as a hack. This solution assumes that the common topic will be registered first at all times.
+                                              //     However, at the current point of the MQTT_SN API there is no other solution, and the assignment does not cover the time to change this. It works and we will leave it at that.
+    {
+      m_topic_heartbeat.topic_id = p_event->event_data.registered.packet.topic.topic_id;
+      NRF_LOG_RAW_INFO("MQTT-SN event: Heartbeat topic has been registered with ID: %d.\n",
+                 p_event->event_data.registered.packet.topic.topic_id);
+    }
 }
 
 /**@brief Processes retransmission limit reached event. */
@@ -365,7 +468,7 @@ void mqttsn_evt_handler(mqttsn_client_t * p_client, mqttsn_event_t * p_event)
             break;
 
         case MQTTSN_EVENT_RECEIVED:
-            NRF_LOG_RAW_INFO("MQTT-SN event: Client received content.\r\n");
+            //NRF_LOG_RAW_INFO("MQTT-SN event: Client received content.\r\n");
             received_callback(p_event);
             break;
 
@@ -514,6 +617,7 @@ void get_device_address()
 
   memcpy(s_state.mac_address, m_client_id, 6);
   memcpy(m_topic_client.p_topic_name, m_client_id, 6);
+  s_state.mac_address_ascii_size = hex_array_to_ascii(s_state.mac_address, s_state.mac_address_ascii);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -535,20 +639,21 @@ int main(void)
 
   pcb_peripherals_init(); // Initializes RGB LEDs and GPIO
 
-  rtc_init(&rtc_timer); // Real time clock used for configuration and timing of the MPU 9250 and additional real time sensitive data
-  mpu_twi_init(); // Initialize two wire interface used to communicate with the MPU 9250.
-  app_mpu_init(); // Initialize MPU 9250, flashing DMP firmware to the unit.
-  app_tof_init(); // Initialize all VL53L0X LIDAR units.
-  batt_mon_enable(batt_callback); // Battery voltage monitoring.
-  motor_pwm_init(); // PWM used to control the motors of the vessel.
-  timer_init(); // Main timer used to run the swarm algorithm.
+  rtc_init(&rtc_timer);               // Real time clock used for configuration and timing of the MPU 9250 and additional real time sensitive data
+  mpu_twi_init();                     // Initialize two wire interface used to communicate with the MPU 9250.
+  app_mpu_init();                     // Initialize MPU 9250, flashing DMP firmware to the unit.
+  app_tof_init();                     // Initialize all VL53L0X LIDAR units.
+  batt_mon_enable(batt_callback);     // Battery voltage monitoring.
+  motor_pwm_init();                   // PWM used to control the motors of the vessel.
+  potential_field_controller_init();  // Potential field controller which makes the vessel move based on sensory input.
+  timer_init();                       // Main timer used to run the swarm algorithm.
 
   thread_instance_init();
   mqttsn_init();
 
   rgb_update_led_color(1,0,1000,0);
 
-  NRF_LOG_RAW_INFO("All systems online. \n \n");
+  NRF_LOG_RAW_INFO ("All systems online. \n \n");
 
   while (true)
     {
