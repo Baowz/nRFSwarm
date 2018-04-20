@@ -122,9 +122,13 @@ void app_mpu_init(void)
         NRF_LOG_RAW_INFO("[FAIL] Failed to initiate MPU properly. \n");
     }
 
-    mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL);
+    mpu_set_bypass(1); // TODO: Check this
 
-    mpu_set_bypass(1);
+    mpu_set_sensors(INV_XYZ_COMPASS);
+
+    mpu_set_compass_sample_rate(COMPASS_SAMPLE_RATE);
+
+
 
 
 	#if ENABLE_DMP
@@ -184,4 +188,10 @@ float app_mpu_exp_moving_avg(short new_measurement, short prev_avg, float alpha)
 void app_mpu_get_ms(unsigned long *count)
 {
     *count = (unsigned long)rtc_get_current_time_ms();
+}
+
+void app_mpu_get_mag(short *mag, float *heading)
+{
+  unsigned long time;
+  mpu_get_compass_reg(mag, &time);
 }

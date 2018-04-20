@@ -5,10 +5,10 @@
 #include "pca10056.h"
 
 
-#define RED_INDICATION_RANGE     500.0f  //In mm
+#define RED_INDICATION_RANGE     250.0f  //In mm
 #define GREEN_INDICATION_RANGE   1000.0f //In mm
 
-#define WAKE_UP_TIME             300
+#define WAKE_UP_TIME             10
 
 #define VL53L0X_I2C_DEFAULT_ADDR 0x29
 

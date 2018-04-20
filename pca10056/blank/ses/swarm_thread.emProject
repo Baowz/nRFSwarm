@@ -148,6 +148,7 @@
       <file file_name="../../../drivers/source/ascii_converter.c" />
       <file file_name="../../../drivers/source/pfc.c" />
       <file file_name="../../../drivers/source/pid.c" />
+      <file file_name="../../../drivers/source/crc_filter.c" />
     </folder>
     <configuration Name="Debug" c_preprocessor_definitions="" />
   </project>

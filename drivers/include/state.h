@@ -4,7 +4,7 @@
 // Print state values, they are not mutually exclusive
 
 #define PRINT_STATE_MAC_ADDRESS           0
-#define PRINT_STATE_ANGLE_VALUES          0
+#define PRINT_STATE_MAG_VALUES            0
 #define PRINT_STATE_ACCELEROMETER_VALUES  0
 #define PRINT_MOTOR_VALUES                0
 #define PRINT_STATE_RANGE_MEASUREMENT     0
@@ -20,7 +20,8 @@ typedef struct{
   char mac_address[6];
   uint8_t mac_address_ascii[12];
   uint8_t mac_address_ascii_size;
-  int8_t RSSI;
+  int8_t RSSI; // Largest RSSI value in the network
+  int8_t RSSI_values[10]; // All RSSI values in the network
   float voltage;
 
   bool interrupt_flag;
@@ -32,6 +33,12 @@ typedef struct{
   // States for MPU-9250
   float angle_measurement[3];
   float accel[3];
+  short mag[3];
+  float heading;
+
+  // States used for movement planning
+  float heading_ref;
+  float speed;
 
   // States for VL53L0X LIDAR-system
   VL53L0X_RangingMeasurementData_t lidarOne;

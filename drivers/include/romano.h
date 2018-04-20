@@ -12,6 +12,7 @@
 #define REQUEST_CONNECTED_NODES_INFO  '4'
 #define CONNECTED_NODES_INFO          '5'
 #define HEARTBEAT_MESSAGE             '6'
+#define ALGORITHM_CONTROL             '7'
 
 // Movement control types (To be used when compass is added)
 

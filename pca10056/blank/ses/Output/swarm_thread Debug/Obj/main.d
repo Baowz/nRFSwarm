@@ -71,6 +71,7 @@ Output/swarm_thread\ Debug/Obj/main.o: C:\Repositories\nRFSwarm\main.c \
  ../../../drivers/include/state.h ../../../drivers/include/pfc.h \
  ../../../drivers/include/motor.h ../../../drivers/include/romano.h \
  ../../../drivers/include/ascii_converter.h \
+ ../../../drivers/include/crc_filter.h \
  C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.h \
  C:/SDKThread/components/thread/experimental/utils/thread_utils.h \
  C:/SDKThread/external/openthread/include/openthread/openthread.h \

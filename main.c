@@ -1,4 +1,4 @@
-// nRF Swarm rev 0.2 by Henrik Malvik Halvorsen - Master's project
+// nRF Swarm rev 0.3 by Henrik Malvik Halvorsen - Master's project
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -22,6 +22,7 @@
 #include "state.h"
 #include "romano.h"
 #include "ascii_converter.h"
+#include "crc_filter.h"
 
 
 #include "mqttsn_client.h"
@@ -31,7 +32,7 @@
 #include <openthread/cli.h>
 #include <openthread/platform/platform.h>
 
-#define ALGORITHM_INTERVAL_MS   50
+#define ALGORITHM_INTERVAL_MS   100
 #define BOOT_DELAY_MS           10
 
 #define SEARCH_GATEWAY_FREQUENCY 10
@@ -56,24 +57,11 @@ static bool                 m_subscribed              = 0;                  /**<
 static bool                 m_connected               = 0;                  /**< Current connection state. */
 static uint16_t             m_msg_id                  = 0;                  /**< Message ID thrown with MQTTSN_EVENT_TIMEOUT. */
 static char                 m_topic_common_name[]     = "Swarm/Common";     /**< Name of the topic corresponding to Swarm common data. */
-static char                 m_topic_heartbeat_name[]  = "Swarm/Heartbeat";  /**< Name of the topic corresponding to Swarm heartbeat messaging. Used for RSSI polling. */
-static char                 m_topic_client_name[6];
 static bool                 m_gateway_found           = false;              /**< Stores whether a gateway has been found. */
 static mqttsn_topic_t       m_topic_common            =                     /**< Topic corresponding to subscriber's LED. */
 {
    .p_topic_name = (unsigned char *)m_topic_common_name,
    .topic_id     = 0,
-};
-static mqttsn_topic_t      m_topic_client             =
-{
-   .p_topic_name = 0,
-   .topic_id     = 1,
-};
-
-static mqttsn_topic_t      m_topic_heartbeat             =
-{
-   .p_topic_name = (unsigned char *)m_topic_heartbeat_name,
-   .topic_id     = 2,
 };
 
 
@@ -107,15 +95,14 @@ void connection_check(void)
   }
   else if(m_gateway_found && m_client.client_state == MQTTSN_CLIENT_CONNECTED && !m_subscribed)
   {
-    uint8_t  topic_name_len = strlen(m_topic_common_name);
-    if(mqttsn_client_subscribe(&m_client, m_topic_common.p_topic_name, topic_name_len, &m_msg_id) != NRF_SUCCESS) // TODO: Add subscription to all topics.
-    {
-      NRF_LOG_RAW_INFO("[FAIL] Could not send a subscribe message. Retrying.. \n")
-    }
+    if(mqttsn_client_subscribe(&m_client, m_topic_common.p_topic_name, strlen(m_topic_common_name), &m_msg_id) != NRF_SUCCESS) // TODO: Add subscription to all topics.
+      {
+        NRF_LOG_RAW_INFO("[FAIL] Could not send a subscribe message. Retrying.. \n")
+      }
     else
-    {
-      m_subscribed = true;
-    }
+      {
+        m_subscribed = true;
+      }
   }
 }
 
@@ -125,10 +112,8 @@ void state_printing(void)
   NRF_LOG_RAW_INFO("MAC: 0x%x%x%x%x%x%x - ", s_state.mac_address[5], s_state.mac_address[4], s_state.mac_address[3], s_state.mac_address[2], s_state.mac_address[1], s_state.mac_address[0]);
   #endif
 
-  #if PRINT_STATE_ANGLE_VALUES
-  NRF_LOG_RAW_INFO("Angles: R "NRF_LOG_FLOAT_MARKER" ", NRF_LOG_FLOAT(s_state.angle_measurement[0]));
-  NRF_LOG_RAW_INFO("P "NRF_LOG_FLOAT_MARKER" ",         NRF_LOG_FLOAT(s_state.angle_measurement[1]));
-  NRF_LOG_RAW_INFO("Y "NRF_LOG_FLOAT_MARKER" - ",       NRF_LOG_FLOAT(s_state.angle_measurement[2]));
+  #if PRINT_STATE_MAG_VALUES
+  NRF_LOG_RAW_INFO("Mag: X %d Y %d Z %d \n", s_state.mag[0], s_state.mag[1], s_state.mag[2]);
   #endif
 
   #if PRINT_STATE_ACCELEROMETER_VALUES
@@ -162,19 +147,20 @@ void main_algorithm(void)
   static float delta_time = 0;
   static float range_measurement[4] = {0};
 
-  app_mpu_get_angles(s_state.angle_measurement, s_state.accel);
-  app_tof_get_range_all(&s_state.lidarOne, &s_state.lidarTwo, &s_state.lidarThree, &s_state.lidarFour, range_measurement);
-  rtc_get_delta_time_sec(&delta_time);
-  update_pfc_controller(&s_state.motor, range_measurement, delta_time);
-  update_motor_values(&s_state.motor);
-
   // Poll a connection scheme until a subscription to a broker is obtained.
   if(!m_subscribed)
     connection_check();
 
-  // If connected, print state values for debugging
+  // Main algorithm goes here, runs after connection with the network is established
   if(m_subscribed){
-    if(heartbeat_count % 100 == 0)
+    app_mpu_get_mag(s_state.mag, &s_state.heading);
+    app_tof_get_range_all(&s_state.lidarOne, &s_state.lidarTwo, &s_state.lidarThree, &s_state.lidarFour, range_measurement);
+    rtc_get_delta_time_sec(&delta_time);
+    update_pfc_controller(&s_state.motor, s_state.RSSI, s_state.heading, s_state.heading_ref, range_measurement, s_state.speed, delta_time);
+    update_motor_values(&s_state.motor);
+
+    // Publishes data over a set time interval 
+    if(heartbeat_count % 2 == 0)
       romano_pub_heartbeat_msg(); //TODO: Add this
     state_printing();
     heartbeat_count++;
@@ -206,8 +192,17 @@ void batt_callback(float voltage)
 // Publish a heartbeat message.
 void romano_pub_heartbeat_msg(void)
 {
-  uint8_t romano_message[] = {HEARTBEAT_MESSAGE};
-  mqttsn_client_publish(&m_client, m_topic_heartbeat.topic_id, romano_message, sizeof(romano_message), NULL);
+  uint8_t romano_node_message[166];
+  uint8_t buffer[166];
+
+  sprintf((char *)&buffer[0], "{ \"MAC\" : \"%02x:%02x:%02x:%02x:%02x:%02x\", \"RSSI\" : %d, \"Range1\" : %d, \"Range2\" : %d, \"Range3\" : %d, \"Range4\" : %d, \"Heading\" : %d, \"MagX\" : %d, \"MagY\" : %d, \"MagZ\" : %d}\r\n",
+              s_state.mac_address[5], s_state.mac_address[4], s_state.mac_address[3], s_state.mac_address[2], s_state.mac_address[1], s_state.mac_address[0],
+              s_state.RSSI, s_state.lidarOne.RangeMilliMeter, s_state.lidarTwo.RangeMilliMeter, s_state.lidarThree.RangeMilliMeter, s_state.lidarFour.RangeMilliMeter, (short)s_state.heading, 
+              s_state.mag[0], s_state.mag[1], s_state.mag[2]);
+
+
+  memcpy(romano_node_message, buffer, 166);
+  mqttsn_client_publish(&m_client, m_topic_common.topic_id, romano_node_message, sizeof(romano_node_message), NULL);
 }
 // Checks data that has been received and acts upon it.
 
@@ -223,17 +218,16 @@ void romano_message_received(uint8_t *p_data)
       NRF_LOG_RAW_INFO("\n");
     break;
     case MOVEMENT_CONTROL:
-      NRF_LOG_RAW_INFO("Movement control data received."); //TODO: Add functionality for PFC/Compass rather than assume direct control
-      if(p_data[1] == DIRECT_CONTROL) // Checks if the movement control type demands direct control rather than regulatory control
-      {
-        s_state.motor.output_motor_a = p_data[3] << 8 || p_data[2];
-        s_state.motor.output_motor_b = p_data[5] << 8 || p_data[4];
-        s_state.motor.direction_motor_a = p_data[6];
-        s_state.motor.direction_motor_b = p_data[7];
-        // TODO: add code that will stop the regulator
-      }
+      if(p_data[1] == (s_state.mac_address[0] >> 4) || p_data[1] == 0) // individual control or multiple // TODO: Test this.
+        {
+          NRF_LOG_RAW_INFO("Movement control data received.");
+          if(p_data[2] == HEADING)
+            s_state.heading_ref = (float)(p_data[3] << 8 | p_data[4]);
+          else if(p_data[3] == SPEED)
+            s_state.speed = (float)(p_data[3] << 8 | p_data[4]);
+        }
     break;
-    case REQUEST_SENSOR_DATA:               //TODO: Clean up of this one. We need all sensor data here.
+    case REQUEST_SENSOR_DATA:
       NRF_LOG_RAW_INFO("Sensor data request received. Publishing available sensor data. \n ");
       uint8_t romano_sensor_message[20];
       uint8_t rssi_value = abs(s_state.RSSI);
@@ -289,18 +283,12 @@ static void led_update(uint8_t * p_data)
       s_state.led_two_red   = 0;
       s_state.led_two_green = 0;
       s_state.led_two_blue  = 0;
-
-      s_state.motor.output_motor_a = 400;
-      s_state.motor.output_motor_b = 400;
    }
    else if (*p_data == LED_OFF_REQUEST)
    {
       s_state.led_two_red   = 0;
       s_state.led_two_green = 0;
       s_state.led_two_blue  = 0;
-
-      s_state.motor.output_motor_a = 0;
-      s_state.motor.output_motor_b = 0;
    }
 
    rgb_update_led_color(2,s_state.led_two_red,s_state.led_two_green,s_state.led_two_blue);
@@ -311,17 +299,10 @@ static void led_update(uint8_t * p_data)
 *
 */
 
-static void rssi_callback(uint16_t id, int8_t rssi)
+static void rssi_callback(uint16_t id, int8_t rssi, uint8_t crc)
 {
-   s_state.RSSI = rssi;
-
-   uint8_t led_percentage = (100 - (abs(s_state.RSSI) - 30));
-   s_state.led_one_blue = 1000;
-   float led_strength_indicator = (float)s_state.led_one_blue * ((float)led_percentage / 100.0f);
-
-   rgb_update_led_color(1, s_state.led_one_red, s_state.led_one_green, (uint16_t)led_strength_indicator);
-
-   //NRF_LOG_RAW_INFO("ID and RSSI: %d - %d \n", id, rssi);
+  // Checks RSSI signal from all nodes in the network, performs a CRC check on said RSSI signal and returns the largest value
+  s_state.RSSI = crc_filter(s_state.RSSI_values, id, rssi, crc);
 }
 
 
@@ -374,23 +355,17 @@ static void connected_callback(void)
     s_state.led_one_red   = 0;
     s_state.led_one_green = 0;
     s_state.led_one_blue  = 1000;
-
     rgb_update_led_color(1,s_state.led_one_red,s_state.led_one_green,s_state.led_one_blue);
 
-    uint32_t err_code = mqttsn_client_topic_register(&m_client, m_topic_common.p_topic_name, strlen(m_topic_common_name), &m_msg_id); // Important that the register order is maintained since REGACK assumes this is the case.
+    uint32_t err_code;
 
+    do{
+    err_code = mqttsn_client_topic_register(&m_client, m_topic_common.p_topic_name, strlen(m_topic_common_name), &m_msg_id);
+    } while(err_code != NRF_SUCCESS);
+
+    /*err_code = mqttsn_client_topic_register(&m_client, m_topic_heartbeat.p_topic_name, strlen(m_topic_heartbeat_name), &m_msg_id);
     if (err_code != NRF_SUCCESS)
-        NRF_LOG_ERROR("REGISTER message could not be sent. Error code: 0x%x\r\n", err_code);
-
-    /*err_code = mqttsn_client_topic_register(&m_client, m_topic_client.p_topic_name, strlen(m_topic_client_name), &m_msg_id);
-
-    if (err_code != NRF_SUCCESS)
-        NRF_LOG_ERROR("REGISTER message could not be sent. Error code: 0x%x\r\n", err_code); */ //TODO: Add this.
-
-    err_code = mqttsn_client_topic_register(&m_client, m_topic_heartbeat.p_topic_name, strlen(m_topic_heartbeat_name), &m_msg_id);
-
-    if (err_code != NRF_SUCCESS)
-        NRF_LOG_ERROR("REGISTER message could not be sent. Error code: 0x%x\r\n", err_code);
+        NRF_LOG_ERROR("REGISTER message could not be sent. Error code: 0x%x\r\n", err_code);*/
 }
 
 
@@ -416,13 +391,13 @@ static void regack_callback(mqttsn_event_t * p_event)
       NRF_LOG_RAW_INFO("MQTT-SN event: Common topic has been registered with ID: %d.\n",
                  p_event->event_data.registered.packet.topic.topic_id);
     }
-    else if(m_topic_heartbeat.topic_id == 0) //NOTE: This is not a good solution and should be seen as a hack. This solution assumes that the common topic will be registered first at all times.
+    /*else if(m_topic_heartbeat.topic_id == 0) //NOTE: This is not a good solution and should be seen as a hack. This solution assumes that the common topic will be registered first at all times.
                                               //     However, at the current point of the MQTT_SN API there is no other solution, and the assignment does not cover the time to change this. It works and we will leave it at that.
     {
       m_topic_heartbeat.topic_id = p_event->event_data.registered.packet.topic.topic_id;
       NRF_LOG_RAW_INFO("MQTT-SN event: Heartbeat topic has been registered with ID: %d.\n",
                  p_event->event_data.registered.packet.topic.topic_id);
-    }
+    }*/
 }
 
 /**@brief Processes retransmission limit reached event. */
@@ -616,7 +591,6 @@ void get_device_address()
   m_client_id[5] = (NRF_FICR->DEVICEADDR[1] >> 8)  & 0xFF;
 
   memcpy(s_state.mac_address, m_client_id, 6);
-  memcpy(m_topic_client.p_topic_name, m_client_id, 6);
   s_state.mac_address_ascii_size = hex_array_to_ascii(s_state.mac_address, s_state.mac_address_ascii);
 }
 
@@ -629,7 +603,7 @@ int main(void)
   log_init();
   get_device_address();
 
-  NRF_LOG_RAW_INFO("\n \n nRF Swarm revision 0.3.1 online. \n \n");
+  NRF_LOG_RAW_INFO("\n \n nRF Swarm revision 0.3.2 online. \n \n");
   NRF_LOG_RAW_INFO("The device MAC address is given by: 0x%x%x%x%x%x%x \n", s_state.mac_address[5], s_state.mac_address[4], s_state.mac_address[3], s_state.mac_address[2], s_state.mac_address[1], s_state.mac_address[0]);
   NRF_LOG_RAW_INFO("Initializing all systems in %d ms. \n", BOOT_DELAY_MS);
 
