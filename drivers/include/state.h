@@ -22,6 +22,7 @@ typedef struct{
   uint8_t mac_address_ascii_size;
   int8_t RSSI; // Largest RSSI value in the network
   int8_t RSSI_values[10]; // All RSSI values in the network
+  uint8_t CRC;
   float voltage;
 
   bool interrupt_flag;

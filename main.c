@@ -159,7 +159,7 @@ void main_algorithm(void)
     update_pfc_controller(&s_state.motor, s_state.RSSI, s_state.heading, s_state.heading_ref, range_measurement, s_state.speed, delta_time);
     update_motor_values(&s_state.motor);
 
-    // Publishes data over a set time interval 
+    // Publishes data over a set time interval
     if(heartbeat_count % 2 == 0)
       romano_pub_heartbeat_msg(); //TODO: Add this
     state_printing();
@@ -192,16 +192,16 @@ void batt_callback(float voltage)
 // Publish a heartbeat message.
 void romano_pub_heartbeat_msg(void)
 {
-  uint8_t romano_node_message[166];
-  uint8_t buffer[166];
+  uint8_t romano_node_message[176];
+  uint8_t buffer[176];
 
-  sprintf((char *)&buffer[0], "{ \"MAC\" : \"%02x:%02x:%02x:%02x:%02x:%02x\", \"RSSI\" : %d, \"Range1\" : %d, \"Range2\" : %d, \"Range3\" : %d, \"Range4\" : %d, \"Heading\" : %d, \"MagX\" : %d, \"MagY\" : %d, \"MagZ\" : %d}\r\n",
+  sprintf((char *)&buffer[0], "{ \"MAC\" : \"%02x:%02x:%02x:%02x:%02x:%02x\", \"RSSI\" : %d, \"Range1\" : %d, \"Range2\" : %d, \"Range3\" : %d, \"Range4\" : %d, \"Heading\" : %d, \"MagX\" : %d, \"MagY\" : %d, \"MagZ\" : %d, \"CRC\" : %d }\r\n",
               s_state.mac_address[5], s_state.mac_address[4], s_state.mac_address[3], s_state.mac_address[2], s_state.mac_address[1], s_state.mac_address[0],
-              s_state.RSSI, s_state.lidarOne.RangeMilliMeter, s_state.lidarTwo.RangeMilliMeter, s_state.lidarThree.RangeMilliMeter, s_state.lidarFour.RangeMilliMeter, (short)s_state.heading, 
-              s_state.mag[0], s_state.mag[1], s_state.mag[2]);
+              s_state.RSSI, s_state.lidarOne.RangeMilliMeter, s_state.lidarTwo.RangeMilliMeter, s_state.lidarThree.RangeMilliMeter, s_state.lidarFour.RangeMilliMeter, (short)s_state.heading,
+              s_state.mag[0], s_state.mag[1], s_state.mag[2], s_state.CRC);
 
 
-  memcpy(romano_node_message, buffer, 166);
+  memcpy(romano_node_message, buffer, 176);
   mqttsn_client_publish(&m_client, m_topic_common.topic_id, romano_node_message, sizeof(romano_node_message), NULL);
 }
 // Checks data that has been received and acts upon it.
@@ -302,6 +302,7 @@ static void led_update(uint8_t * p_data)
 static void rssi_callback(uint16_t id, int8_t rssi, uint8_t crc)
 {
   // Checks RSSI signal from all nodes in the network, performs a CRC check on said RSSI signal and returns the largest value
+  s_state.CRC  = crc;
   s_state.RSSI = crc_filter(s_state.RSSI_values, id, rssi, crc);
 }
 
@@ -624,6 +625,7 @@ int main(void)
 
   thread_instance_init();
   mqttsn_init();
+
 
   rgb_update_led_color(1,0,1000,0);
 
