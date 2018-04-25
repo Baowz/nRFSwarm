@@ -1,7 +1,7 @@
 Output/swarm_thread\ Debug/Obj/app_tof.o: \
  C:\Repositories\nRFSwarm\drivers\source\app_tof.c \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdbool.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdint.h \
  C:/SDKThread/components/drivers_nrf/hal/nrf_gpio.h \
  C:/SDKThread/components/device/nrf.h \
  C:/SDKThread/components/device/nrf52840.h \
@@ -19,21 +19,21 @@ Output/swarm_thread\ Debug/Obj/app_tof.o: \
  C:/SDKThread/components/device/nrf52840_peripherals.h \
  C:/SDKThread/components/libraries/util/nrf_assert.h \
  C:/SDKThread/components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/__crossworks.h \
  C:/SDKThread/components/libraries/util/sdk_errors.h \
  C:/SDKThread/components/drivers_nrf/nrf_soc_nosd/nrf_error.h \
  ../config/sdk_config.h \
  C:/SDKThread/components/libraries/util/nordic_common.h \
  C:/SDKThread/components/libraries/util/app_error_weak.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdlib.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdlib.h \
  C:/SDKThread/components/libraries/experimental_log/nrf_log.h \
  C:/SDKThread/components/libraries/util/sdk_common.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/string.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/string.h \
  C:/SDKThread/components/device/compiler_abstraction.h \
  C:/SDKThread/components/libraries/util/sdk_os.h \
  C:/SDKThread/components/libraries/util/app_util.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stddef.h \
  C:/SDKThread/components/libraries/util/sdk_macros.h \
  C:/SDKThread/components/libraries/experimental_section_vars/nrf_section.h \
  C:/SDKThread/components/libraries/util/nordic_common.h \

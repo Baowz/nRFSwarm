@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <string.h>
 
 #include "nrf.h"
 #include "nordic_common.h"
@@ -113,7 +114,7 @@ void state_printing(void)
   #endif
 
   #if PRINT_STATE_MAG_VALUES
-  NRF_LOG_RAW_INFO("Mag: X %d Y %d Z %d \n", s_state.mag[0], s_state.mag[1], s_state.mag[2]);
+  NRF_LOG_RAW_INFO("Mag: X %d Y %d Z %d H %d \n", s_state.mag[0], s_state.mag[1], s_state.mag[2], s_state.heading);
   #endif
 
   #if PRINT_STATE_ACCELEROMETER_VALUES
@@ -192,17 +193,18 @@ void batt_callback(float voltage)
 // Publish a heartbeat message.
 void romano_pub_heartbeat_msg(void)
 {
-  uint8_t romano_node_message[176];
-  uint8_t buffer[176];
+  uint8_t romano_node_message[250];
+  uint8_t buffer[250];
+  uint16_t len = 0;
 
   sprintf((char *)&buffer[0], "{ \"MAC\" : \"%02x:%02x:%02x:%02x:%02x:%02x\", \"RSSI\" : %d, \"Range1\" : %d, \"Range2\" : %d, \"Range3\" : %d, \"Range4\" : %d, \"Heading\" : %d, \"MagX\" : %d, \"MagY\" : %d, \"MagZ\" : %d, \"CRC\" : %d }\r\n",
               s_state.mac_address[5], s_state.mac_address[4], s_state.mac_address[3], s_state.mac_address[2], s_state.mac_address[1], s_state.mac_address[0],
               s_state.RSSI, s_state.lidarOne.RangeMilliMeter, s_state.lidarTwo.RangeMilliMeter, s_state.lidarThree.RangeMilliMeter, s_state.lidarFour.RangeMilliMeter, (short)s_state.heading,
               s_state.mag[0], s_state.mag[1], s_state.mag[2], s_state.CRC);
 
-
-  memcpy(romano_node_message, buffer, 176);
-  mqttsn_client_publish(&m_client, m_topic_common.topic_id, romano_node_message, sizeof(romano_node_message), NULL);
+  len = strlen((const char*)&buffer[0]);
+  memcpy(romano_node_message, buffer, len);
+  mqttsn_client_publish(&m_client, m_topic_common.topic_id, romano_node_message, len, NULL);
 }
 // Checks data that has been received and acts upon it.
 
@@ -222,9 +224,9 @@ void romano_message_received(uint8_t *p_data)
         {
           NRF_LOG_RAW_INFO("Movement control data received.");
           if(p_data[2] == HEADING)
-            s_state.heading_ref = (float)(p_data[3] << 8 | p_data[4]);
-          else if(p_data[3] == SPEED)
-            s_state.speed = (float)(p_data[3] << 8 | p_data[4]);
+            s_state.speed[0] = (float)(p_data[3] << 8 | p_data[4]);
+          else if(p_data[2] == SPEED)
+            s_state.speed[1] = (float)(p_data[3] << 8 | p_data[4]);
         }
     break;
     case REQUEST_SENSOR_DATA:
@@ -628,6 +630,7 @@ int main(void)
 
 
   rgb_update_led_color(1,0,1000,0);
+  nrf_gpio_cfg_output(3);
 
   NRF_LOG_RAW_INFO ("All systems online. \n \n");
 
@@ -637,7 +640,9 @@ int main(void)
 
       if (NRF_LOG_PROCESS() == false)
       {
+          nrf_gpio_pin_set(3);
           thread_sleep();
+          nrf_gpio_pin_clear(3);
       }
 
       if(s_state.interrupt_flag)

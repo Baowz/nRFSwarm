@@ -19,6 +19,14 @@ typedef int inv_error_t;
 
 #define ENABLE_DMP  0
 
+#define MAX_X -179
+#define MAX_Y 45
+#define MAX_Z -28
+
+#define MIN_X -459
+#define MIN_Y -154
+#define MIN_Z -90
+
 
 typedef struct
 {

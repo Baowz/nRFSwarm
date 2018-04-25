@@ -79,12 +79,12 @@
       <file file_name="C:/SDKThread/components/drivers_nrf/nrf_soc_nosd/nrf_nvic.c" />
       <file file_name="C:/SDKThread/components/drivers_nrf/hal/nrf_nvmc.c" />
       <file file_name="C:/SDKThread/components/drivers_nrf/nrf_soc_nosd/nrf_soc.c" />
-      <file file_name="C:/SDK14/components/drivers_nrf/pwm/nrf_drv_pwm.c" />
-      <file file_name="C:/SDK14/components/drivers_nrf/saadc/nrf_drv_saadc.c" />
-      <file file_name="C:/SDK14/components/drivers_nrf/timer/nrf_drv_timer.c" />
-      <file file_name="C:/SDK14/components/drivers_nrf/ppi/nrf_drv_ppi.c" />
-      <file file_name="C:/SDK14/components/drivers_nrf/hal/nrf_saadc.c" />
-      <file file_name="C:/SDK14/components/drivers_nrf/twi_master/nrf_drv_twi.c" />
+      <file file_name="C:/SDKThread/components/drivers_nrf/pwm/nrf_drv_pwm.c" />
+      <file file_name="C:/SDKThread/components/drivers_nrf/saadc/nrf_drv_saadc.c" />
+      <file file_name="C:/SDKThread/components/drivers_nrf/timer/nrf_drv_timer.c" />
+      <file file_name="C:/SDKThread/components/drivers_nrf/ppi/nrf_drv_ppi.c" />
+      <file file_name="C:/SDKThread/components/drivers_nrf/hal/nrf_saadc.c" />
+      <file file_name="C:/SDKThread/components/drivers_nrf/twi_master/nrf_drv_twi.c" />
     </folder>
     <folder Name="Board Support">
       <file file_name="C:/SDKThread/components/libraries/bsp/bsp.c" />

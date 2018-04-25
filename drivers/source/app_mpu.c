@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
+#include <math.h>
 
 #include "nrf_log.h"
 
@@ -14,6 +15,8 @@
 #include "nrf_delay.h"
 
 #include "real_time_clock.h"
+
+#define PI 3.1415926535f
 
 bool app_mpu_who_am_i(void)
 {
@@ -193,5 +196,28 @@ void app_mpu_get_ms(unsigned long *count)
 void app_mpu_get_mag(short *mag, float *heading)
 {
   unsigned long time;
+  int32_t mag_bias[3];
+  int32_t mag_scale[3];
+  float avg_rad;
+
   mpu_get_compass_reg(mag, &time);
+
+  // Get magnetometer hard offset
+  mag_bias[0] = (MAX_X + MIN_X)/2;
+  mag_bias[1] = (MAX_Y + MIN_Y)/2;
+  mag_bias[2] = (MAX_Z + MIN_Z)/2;
+
+  // Get magnetometer soft offset
+
+  mag_scale[0] = (MAX_X - MIN_X)/2;
+  mag_scale[1] = (MAX_Y - MIN_Y)/2;
+  mag_scale[2] = (MAX_Z - MIN_Z)/2;
+  avg_rad = (float)(mag_scale[0] + mag_scale[1] + mag_scale[2])/3.0f;
+
+  // Calibrate magnetometer values
+  mag[0] = (avg_rad/mag_scale[0])*(mag[0] - mag_bias[0]);
+  mag[1] = (avg_rad/mag_scale[1])*(mag[1] - mag_bias[1]);
+  mag[2] = (avg_rad/mag_scale[2])*(mag[2] - mag_bias[2]);
+
+  *heading = (float)(atan2(mag[0],mag[1])*180/PI);
 }

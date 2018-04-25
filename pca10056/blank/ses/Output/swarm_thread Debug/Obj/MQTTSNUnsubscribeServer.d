@@ -1,8 +1,8 @@
 Output/swarm_thread\ Debug/Obj/MQTTSNUnsubscribeServer.o: \
  C:/SDKThread/external/paho/mqtt-sn/mqttsn_packet/MQTTSNUnsubscribeServer.c \
  C:/SDKThread/external/paho/mqtt-sn/mqttsn_packet/StackTrace.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/__crossworks.h \
  C:/SDKThread/external/paho/mqtt-sn/mqttsn_packet/MQTTSNPacket.h \
  C:/SDKThread/external/paho/mqtt-sn/mqttsn_packet/MQTTSNConnect.h \
  C:/SDKThread/external/paho/mqtt-sn/mqttsn_packet/MQTTSNPublish.h \

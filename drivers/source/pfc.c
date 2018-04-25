@@ -85,6 +85,7 @@ void update_pfc_controller(motor_t *motor, int8_t RSSI, float heading, float hea
     static float signal_field_scalar      =  0;
     static float heading_field_scalar     =  0;
     static float obstacle_field_scalar[4] = {0};
+    static float obstacle_bleeding_coef   =  10;
 
     static float signal_output            =  0;
     static float heading_output           =  0;
@@ -95,7 +96,7 @@ void update_pfc_controller(motor_t *motor, int8_t RSSI, float heading, float hea
 
     if(!(RSSI == -100))
       signal_field_scalar      = compute_potential_field_signal_strength(RSSI);
-    heading_field_scalar     = compute_potential_field_heading(heading, heading_ref);
+    heading_field_scalar     = 0 //compute_potential_field_heading(heading, heading_ref);
 
     obstacle_field_scalar[0] = compute_potential_field_obstacle(measurement[0]);
     obstacle_field_scalar[1] = compute_potential_field_obstacle(measurement[1]);
@@ -105,7 +106,7 @@ void update_pfc_controller(motor_t *motor, int8_t RSSI, float heading, float hea
     // Compute output from PID controller
 
     signal_output      = update_PID(&PID_signal_field, signal_field_scalar, dt);
-    heading_output     = update_PID(&PID_heading_field, heading_field_scalar, dt);
+    heading_output     = 0 //update_PID(&PID_heading_field, heading_field_scalar, dt);
 
     obstacle_output[0] = update_PID(&PID_obstacle_field, obstacle_field_scalar[0], dt);
     obstacle_output[1] = 0.5f*update_PID(&PID_obstacle_field, obstacle_field_scalar[1], dt);
@@ -114,8 +115,10 @@ void update_pfc_controller(motor_t *motor, int8_t RSSI, float heading, float hea
 
     // Output computed controller signals
 
-    controller_output[0] = speed - signal_output + heading_output -obstacle_output[0] - obstacle_output[1] + obstacle_output[2] + obstacle_output[3];
-    controller_output[1] = speed - signal_output - heading_output -obstacle_output[0] + obstacle_output[1] + obstacle_output[2] - obstacle_output[3]; //TODO: Test this
+    controller_output[0] = speed - signal_output + heading_output 
+                         - obstacle_output[0] - (obstacle_output[0] / obstacle_bleeding_coef + obstacle_output[1]) + obstacle_output[2] + (obstacle_output[0]/obstacle_bleeding_coef + obstacle_output[3]);
+    controller_output[1] = speed - signal_output - heading_output 
+                         - obstacle_output[0] + (obstacle_output[0] / obstacle_bleeding_coef + obstacle_output[1]) + obstacle_output[2] - (obstacle_output[0]/obstacle_bleeding_coef + obstacle_output[3]); //TODO: Test this
 
     // Make controller output compatible with motor domain
 
