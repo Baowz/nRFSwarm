@@ -4,7 +4,7 @@
 // Print state values, they are not mutually exclusive
 
 #define PRINT_STATE_MAC_ADDRESS           0
-#define PRINT_STATE_MAG_VALUES            1
+#define PRINT_STATE_MAG_VALUES            0
 #define PRINT_STATE_ACCELEROMETER_VALUES  0
 #define PRINT_MOTOR_VALUES                0
 #define PRINT_STATE_RANGE_MEASUREMENT     0

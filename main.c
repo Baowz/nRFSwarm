@@ -130,7 +130,7 @@ void state_printing(void)
   #endif
 
   #if PRINT_STATE_RSSI_VALUE
-  NRF_LOG_RAW_INFO("RSSI: %d - ", s_state.RSSI);
+  NRF_LOG_RAW_INFO("RSSI: %d \n", s_state.RSSI);
   #endif
 
   #if PRINT_STATE_LED_VALUE
@@ -146,6 +146,7 @@ void main_algorithm(void)
 {
   static uint32_t heartbeat_count = 0;
   static float delta_time = 0;
+  static float prev_time = 0;
   static float range_measurement[4] = {0};
 
   // Poll a connection scheme until a subscription to a broker is obtained.
@@ -156,7 +157,7 @@ void main_algorithm(void)
   if(m_subscribed){
     app_mpu_get_mag(s_state.mag, &s_state.heading);
     app_tof_get_range_all(&s_state.lidarOne, &s_state.lidarTwo, &s_state.lidarThree, &s_state.lidarFour, range_measurement);
-    rtc_get_delta_time_sec(&delta_time);
+    delta_time = rtc_get_delta_time_sec(&prev_time);
     update_pfc_controller(&s_state.motor, s_state.RSSI, s_state.heading, s_state.heading_ref, range_measurement, s_state.speed, delta_time);
     update_motor_values(&s_state.motor);
 
