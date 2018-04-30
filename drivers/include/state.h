@@ -57,4 +57,12 @@ typedef struct{
   uint16_t led_two_green;
   uint16_t led_two_blue;
 
+  // PID output values
+
+  uint16_t RSSI_pid;
+  uint16_t obstacle_pid_one;
+  uint16_t obstacle_pid_two;
+  uint16_t obstacle_pid_three;
+  uint16_t obstacle_pid_four;
+  
 }state_machine_t;

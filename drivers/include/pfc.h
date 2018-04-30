@@ -50,11 +50,11 @@
 
 // Upper and lower bound values for PFC
 
-#define MINIMUM_SIGNAL_STRENGTH   -45.0f // abs(dBM)
-#define MAXIMUM_SIGNAL_STRENGTH   -30.0f // abs(dBM)
+#define MINIMUM_SIGNAL_STRENGTH   -65.0f // abs(dBM)
+#define MAXIMUM_SIGNAL_STRENGTH   -60.0f // abs(dBM)
 #define OBSTACLE_CUTOFF_DISTANCE  500.0f
 
 // Prototypes for functions used in source files:
 
 void potential_field_controller_init(void);
-void update_pfc_controller(motor_t *motor, int8_t RSSI, float heading, float heading_ref, float *measurement, float *speed, float dt);
+void update_pfc_controller(motor_t *motor, int8_t RSSI, float heading, float heading_ref, float *measurement, float *speed, float dt, uint16_t *analytical_data);

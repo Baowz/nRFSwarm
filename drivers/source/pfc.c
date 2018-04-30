@@ -113,7 +113,7 @@ float compute_potential_field_obstacle(float measurement)
 
 // PFC and PID controller computations. Formatted to be sent to the motor output.
 
-void update_pfc_controller(motor_t *motor, int8_t RSSI, float heading, float heading_ref, float *measurement, float *speed, float dt)
+void update_pfc_controller(motor_t *motor, int8_t RSSI, float heading, float heading_ref, float *measurement, float *speed, float dt, uint16_t *analytical_data)
 {
     static float signal_field_scalar      =  0;
     static float heading_field_scalar     =  0;
@@ -196,4 +196,10 @@ void update_pfc_controller(motor_t *motor, int8_t RSSI, float heading, float hea
 
     motor->output_motor_a = MOTOR_OFFSET_LEFT*motor->output_motor_a;
     motor->output_motor_b = MOTOR_OFFSET_RIGHT*motor->output_motor_b;
+
+    analytical_data[0]   = (uint16_t)signal_output;
+    analytical_data[1]   = (uint16_t)obstacle_output[0];
+    analytical_data[2]   = (uint16_t)obstacle_output[1];
+    analytical_data[3]   = (uint16_t)obstacle_output[2];
+    analytical_data[4]   = (uint16_t)obstacle_output[3];
 }

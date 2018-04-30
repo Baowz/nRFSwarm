@@ -148,6 +148,7 @@ void main_algorithm(void)
   static float delta_time = 0;
   static float prev_time = 0;
   static float range_measurement[4] = {0};
+  static uint16_t analytical_data[5] = {0};
 
   // Poll a connection scheme until a subscription to a broker is obtained.
   if(!m_subscribed)
@@ -158,11 +159,19 @@ void main_algorithm(void)
     app_mpu_get_mag(s_state.mag, &s_state.heading);
     app_tof_get_range_all(&s_state.lidarOne, &s_state.lidarTwo, &s_state.lidarThree, &s_state.lidarFour, range_measurement);
     delta_time = rtc_get_delta_time_sec(&prev_time);
-    update_pfc_controller(&s_state.motor, s_state.RSSI, s_state.heading, s_state.heading_ref, range_measurement, s_state.speed, delta_time);
-    update_motor_values(&s_state.motor);
+    update_pfc_controller(&s_state.motor, s_state.RSSI, s_state.heading, s_state.heading_ref, range_measurement, s_state.speed, delta_time, analytical_data);
+    update_motor_values(&s_state.motor); 
+
+    // Data to be analyzed
+
+    s_state.RSSI_pid           = analytical_data[0];
+    s_state.obstacle_pid_one   = analytical_data[1];
+    s_state.obstacle_pid_two   = analytical_data[2];
+    s_state.obstacle_pid_three = analytical_data[3];
+    s_state.obstacle_pid_four  = analytical_data[4];
 
     // Publishes data over a set time interval
-    if(heartbeat_count % 2 == 0)
+    if(heartbeat_count % 10 == 0)
       romano_pub_heartbeat_msg(); //TODO: Add this
     state_printing();
     heartbeat_count++;
@@ -198,10 +207,11 @@ void romano_pub_heartbeat_msg(void)
   uint8_t buffer[250];
   uint16_t len = 0;
 
-  sprintf((char *)&buffer[0], "{ \"MAC\" : \"%02x:%02x:%02x:%02x:%02x:%02x\", \"RSSI\" : %d, \"Range1\" : %d, \"Range2\" : %d, \"Range3\" : %d, \"Range4\" : %d, \"Heading\" : %d, \"MagX\" : %d, \"MagY\" : %d, \"MagZ\" : %d, \"CRC\" : %d }\r\n",
+  sprintf((char *)&buffer[0], "{ \"MAC\" : \"%02x:%02x:%02x:%02x:%02x:%02x\", \"RSSI\" : %d, \"Range1\" : %d, \"Range2\" : %d, \"Range3\" : %d, \"Range4\" : %d, \"PIDRSSI\" : %d, \"PIDRange1\" : %d, \"PIDRange2\" : %d, \"PIDRange3\" : %d, \"PIDRange4\" : %d, \"CRC\" : %d }\r\n",
               s_state.mac_address[5], s_state.mac_address[4], s_state.mac_address[3], s_state.mac_address[2], s_state.mac_address[1], s_state.mac_address[0],
-              s_state.RSSI, s_state.lidarOne.RangeMilliMeter, s_state.lidarTwo.RangeMilliMeter, s_state.lidarThree.RangeMilliMeter, s_state.lidarFour.RangeMilliMeter, (short)s_state.heading,
-              s_state.mag[0], s_state.mag[1], s_state.mag[2], s_state.CRC);
+              s_state.RSSI, s_state.lidarOne.RangeMilliMeter, s_state.lidarTwo.RangeMilliMeter, s_state.lidarThree.RangeMilliMeter, s_state.lidarFour.RangeMilliMeter, 
+              s_state.RSSI_pid, s_state.obstacle_pid_one, s_state.obstacle_pid_two, s_state.obstacle_pid_three, s_state.obstacle_pid_four,
+              s_state.CRC);
 
   len = strlen((const char*)&buffer[0]);
   memcpy(romano_node_message, buffer, len);
