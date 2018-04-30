@@ -52,7 +52,7 @@
 
 #define MINIMUM_SIGNAL_STRENGTH   -45.0f // abs(dBM)
 #define MAXIMUM_SIGNAL_STRENGTH   -30.0f // abs(dBM)
-#define OBSTACLE_CUTOFF_DISTANCE  200.0f
+#define OBSTACLE_CUTOFF_DISTANCE  500.0f
 
 // Prototypes for functions used in source files:
 
