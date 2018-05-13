@@ -1,12 +1,12 @@
 Output/swarm_thread\ Debug/Obj/pfc.o: \
  C:\Repositories\nRFSwarm\drivers\source\pfc.c \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/__crossworks.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdlib.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/string.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdlib.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/string.h \
  ../../../drivers/include/pfc.h ../../../drivers/include/motor.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdbool.h \
  ../../../drivers/include/pid.h \
  C:/SDKThread/components/libraries/experimental_log/nrf_log.h \
  C:/SDKThread/components/libraries/util/sdk_common.h \
@@ -17,7 +17,7 @@ Output/swarm_thread\ Debug/Obj/pfc.o: \
  C:/SDKThread/components/libraries/util/sdk_errors.h \
  C:/SDKThread/components/drivers_nrf/nrf_soc_nosd/nrf_error.h \
  C:/SDKThread/components/libraries/util/app_util.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stddef.h \
  C:/SDKThread/components/device/nrf.h \
  C:/SDKThread/components/device/nrf52840.h \
  C:/SDKThread/components/toolchain/cmsis/include/core_cm4.h \

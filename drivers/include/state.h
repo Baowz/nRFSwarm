@@ -59,10 +59,10 @@ typedef struct{
 
   // PID output values
 
-  uint16_t RSSI_pid;
-  uint16_t obstacle_pid_one;
-  uint16_t obstacle_pid_two;
-  uint16_t obstacle_pid_three;
-  uint16_t obstacle_pid_four;
+  int16_t RSSI_pid;
+  int16_t obstacle_pid_one;
+  int16_t obstacle_pid_two;
+  int16_t obstacle_pid_three;
+  int16_t obstacle_pid_four;
   
 }state_machine_t;

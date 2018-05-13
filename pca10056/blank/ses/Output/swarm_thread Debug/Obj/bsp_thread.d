@@ -1,9 +1,9 @@
 Output/swarm_thread\ Debug/Obj/bsp_thread.o: \
  C:/SDKThread/components/libraries/bsp/experimental/bsp_thread.c \
  C:/SDKThread/components/libraries/bsp/experimental/bsp_thread.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdint.h \
  C:/SDKThread/components/libraries/bsp/bsp.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdbool.h \
  C:/SDKThread/components/boards/boards.h \
  C:/SDKThread/components/drivers_nrf/hal/nrf_gpio.h \
  C:/SDKThread/components/device/nrf.h \
@@ -22,28 +22,28 @@ Output/swarm_thread\ Debug/Obj/bsp_thread.o: \
  C:/SDKThread/components/device/nrf52840_peripherals.h \
  C:/SDKThread/components/libraries/util/nrf_assert.h \
  C:/SDKThread/components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/__crossworks.h \
  C:/SDKThread/components/libraries/util/sdk_errors.h \
  C:/SDKThread/components/drivers_nrf/nrf_soc_nosd/nrf_error.h \
  ../config/sdk_config.h \
  C:/SDKThread/components/libraries/util/nordic_common.h \
  C:/SDKThread/components/libraries/util/app_error_weak.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdlib.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdlib.h \
  C:/SDKThread/components/boards/pca10056.h \
  C:/SDKThread/components/libraries/button/app_button.h \
  C:/SDKThread/components/libraries/util/app_error.h \
  C:/SDKThread/components/libraries/util/sdk_errors.h \
  C:/SDKThread/external/openthread/include/openthread/types.h \
  C:/SDKThread/external/openthread/include/openthread/platform/toolchain.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/string.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/string.h \
  C:/SDKThread/components/libraries/bsp/bsp_config.h \
  C:/SDKThread/external/openthread/include/openthread/openthread.h \
  C:/SDKThread/external/openthread/include/openthread/crypto.h \
  C:/SDKThread/external/openthread/include/openthread/dataset.h \
  C:/SDKThread/external/openthread/include/openthread/instance.h \
  C:/SDKThread/external/openthread/include/openthread/platform/logging.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdarg.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdarg.h \
  C:/SDKThread/external/openthread/include/openthread/ip6.h \
  C:/SDKThread/external/openthread/include/openthread/message.h \
  C:/SDKThread/external/openthread/include/openthread/platform/radio.h \
@@ -54,6 +54,6 @@ Output/swarm_thread\ Debug/Obj/bsp_thread.o: \
  C:/SDKThread/external/openthread/include/openthread/icmp6.h \
  C:/SDKThread/components/libraries/timer/app_timer.h \
  C:/SDKThread/components/libraries/util/app_util.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stddef.h \
  C:/SDKThread/components/device/compiler_abstraction.h \
  C:/SDKThread/components/libraries/util/nordic_common.h

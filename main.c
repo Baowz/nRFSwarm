@@ -148,11 +148,13 @@ void main_algorithm(void)
   static float delta_time = 0;
   static float prev_time = 0;
   static float range_measurement[4] = {0};
-  static uint16_t analytical_data[5] = {0};
+  static int16_t analytical_data[5] = {0};
 
   // Poll a connection scheme until a subscription to a broker is obtained.
-  if(!m_subscribed)
+  if(!m_subscribed) {
     connection_check();
+    s_state.RSSI_pid = 0;
+    }
 
   // Main algorithm goes here, runs after connection with the network is established
   if(m_subscribed){
@@ -162,16 +164,8 @@ void main_algorithm(void)
     update_pfc_controller(&s_state.motor, s_state.RSSI, s_state.heading, s_state.heading_ref, range_measurement, s_state.speed, delta_time, analytical_data);
     update_motor_values(&s_state.motor); 
 
-    // Data to be analyzed
-
-    s_state.RSSI_pid           = analytical_data[0];
-    s_state.obstacle_pid_one   = analytical_data[1];
-    s_state.obstacle_pid_two   = analytical_data[2];
-    s_state.obstacle_pid_three = analytical_data[3];
-    s_state.obstacle_pid_four  = analytical_data[4];
-
     // Publishes data over a set time interval
-    if(heartbeat_count % 10 == 0)
+    if(heartbeat_count % 1 == 0)
       romano_pub_heartbeat_msg(); //TODO: Add this
     state_printing();
     heartbeat_count++;
@@ -317,6 +311,9 @@ static void rssi_callback(uint16_t id, int8_t rssi, uint8_t crc)
   // Checks RSSI signal from all nodes in the network, performs a CRC check on said RSSI signal and returns the largest value
   s_state.CRC  = crc;
   s_state.RSSI = crc_filter(s_state.RSSI_values, id, rssi, crc);
+
+  if(m_subscribed)
+    romano_pub_heartbeat_msg();
 }
 
 
@@ -628,12 +625,13 @@ int main(void)
   pcb_peripherals_init(); // Initializes RGB LEDs and GPIO
 
   rtc_init(&rtc_timer);               // Real time clock used for configuration and timing of the MPU 9250 and additional real time sensitive data
-  mpu_twi_init();                     // Initialize two wire interface used to communicate with the MPU 9250.
+  /*mpu_twi_init();                     // Initialize two wire interface used to communicate with the MPU 9250.
   app_mpu_init();                     // Initialize MPU 9250, flashing DMP firmware to the unit.
   app_tof_init();                     // Initialize all VL53L0X LIDAR units.
   batt_mon_enable(batt_callback);     // Battery voltage monitoring.
   motor_pwm_init();                   // PWM used to control the motors of the vessel.
   potential_field_controller_init();  // Potential field controller which makes the vessel move based on sensory input.
+  */
   timer_init();                       // Main timer used to run the swarm algorithm.
 
   thread_instance_init();

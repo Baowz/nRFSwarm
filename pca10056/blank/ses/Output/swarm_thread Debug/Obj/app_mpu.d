@@ -1,10 +1,10 @@
 Output/swarm_thread\ Debug/Obj/app_mpu.o: \
  C:\Repositories\nRFSwarm\drivers\source\app_mpu.c \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdbool.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/string.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/__crossworks.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/math.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/string.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/math.h \
  C:/SDKThread/components/libraries/experimental_log/nrf_log.h \
  C:/SDKThread/components/libraries/util/sdk_common.h \
  ../config/sdk_config.h \
@@ -14,7 +14,7 @@ Output/swarm_thread\ Debug/Obj/app_mpu.o: \
  C:/SDKThread/components/libraries/util/sdk_errors.h \
  C:/SDKThread/components/drivers_nrf/nrf_soc_nosd/nrf_error.h \
  C:/SDKThread/components/libraries/util/app_util.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stddef.h \
  C:/SDKThread/components/device/nrf.h \
  C:/SDKThread/components/device/nrf52840.h \
  C:/SDKThread/components/toolchain/cmsis/include/core_cm4.h \
@@ -44,9 +44,9 @@ Output/swarm_thread\ Debug/Obj/app_mpu.o: \
  C:/SDKThread/components/device/nrf52840_peripherals.h \
  C:/SDKThread/components/libraries/util/nrf_assert.h \
  C:/SDKThread/components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdio.h \
  C:/SDKThread/components/libraries/util/app_error_weak.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdlib.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdlib.h \
  C:/SDKThread/components/drivers_nrf/delay/nrf_delay.h \
  ../../../drivers/include/real_time_clock.h \
  C:/SDKThread/components/drivers_nrf/timer/nrf_drv_timer.h \

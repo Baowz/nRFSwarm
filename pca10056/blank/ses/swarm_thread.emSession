@@ -3,7 +3,7 @@
  <Bookmarks/>
  <Breakpoints groups="Breakpoints" active_group="Breakpoints">
   <BreakpointListItem trigger="" line="3004" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../../../drivers/source/inv_mpu.c" useHWbreakpoint="false"/>
-  <BreakpointListItem trigger="" line="175" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../../../main.c" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="153" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../../../drivers/source/pfc.c" useHWbreakpoint="false"/>
  </Breakpoints>
  <ExecutionProfileWindow/>
  <FrameBufferWindow>
@@ -80,6 +80,11 @@
    <Watchpoint numelements="50" expression="rssi_vault" evalMode="2" name="rssi_vault" radix="10" linenumber="22" filename="../../../drivers/source/crc_filter.c" list=""/>
    <Watchpoint numelements="0" expression="RSSI_values" evalMode="1" name="RSSI_values" radix="-1" linenumber="55" filename="../../../drivers/source/crc_filter.c" list=""/>
    <Watchpoint numelements="0" expression="signal_output" evalMode="0" name="signal_output" radix="-1" linenumber="141" filename="../../../drivers/source/pfc.c" list=""/>
+   <Watchpoint numelements="0" expression="analytical_data[1]" evalMode="0" name="analytical_data[1]" radix="10" linenumber="0" filename="" list=""/>
+   <Watchpoint numelements="0" expression="analytical_data[0]" evalMode="0" name="analytical_data[0]" radix="10" linenumber="200" filename="../../../drivers/source/pfc.c" list=""/>
+   <Watchpoint numelements="0" expression="analytical_data[2]" evalMode="0" name="analytical_data[2]" radix="10" linenumber="0" filename="" list=""/>
+   <Watchpoint numelements="0" expression="analytical_data[3]" evalMode="0" name="analytical_data[3]" radix="10" linenumber="0" filename="" list=""/>
+   <Watchpoint numelements="0" expression="analytical_data[4]" evalMode="0" name="analytical_data[4]" radix="10" linenumber="0" filename="" list=""/>
   </Watches>
  </Watch1>
  <Watch2>
@@ -92,44 +97,11 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="22" y="176" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" debugPath="../../../main.c" selected="0" top="137" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="6" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/motor.h" debugPath="../../../drivers/include/motor.h" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="2" y="66" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/state.h" debugPath="../../../drivers/include/state.h" selected="0" top="25" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="20" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/romano.h" debugPath="../../../drivers/include/romano.h" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="54" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/libraries/util/sdk_common.h" debugPath="C:/SDKThread/components/libraries/util/sdk_common.h" selected="0" top="2" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="51" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/libraries/experimental_log/nrf_log.h" debugPath="C:/SDKThread/components/libraries/experimental_log/nrf_log.h" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="5" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/romano.h." debugPath="../../../drivers/include/romano.h." selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="59" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/app_tof.c" debugPath="../../../drivers/source/app_tof.c" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="413" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.c" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.c" selected="0" top="398" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="13" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/min_max.c" debugPath="../../../drivers/source/min_max.c" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="157" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/drivers_nrf/delay/nrf_delay.h" debugPath="C:/SDKThread/components/drivers_nrf/delay/nrf_delay.h" selected="0" top="141" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="521" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/libraries/experimental_log/src/nrf_log_frontend.c" debugPath="C:/SDKThread/components/libraries/experimental_log/src/nrf_log_frontend.c" selected="0" top="494" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="879" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_packet_receiver.c" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_packet_receiver.c" selected="0" top="802" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="6" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/ascii_converter.h" debugPath="../../../drivers/include/ascii_converter.h" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="42" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.h" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.h" selected="0" top="30" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="72" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_transport_ot.c" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_transport_ot.c" selected="0" top="55" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="100" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_transport.h" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_transport.h" selected="0" top="97" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="209" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/inv_mpu.c" debugPath="../../../drivers/source/inv_mpu.c" selected="0" top="195" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="195" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/app_mpu.c" debugPath="../../../drivers/source/app_mpu.c" selected="0" top="177" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="44" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/app_mpu.h" debugPath="../../../drivers/include/app_mpu.h" selected="0" top="30" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="22" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/inv_mpu.h" debugPath="../../../drivers/include/inv_mpu.h" selected="0" top="105" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="36" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/mpu_twi.c" debugPath="../../../drivers/source/mpu_twi.c" selected="0" top="9" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="98" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/utils/thread_utils.c" debugPath="C:/SDKThread/components/thread/experimental/utils/thread_utils.c" selected="0" top="76" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="57" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/external/openthread/include/openthread/thread.h" debugPath="C:/SDKThread/external/openthread/include/openthread/thread.h" selected="0" top="46" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="37" y="52" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/pfc.h" debugPath="../../../drivers/include/pfc.h" selected="0" top="21" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="15" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/crc_filter.c" debugPath="../../../drivers/source/crc_filter.c" selected="0" top="15" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="341" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/drivers_nrf/hal/nrf_twi.h" debugPath="C:/SDKThread/components/drivers_nrf/hal/nrf_twi.h" selected="0" top="314" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="60" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/tof_api/vl53l0x_i2c_comms.c" debugPath="../../../drivers/source/tof_api/vl53l0x_i2c_comms.c" selected="0" top="13" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="557" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_packet_sender.c" debugPath="C:/SDKThread/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_packet_sender.c" selected="0" top="523" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="56" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/swarm_pcb.c" debugPath="../../../drivers/source/swarm_pcb.c" selected="0" top="6" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="47" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/real_time_clock.c" debugPath="../../../drivers/source/real_time_clock.c" selected="0" top="15" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="17" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/pid.c" debugPath="../../../drivers/source/pid.c" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="31" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/pid.h" debugPath="../../../drivers/include/pid.h" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="26" y="146" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/pfc.c" debugPath="../../../drivers/source/pfc.c" selected="1" top="118" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="265" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/tof_api/vl53l0x_platform.c" debugPath="../../../drivers/source/tof_api/vl53l0x_platform.c" selected="0" top="240" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="506" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/drivers_nrf/pwm/nrf_drv_pwm.c" debugPath="C:/SDKThread/components/drivers_nrf/pwm/nrf_drv_pwm.c" selected="0" top="481" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="545" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/drivers_nrf/hal/nrf_pwm.h" debugPath="C:/SDKThread/components/drivers_nrf/hal/nrf_pwm.h" selected="0" top="519" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="424" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/drivers_nrf/twi_master/nrf_drv_twi.c" debugPath="C:/SDKThread/components/drivers_nrf/twi_master/nrf_drv_twi.c" selected="0" top="424" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="19" y="308" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" debugPath="../../../main.c" selected="1" top="293" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="18" y="143" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/pfc.c" debugPath="../../../drivers/source/pfc.c" selected="0" top="176" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="60" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/pfc.h" debugPath="../../../drivers/include/pfc.h" selected="0" top="31" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="24" y="57" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/state.h" debugPath="../../../drivers/include/state.h" selected="0" top="39" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="54" y="51" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/app_tof.c" debugPath="../../../drivers/source/app_tof.c" selected="0" top="35" codecName="Default"/>
  </Files>
  <ARMCrossStudioWindow activeProject="swarm_thread" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3711"/>
 </session>
