@@ -166,7 +166,7 @@ void main_algorithm(void)
 
     // Publishes data over a set time interval
     if(heartbeat_count % 1 == 0)
-      romano_pub_heartbeat_msg(); //TODO: Add this
+      //romano_pub_heartbeat_msg(); //TODO: Add this
     state_printing();
     heartbeat_count++;
   }
@@ -179,13 +179,13 @@ void main_algorithm(void)
 void batt_callback(float voltage)
 {
   s_state.voltage = voltage;
-   /*if(s_state.voltage < VOLTAGE_LEVEL_CUTOFF)
+   if(s_state.voltage < 3.2f)
    {
    uint32_t err_code;
 
    err_code = sd_power_system_off();
-   APP_ERROR_CHECK(err_code);      //put nRF52 in sleep mode / power off
- }*/
+   APP_ERROR_CHECK(err_code);      //put nRF52 in sleep mode / power off 
+ }
 }
 
 
@@ -312,8 +312,8 @@ static void rssi_callback(uint16_t id, int8_t rssi, uint8_t crc)
   s_state.CRC  = crc;
   s_state.RSSI = crc_filter(s_state.RSSI_values, id, rssi, crc);
 
-  if(m_subscribed)
-    romano_pub_heartbeat_msg();
+  /*if(m_subscribed)
+    romano_pub_heartbeat_msg();*/
 }
 
 
@@ -625,13 +625,12 @@ int main(void)
   pcb_peripherals_init(); // Initializes RGB LEDs and GPIO
 
   rtc_init(&rtc_timer);               // Real time clock used for configuration and timing of the MPU 9250 and additional real time sensitive data
-  /*mpu_twi_init();                     // Initialize two wire interface used to communicate with the MPU 9250.
+  mpu_twi_init();                     // Initialize two wire interface used to communicate with the MPU 9250.
   app_mpu_init();                     // Initialize MPU 9250, flashing DMP firmware to the unit.
   app_tof_init();                     // Initialize all VL53L0X LIDAR units.
   batt_mon_enable(batt_callback);     // Battery voltage monitoring.
   motor_pwm_init();                   // PWM used to control the motors of the vessel.
   potential_field_controller_init();  // Potential field controller which makes the vessel move based on sensory input.
-  */
   timer_init();                       // Main timer used to run the swarm algorithm.
 
   thread_instance_init();
