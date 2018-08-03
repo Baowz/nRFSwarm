@@ -11,7 +11,7 @@
 #define PRINT_STATE_RSSI_VALUE            0
 #define PRINT_STATE_LED_VALUE             0
 #define PRINT_STATE_VOLTAGE_VALUE         0
-#define PRINT_STATE_LIGHT_VALUE           1
+#define PRINT_STATE_LIGHT_VALUE           0
 
 
 

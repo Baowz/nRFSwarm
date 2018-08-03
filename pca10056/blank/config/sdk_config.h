@@ -241,169 +241,6 @@
 #define BUTTON_ENABLED 1
 #endif
 
-// <e> MEM_MANAGER_ENABLED - mem_manager - Dynamic memory allocator
-//==========================================================
-#ifndef MEM_MANAGER_ENABLED
-#define MEM_MANAGER_ENABLED 1
-#endif
-// <o> MEMORY_MANAGER_SMALL_BLOCK_COUNT - Size of each memory blocks identified as 'small' block.  <0-255> 
-
-
-#ifndef MEMORY_MANAGER_SMALL_BLOCK_COUNT
-#define MEMORY_MANAGER_SMALL_BLOCK_COUNT 8
-#endif
-
-// <o> MEMORY_MANAGER_SMALL_BLOCK_SIZE -  Size of each memory blocks identified as 'small' block. 
-// <i>  Size of each memory blocks identified as 'small' block. Memory block are recommended to be word-sized.
-
-#ifndef MEMORY_MANAGER_SMALL_BLOCK_SIZE
-#define MEMORY_MANAGER_SMALL_BLOCK_SIZE 128
-#endif
-
-// <o> MEMORY_MANAGER_MEDIUM_BLOCK_COUNT - Size of each memory blocks identified as 'medium' block.  <0-255> 
-
-
-#ifndef MEMORY_MANAGER_MEDIUM_BLOCK_COUNT
-#define MEMORY_MANAGER_MEDIUM_BLOCK_COUNT 4
-#endif
-
-// <o> MEMORY_MANAGER_MEDIUM_BLOCK_SIZE -  Size of each memory blocks identified as 'medium' block. 
-// <i>  Size of each memory blocks identified as 'medium' block. Memory block are recommended to be word-sized.
-
-#ifndef MEMORY_MANAGER_MEDIUM_BLOCK_SIZE
-#define MEMORY_MANAGER_MEDIUM_BLOCK_SIZE 256
-#endif
-
-// <o> MEMORY_MANAGER_LARGE_BLOCK_COUNT - Size of each memory blocks identified as 'large' block.  <0-255> 
-
-
-#ifndef MEMORY_MANAGER_LARGE_BLOCK_COUNT
-#define MEMORY_MANAGER_LARGE_BLOCK_COUNT 0
-#endif
-
-// <o> MEMORY_MANAGER_LARGE_BLOCK_SIZE -  Size of each memory blocks identified as 'large' block. 
-// <i>  Size of each memory blocks identified as 'large' block. Memory block are recommended to be word-sized.
-
-#ifndef MEMORY_MANAGER_LARGE_BLOCK_SIZE
-#define MEMORY_MANAGER_LARGE_BLOCK_SIZE 256
-#endif
-
-// <o> MEMORY_MANAGER_XLARGE_BLOCK_COUNT - Size of each memory blocks identified as 'extra large' block.  <0-255> 
-
-
-#ifndef MEMORY_MANAGER_XLARGE_BLOCK_COUNT
-#define MEMORY_MANAGER_XLARGE_BLOCK_COUNT 0
-#endif
-
-// <o> MEMORY_MANAGER_XLARGE_BLOCK_SIZE -  Size of each memory blocks identified as 'extra large' block. 
-// <i>  Size of each memory blocks identified as 'extra large' block. Memory block are recommended to be word-sized.
-
-#ifndef MEMORY_MANAGER_XLARGE_BLOCK_SIZE
-#define MEMORY_MANAGER_XLARGE_BLOCK_SIZE 1320
-#endif
-
-// <o> MEMORY_MANAGER_XXLARGE_BLOCK_COUNT - Size of each memory blocks identified as 'extra extra large' block.  <0-255> 
-
-
-#ifndef MEMORY_MANAGER_XXLARGE_BLOCK_COUNT
-#define MEMORY_MANAGER_XXLARGE_BLOCK_COUNT 0
-#endif
-
-// <o> MEMORY_MANAGER_XXLARGE_BLOCK_SIZE -  Size of each memory blocks identified as 'extra extra large' block. 
-// <i>  Size of each memory blocks identified as 'extra extra large' block. Memory block are recommended to be word-sized.
-
-#ifndef MEMORY_MANAGER_XXLARGE_BLOCK_SIZE
-#define MEMORY_MANAGER_XXLARGE_BLOCK_SIZE 3444
-#endif
-
-// <o> MEMORY_MANAGER_XSMALL_BLOCK_COUNT - Size of each memory blocks identified as 'extra small' block.  <0-255> 
-
-
-#ifndef MEMORY_MANAGER_XSMALL_BLOCK_COUNT
-#define MEMORY_MANAGER_XSMALL_BLOCK_COUNT 0
-#endif
-
-// <o> MEMORY_MANAGER_XSMALL_BLOCK_SIZE -  Size of each memory blocks identified as 'extra small' block. 
-// <i>  Size of each memory blocks identified as 'extra large' block. Memory block are recommended to be word-sized.
-
-#ifndef MEMORY_MANAGER_XSMALL_BLOCK_SIZE
-#define MEMORY_MANAGER_XSMALL_BLOCK_SIZE 64
-#endif
-
-// <o> MEMORY_MANAGER_XXSMALL_BLOCK_COUNT - Size of each memory blocks identified as 'extra extra small' block.  <0-255> 
-
-
-#ifndef MEMORY_MANAGER_XXSMALL_BLOCK_COUNT
-#define MEMORY_MANAGER_XXSMALL_BLOCK_COUNT 0
-#endif
-
-// <o> MEMORY_MANAGER_XXSMALL_BLOCK_SIZE -  Size of each memory blocks identified as 'extra extra small' block. 
-// <i>  Size of each memory blocks identified as 'extra extra small' block. Memory block are recommended to be word-sized.
-
-#ifndef MEMORY_MANAGER_XXSMALL_BLOCK_SIZE
-#define MEMORY_MANAGER_XXSMALL_BLOCK_SIZE 32
-#endif
-
-// <e> MEM_MANAGER_CONFIG_LOG_ENABLED - Enables logging in the module.
-//==========================================================
-#ifndef MEM_MANAGER_CONFIG_LOG_ENABLED
-#define MEM_MANAGER_CONFIG_LOG_ENABLED 0
-#endif
-// <o> MEM_MANAGER_CONFIG_LOG_LEVEL  - Default Severity level
- 
-// <0=> Off 
-// <1=> Error 
-// <2=> Warning 
-// <3=> Info 
-// <4=> Debug 
-
-#ifndef MEM_MANAGER_CONFIG_LOG_LEVEL
-#define MEM_MANAGER_CONFIG_LOG_LEVEL 3
-#endif
-
-// <o> MEM_MANAGER_CONFIG_INFO_COLOR  - ANSI escape code prefix.
- 
-// <0=> Default 
-// <1=> Black 
-// <2=> Red 
-// <3=> Green 
-// <4=> Yellow 
-// <5=> Blue 
-// <6=> Magenta 
-// <7=> Cyan 
-// <8=> White 
-
-#ifndef MEM_MANAGER_CONFIG_INFO_COLOR
-#define MEM_MANAGER_CONFIG_INFO_COLOR 0
-#endif
-
-// <o> MEM_MANAGER_CONFIG_DEBUG_COLOR  - ANSI escape code prefix.
- 
-// <0=> Default 
-// <1=> Black 
-// <2=> Red 
-// <3=> Green 
-// <4=> Yellow 
-// <5=> Blue 
-// <6=> Magenta 
-// <7=> Cyan 
-// <8=> White 
-
-#ifndef MEM_MANAGER_CONFIG_DEBUG_COLOR
-#define MEM_MANAGER_CONFIG_DEBUG_COLOR 0
-#endif
-
-// </e>
-
-// <q> MEM_MANAGER_DISABLE_API_PARAM_CHECK  - Disable API parameter checks in the module.
- 
-
-#ifndef MEM_MANAGER_DISABLE_API_PARAM_CHECK
-#define MEM_MANAGER_DISABLE_API_PARAM_CHECK 0
-#endif
-
-// </e>
-
 // <e> NRF_BALLOC_ENABLED - nrf_balloc - Block allocator module
 //==========================================================
 #ifndef NRF_BALLOC_ENABLED
@@ -2658,220 +2495,6 @@
 #define THREAD_CHANNEL 11
 #endif
 
-// </h> 
-//==========================================================
-
-// </h> 
-//==========================================================
-
-// <e> PWM_ENABLED - nrf_drv_pwm - PWM peripheral driver
-//==========================================================
-#ifndef PWM_ENABLED
-#define PWM_ENABLED 1
-#endif
-// <o> PWM_DEFAULT_CONFIG_OUT0_PIN - Out0 pin  <0-31> 
-
-
-#ifndef PWM_DEFAULT_CONFIG_OUT0_PIN
-#define PWM_DEFAULT_CONFIG_OUT0_PIN 31
-#endif
-
-// <o> PWM_DEFAULT_CONFIG_OUT1_PIN - Out1 pin  <0-31> 
-
-
-#ifndef PWM_DEFAULT_CONFIG_OUT1_PIN
-#define PWM_DEFAULT_CONFIG_OUT1_PIN 31
-#endif
-
-// <o> PWM_DEFAULT_CONFIG_OUT2_PIN - Out2 pin  <0-31> 
-
-
-#ifndef PWM_DEFAULT_CONFIG_OUT2_PIN
-#define PWM_DEFAULT_CONFIG_OUT2_PIN 31
-#endif
-
-// <o> PWM_DEFAULT_CONFIG_OUT3_PIN - Out3 pin  <0-31> 
-
-
-#ifndef PWM_DEFAULT_CONFIG_OUT3_PIN
-#define PWM_DEFAULT_CONFIG_OUT3_PIN 31
-#endif
-
-// <o> PWM_DEFAULT_CONFIG_BASE_CLOCK  - Base clock
- 
-// <0=> 16 MHz 
-// <1=> 8 MHz 
-// <2=> 4 MHz 
-// <3=> 2 MHz 
-// <4=> 1 MHz 
-// <5=> 500 kHz 
-// <6=> 250 kHz 
-// <7=> 125 kHz 
-
-#ifndef PWM_DEFAULT_CONFIG_BASE_CLOCK
-#define PWM_DEFAULT_CONFIG_BASE_CLOCK 4
-#endif
-
-// <o> PWM_DEFAULT_CONFIG_COUNT_MODE  - Count mode
- 
-// <0=> Up 
-// <1=> Up and Down 
-
-#ifndef PWM_DEFAULT_CONFIG_COUNT_MODE
-#define PWM_DEFAULT_CONFIG_COUNT_MODE 0
-#endif
-
-// <o> PWM_DEFAULT_CONFIG_TOP_VALUE - Top value 
-#ifndef PWM_DEFAULT_CONFIG_TOP_VALUE
-#define PWM_DEFAULT_CONFIG_TOP_VALUE 1000
-#endif
-
-// <o> PWM_DEFAULT_CONFIG_LOAD_MODE  - Load mode
- 
-// <0=> Common 
-// <1=> Grouped 
-// <2=> Individual 
-// <3=> Waveform 
-
-#ifndef PWM_DEFAULT_CONFIG_LOAD_MODE
-#define PWM_DEFAULT_CONFIG_LOAD_MODE 0
-#endif
-
-// <o> PWM_DEFAULT_CONFIG_STEP_MODE  - Step mode
- 
-// <0=> Auto 
-// <1=> Triggered 
-
-#ifndef PWM_DEFAULT_CONFIG_STEP_MODE
-#define PWM_DEFAULT_CONFIG_STEP_MODE 0
-#endif
-
-// <o> PWM_DEFAULT_CONFIG_IRQ_PRIORITY  - Interrupt priority
- 
-
-// <i> Priorities 0,1,4,5 (nRF52) are reserved for SoftDevice
-// <0=> 0 (highest) 
-// <1=> 1 
-// <2=> 2 
-// <3=> 3 
-// <4=> 4 
-// <5=> 5 
-// <6=> 6 
-// <7=> 7 
-
-#ifndef PWM_DEFAULT_CONFIG_IRQ_PRIORITY
-#define PWM_DEFAULT_CONFIG_IRQ_PRIORITY 7
-#endif
-
-// <q> PWM0_ENABLED  - Enable PWM0 instance
- 
-
-#ifndef PWM0_ENABLED
-#define PWM0_ENABLED 1
-#endif
-
-// <q> PWM1_ENABLED  - Enable PWM1 instance
- 
-
-#ifndef PWM1_ENABLED
-#define PWM1_ENABLED 1
-#endif
-
-// <q> PWM2_ENABLED  - Enable PWM2 instance
- 
-
-#ifndef PWM2_ENABLED
-#define PWM2_ENABLED 1
-#endif
-
-// <e> PWM_NRF52_ANOMALY_109_WORKAROUND_ENABLED - Enables nRF52 Anomaly 109 workaround for PWM.
-
-// <i> The workaround uses interrupts to wake up the CPU and ensure
-// <i> it is active when PWM is about to start a DMA transfer. For
-// <i> initial transfer, done when a playback is started via PPI,
-// <i> a specific EGU instance is used to generate the interrupt.
-// <i> During the playback, the PWM interrupt triggered on SEQEND
-// <i> event of a preceding sequence is used to protect the transfer
-// <i> done for the next sequence to be played.
-//==========================================================
-#ifndef PWM_NRF52_ANOMALY_109_WORKAROUND_ENABLED
-#define PWM_NRF52_ANOMALY_109_WORKAROUND_ENABLED 0
-#endif
-// <o> PWM_NRF52_ANOMALY_109_EGU_INSTANCE  - EGU instance used by the nRF52 Anomaly 109 workaround for PWM.
- 
-// <0=> EGU0 
-// <1=> EGU1 
-// <2=> EGU2 
-// <3=> EGU3 
-// <4=> EGU4 
-// <5=> EGU5 
-
-#ifndef PWM_NRF52_ANOMALY_109_EGU_INSTANCE
-#define PWM_NRF52_ANOMALY_109_EGU_INSTANCE 5
-#endif
-
-// </e>
-
-// </e>
-
-// <e> SAADC_ENABLED - nrf_drv_saadc - SAADC peripheral driver
-//==========================================================
-#ifndef SAADC_ENABLED
-#define SAADC_ENABLED 1
-#endif
-// <o> SAADC_CONFIG_RESOLUTION  - Resolution
- 
-// <0=> 8 bit 
-// <1=> 10 bit 
-// <2=> 12 bit 
-// <3=> 14 bit 
-
-#ifndef SAADC_CONFIG_RESOLUTION
-#define SAADC_CONFIG_RESOLUTION 1
-#endif
-
-// <o> SAADC_CONFIG_OVERSAMPLE  - Sample period
- 
-// <0=> Disabled 
-// <1=> 2x 
-// <2=> 4x 
-// <3=> 8x 
-// <4=> 16x 
-// <5=> 32x 
-// <6=> 64x 
-// <7=> 128x 
-// <8=> 256x 
-
-#ifndef SAADC_CONFIG_OVERSAMPLE
-#define SAADC_CONFIG_OVERSAMPLE 0
-#endif
-
-// <q> SAADC_CONFIG_LP_MODE  - Enabling low power mode
- 
-
-#ifndef SAADC_CONFIG_LP_MODE
-#define SAADC_CONFIG_LP_MODE 0
-#endif
-
-// <o> SAADC_CONFIG_IRQ_PRIORITY  - Interrupt priority
- 
-
-// <i> Priorities 0,2 (nRF51) and 0,1,4,5 (nRF52) are reserved for SoftDevice
-// <0=> 0 (highest) 
-// <1=> 1 
-// <2=> 2 
-// <3=> 3 
-// <4=> 4 
-// <5=> 5 
-// <6=> 6 
-// <7=> 7 
-
-#ifndef SAADC_CONFIG_IRQ_PRIORITY
-#define SAADC_CONFIG_IRQ_PRIORITY 7
-#endif
-
-// </e>
-
 // <e> TIMER_ENABLED - nrf_drv_timer - TIMER periperal driver
 //==========================================================
 #ifndef TIMER_ENABLED
@@ -2965,8 +2588,6 @@
 #ifndef TIMER4_ENABLED
 #define TIMER4_ENABLED 1
 #endif
-
-// </e>
 
 // <e> TWI_ENABLED - nrf_drv_twi - TWI/TWIM peripheral driver
 //==========================================================
@@ -3168,6 +2789,214 @@
 #ifndef PPI_ENABLED
 #define PPI_ENABLED 1
 #endif
+
+// <e> SAADC_ENABLED - nrf_drv_saadc - SAADC peripheral driver
+//==========================================================
+#ifndef SAADC_ENABLED
+#define SAADC_ENABLED 1
+#endif
+// <o> SAADC_CONFIG_RESOLUTION  - Resolution
+ 
+// <0=> 8 bit 
+// <1=> 10 bit 
+// <2=> 12 bit 
+// <3=> 14 bit 
+
+#ifndef SAADC_CONFIG_RESOLUTION
+#define SAADC_CONFIG_RESOLUTION 1
+#endif
+
+// <o> SAADC_CONFIG_OVERSAMPLE  - Sample period
+ 
+// <0=> Disabled 
+// <1=> 2x 
+// <2=> 4x 
+// <3=> 8x 
+// <4=> 16x 
+// <5=> 32x 
+// <6=> 64x 
+// <7=> 128x 
+// <8=> 256x 
+
+#ifndef SAADC_CONFIG_OVERSAMPLE
+#define SAADC_CONFIG_OVERSAMPLE 0
+#endif
+
+// <q> SAADC_CONFIG_LP_MODE  - Enabling low power mode
+ 
+
+#ifndef SAADC_CONFIG_LP_MODE
+#define SAADC_CONFIG_LP_MODE 0
+#endif
+
+// <o> SAADC_CONFIG_IRQ_PRIORITY  - Interrupt priority
+ 
+
+// <i> Priorities 0,2 (nRF51) and 0,1,4,5 (nRF52) are reserved for SoftDevice
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+// <4=> 4 
+// <5=> 5 
+// <6=> 6 
+// <7=> 7 
+
+#ifndef SAADC_CONFIG_IRQ_PRIORITY
+#define SAADC_CONFIG_IRQ_PRIORITY 7
+#endif
+
+// </e>
+
+// <e> PWM_ENABLED - nrf_drv_pwm - PWM peripheral driver
+//==========================================================
+#ifndef PWM_ENABLED
+#define PWM_ENABLED 1
+#endif
+// <o> PWM_DEFAULT_CONFIG_OUT0_PIN - Out0 pin  <0-31> 
+
+
+#ifndef PWM_DEFAULT_CONFIG_OUT0_PIN
+#define PWM_DEFAULT_CONFIG_OUT0_PIN 31
+#endif
+
+// <o> PWM_DEFAULT_CONFIG_OUT1_PIN - Out1 pin  <0-31> 
+
+
+#ifndef PWM_DEFAULT_CONFIG_OUT1_PIN
+#define PWM_DEFAULT_CONFIG_OUT1_PIN 31
+#endif
+
+// <o> PWM_DEFAULT_CONFIG_OUT2_PIN - Out2 pin  <0-31> 
+
+
+#ifndef PWM_DEFAULT_CONFIG_OUT2_PIN
+#define PWM_DEFAULT_CONFIG_OUT2_PIN 31
+#endif
+
+// <o> PWM_DEFAULT_CONFIG_OUT3_PIN - Out3 pin  <0-31> 
+
+
+#ifndef PWM_DEFAULT_CONFIG_OUT3_PIN
+#define PWM_DEFAULT_CONFIG_OUT3_PIN 31
+#endif
+
+// <o> PWM_DEFAULT_CONFIG_BASE_CLOCK  - Base clock
+ 
+// <0=> 16 MHz 
+// <1=> 8 MHz 
+// <2=> 4 MHz 
+// <3=> 2 MHz 
+// <4=> 1 MHz 
+// <5=> 500 kHz 
+// <6=> 250 kHz 
+// <7=> 125 kHz 
+
+#ifndef PWM_DEFAULT_CONFIG_BASE_CLOCK
+#define PWM_DEFAULT_CONFIG_BASE_CLOCK 4
+#endif
+
+// <o> PWM_DEFAULT_CONFIG_COUNT_MODE  - Count mode
+ 
+// <0=> Up 
+// <1=> Up and Down 
+
+#ifndef PWM_DEFAULT_CONFIG_COUNT_MODE
+#define PWM_DEFAULT_CONFIG_COUNT_MODE 0
+#endif
+
+// <o> PWM_DEFAULT_CONFIG_TOP_VALUE - Top value 
+#ifndef PWM_DEFAULT_CONFIG_TOP_VALUE
+#define PWM_DEFAULT_CONFIG_TOP_VALUE 1000
+#endif
+
+// <o> PWM_DEFAULT_CONFIG_LOAD_MODE  - Load mode
+ 
+// <0=> Common 
+// <1=> Grouped 
+// <2=> Individual 
+// <3=> Waveform 
+
+#ifndef PWM_DEFAULT_CONFIG_LOAD_MODE
+#define PWM_DEFAULT_CONFIG_LOAD_MODE 0
+#endif
+
+// <o> PWM_DEFAULT_CONFIG_STEP_MODE  - Step mode
+ 
+// <0=> Auto 
+// <1=> Triggered 
+
+#ifndef PWM_DEFAULT_CONFIG_STEP_MODE
+#define PWM_DEFAULT_CONFIG_STEP_MODE 0
+#endif
+
+// <o> PWM_DEFAULT_CONFIG_IRQ_PRIORITY  - Interrupt priority
+ 
+
+// <i> Priorities 0,1,4,5 (nRF52) are reserved for SoftDevice
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+// <4=> 4 
+// <5=> 5 
+// <6=> 6 
+// <7=> 7 
+
+#ifndef PWM_DEFAULT_CONFIG_IRQ_PRIORITY
+#define PWM_DEFAULT_CONFIG_IRQ_PRIORITY 7
+#endif
+
+// <q> PWM0_ENABLED  - Enable PWM0 instance
+ 
+
+#ifndef PWM0_ENABLED
+#define PWM0_ENABLED 1
+#endif
+
+// <q> PWM1_ENABLED  - Enable PWM1 instance
+ 
+
+#ifndef PWM1_ENABLED
+#define PWM1_ENABLED 1
+#endif
+
+// <q> PWM2_ENABLED  - Enable PWM2 instance
+ 
+
+#ifndef PWM2_ENABLED
+#define PWM2_ENABLED 1
+#endif
+
+// <e> PWM_NRF52_ANOMALY_109_WORKAROUND_ENABLED - Enables nRF52 Anomaly 109 workaround for PWM.
+
+// <i> The workaround uses interrupts to wake up the CPU and ensure
+// <i> it is active when PWM is about to start a DMA transfer. For
+// <i> initial transfer, done when a playback is started via PPI,
+// <i> a specific EGU instance is used to generate the interrupt.
+// <i> During the playback, the PWM interrupt triggered on SEQEND
+// <i> event of a preceding sequence is used to protect the transfer
+// <i> done for the next sequence to be played.
+//==========================================================
+#ifndef PWM_NRF52_ANOMALY_109_WORKAROUND_ENABLED
+#define PWM_NRF52_ANOMALY_109_WORKAROUND_ENABLED 0
+#endif
+// <o> PWM_NRF52_ANOMALY_109_EGU_INSTANCE  - EGU instance used by the nRF52 Anomaly 109 workaround for PWM.
+ 
+// <0=> EGU0 
+// <1=> EGU1 
+// <2=> EGU2 
+// <3=> EGU3 
+// <4=> EGU4 
+// <5=> EGU5 
+
+#ifndef PWM_NRF52_ANOMALY_109_EGU_INSTANCE
+#define PWM_NRF52_ANOMALY_109_EGU_INSTANCE 5
+#endif
+
+// </e>
+
+// </e>
 
 // <<< end of configuration section >>>
 #endif //SDK_CONFIG_H

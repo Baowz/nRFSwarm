@@ -1,4 +1,4 @@
-PROJECT_NAME     := thread_mqtt_sn_client_subscriber_pca10056
+PROJECT_NAME     := thread_simple_coap_client_pca10056
 TARGETS          := nrf52840_xxaa
 OUTPUT_DIRECTORY := _build
 
@@ -16,14 +16,12 @@ SRC_FILES += \
   $(SDK_ROOT)/components/libraries/experimental_log/src/nrf_log_frontend.c \
   $(SDK_ROOT)/components/libraries/experimental_log/src/nrf_log_str_formatter.c \
   $(SDK_ROOT)/components/boards/boards.c \
-  $(PROJ_DIR)/main.c \
   $(SDK_ROOT)/components/libraries/button/app_button.c \
   $(SDK_ROOT)/components/libraries/util/app_error.c \
   $(SDK_ROOT)/components/libraries/util/app_error_weak.c \
   $(SDK_ROOT)/components/libraries/scheduler/app_scheduler.c \
   $(SDK_ROOT)/components/libraries/timer/app_timer.c \
   $(SDK_ROOT)/components/libraries/util/app_util_platform.c \
-  $(SDK_ROOT)/components/libraries/mem_manager/mem_manager.c \
   $(SDK_ROOT)/components/libraries/util/nrf_assert.c \
   $(SDK_ROOT)/components/libraries/balloc/nrf_balloc.c \
   $(SDK_ROOT)/external/fprintf/nrf_fprintf.c \
@@ -39,28 +37,13 @@ SRC_FILES += \
   $(SDK_ROOT)/components/libraries/bsp/bsp.c \
   $(SDK_ROOT)/components/libraries/bsp/bsp_nfc.c \
   $(SDK_ROOT)/components/libraries/bsp/experimental/bsp_thread.c \
-  $(SDK_ROOT)/external/paho/mqtt-sn/mqttsn_packet/MQTTSNConnectClient.c \
-  $(SDK_ROOT)/external/paho/mqtt-sn/mqttsn_packet/MQTTSNConnectServer.c \
-  $(SDK_ROOT)/external/paho/mqtt-sn/mqttsn_packet/MQTTSNDeserializePublish.c \
-  $(SDK_ROOT)/external/paho/mqtt-sn/mqttsn_packet/MQTTSNPacket.c \
-  $(SDK_ROOT)/external/paho/mqtt-sn/mqttsn_packet/MQTTSNSearchClient.c \
-  $(SDK_ROOT)/external/paho/mqtt-sn/mqttsn_packet/MQTTSNSearchServer.c \
-  $(SDK_ROOT)/external/paho/mqtt-sn/mqttsn_packet/MQTTSNSerializePublish.c \
-  $(SDK_ROOT)/external/paho/mqtt-sn/mqttsn_packet/MQTTSNSubscribeClient.c \
-  $(SDK_ROOT)/external/paho/mqtt-sn/mqttsn_packet/MQTTSNSubscribeServer.c \
-  $(SDK_ROOT)/external/paho/mqtt-sn/mqttsn_packet/MQTTSNUnsubscribeClient.c \
-  $(SDK_ROOT)/external/paho/mqtt-sn/mqttsn_packet/MQTTSNUnsubscribeServer.c \
+  $(PROJ_DIR)/main.c \
   $(SDK_ROOT)/external/segger_rtt/SEGGER_RTT.c \
   $(SDK_ROOT)/external/segger_rtt/SEGGER_RTT_Syscalls_GCC.c \
   $(SDK_ROOT)/external/segger_rtt/SEGGER_RTT_printf.c \
   $(SDK_ROOT)/components/toolchain/gcc/gcc_startup_nrf52840.S \
   $(SDK_ROOT)/components/toolchain/system_nrf52840.c \
-  $(SDK_ROOT)/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_client.c \
-  $(SDK_ROOT)/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_packet_fifo.c \
-  $(SDK_ROOT)/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_packet_receiver.c \
-  $(SDK_ROOT)/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_packet_sender.c \
-  $(SDK_ROOT)/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_platform.c \
-  $(SDK_ROOT)/components/thread/experimental/mqtt_sn/mqtt_sn_client/mqttsn_transport_ot.c \
+  $(PROJ_DIR)/../app_utils/thread_coap_utils.c \
   $(SDK_ROOT)/components/thread/experimental/utils/thread_assert.c \
   $(SDK_ROOT)/components/thread/experimental/utils/thread_utils.c \
 
@@ -75,17 +58,15 @@ INC_FOLDERS += \
   $(SDK_ROOT)/components/device \
   ../config \
   $(SDK_ROOT)/components/drivers_nrf/clock \
+  $(SDK_ROOT)/components/libraries/bsp/experimental \
   $(SDK_ROOT)/components/toolchain/cmsis/include \
   $(SDK_ROOT)/components/libraries/balloc \
-  $(SDK_ROOT)/components/libraries/mem_manager \
   $(SDK_ROOT)/components/thread/experimental/utils \
   $(SDK_ROOT)/components/drivers_nrf/hal \
   $(SDK_ROOT)/components \
   $(SDK_ROOT)/components/libraries/scheduler \
   $(SDK_ROOT)/components/libraries/strerror \
-  $(SDK_ROOT)/external/paho/mqtt-sn/mqttsn_packet \
   $(SDK_ROOT)/components/libraries/experimental_log/src \
-  $(SDK_ROOT)/components/libraries/util \
   $(SDK_ROOT)/external/fprintf \
   $(SDK_ROOT)/components/drivers_nrf/nrf_soc_nosd \
   $(SDK_ROOT)/external/segger_rtt \
@@ -98,9 +79,9 @@ INC_FOLDERS += \
   $(SDK_ROOT)/components/boards \
   $(SDK_ROOT)/components/libraries/timer \
   $(SDK_ROOT)/components/libraries/button \
-  $(SDK_ROOT)/components/libraries/bsp/experimental \
+  $(SDK_ROOT)/components/libraries/util \
+  $(PROJ_DIR)/../app_utils \
   $(SDK_ROOT)/components/toolchain \
-  $(SDK_ROOT)/components/thread/experimental/mqtt_sn/mqtt_sn_client \
 
 # Libraries common to all targets
 LIB_FILES += \
@@ -121,6 +102,7 @@ CFLAGS += $(OPT)
 CFLAGS += -DBOARD_PCA10056
 CFLAGS += -DCONFIG_GPIO_AS_PINRESET
 CFLAGS += -DNRF52840_XXAA
+CFLAGS += -DOPENTHREAD_ENABLE_APPLICATION_COAP
 CFLAGS += -DSWI_DISABLE0
 CFLAGS += -DUART_ENABLED=0
 CFLAGS += -D__HEAP_SIZE=0
@@ -143,6 +125,7 @@ ASMFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
 ASMFLAGS += -DBOARD_PCA10056
 ASMFLAGS += -DCONFIG_GPIO_AS_PINRESET
 ASMFLAGS += -DNRF52840_XXAA
+ASMFLAGS += -DOPENTHREAD_ENABLE_APPLICATION_COAP
 ASMFLAGS += -DSWI_DISABLE0
 ASMFLAGS += -DUART_ENABLED=0
 ASMFLAGS += -D__HEAP_SIZE=0

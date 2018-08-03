@@ -1,4 +1,4 @@
-// nRF Swarm rev 0.3 by Henrik Malvik Halvorsen - Master's project
+// nRF Swarm rev 0.5 by Henrik Malvik Halvorsen - Continuation master's project, demonstration work
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -26,8 +26,8 @@
 #include "ascii_converter.h"
 #include "crc_filter.h"
 
-
 #include "thread_utils.h"
+#include "thread_coap_utils.h"
 
 #include <openthread/openthread.h>
 #include <openthread/cli.h>
@@ -41,7 +41,6 @@
  */
 
 static state_machine_t s_state;
-void romano_pub_heartbeat_msg(void); // Prototype needed as main algorithm exist upon ROMANO declaration.
 
 // Timer instance declaration.
 
@@ -133,7 +132,78 @@ void light_callback(float voltage)
 /////////////////////////// Thread /////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 
+static void thread_data_received_callback(uint8_t data)
+{
+  static uint8_t received_data;
 
+  received_data = data;
+}
+
+static void thread_state_changed_callback(uint32_t flags, void * p_context)
+{
+    if (flags & OT_CHANGED_THREAD_ROLE)
+    {
+        switch (otThreadGetDeviceRole(p_context))
+        {
+            case OT_DEVICE_ROLE_CHILD:
+            case OT_DEVICE_ROLE_ROUTER:
+            case OT_DEVICE_ROLE_LEADER:
+                break;
+
+            case OT_DEVICE_ROLE_DISABLED:
+            case OT_DEVICE_ROLE_DETACHED:
+            default:
+                thread_coap_utils_peer_addr_clear();
+                break;
+        }
+    }
+
+    if (flags & OT_CHANGED_THREAD_PARTITION_ID)
+    {
+        thread_coap_utils_peer_addr_clear();
+    }
+
+    NRF_LOG_INFO("State changed! Flags: 0x%08x Current role: %d\r\n",
+                 flags,
+                 otThreadGetDeviceRole(p_context));
+}
+
+/***************************************************************************************************
+ * @section Initialization
+ **************************************************************************************************/
+
+/**@brief Function for initializing the Thread Stack
+ */
+static void thread_instance_init(void)
+{
+    thread_configuration_t thread_configuration =
+    {
+        .role                  = RX_ON_WHEN_IDLE,
+        .autocommissioning     = true,
+        .poll_period           = 2500,
+        .default_child_timeout = 10,
+    };
+
+    thread_init(&thread_configuration);
+    thread_cli_init();
+    thread_state_changed_callback_set(thread_state_changed_callback);
+}
+
+
+/**@brief Function for initializing the Constrained Application Protocol Module
+ */
+static void thread_coap_init(void)
+{
+    thread_coap_configuration_t thread_coap_configuration =
+    {
+        .coap_server_enabled               = true,
+        .coap_client_enabled               = true,
+        .coap_cloud_enabled                = false,
+        .configurable_led_blinking_enabled = false,
+    };
+
+    thread_coap_utils_init(&thread_coap_configuration, thread_data_received_callback);
+}
 
 ////////////////////////////////////////////////////////////////////
 /////////////////////////// Peripherals ////////////////////////////
@@ -153,11 +223,6 @@ void log_init(void)
 
 void timer_event_handler(nrf_timer_event_t event_type, void* p_context)
 {
-  static uint32_t advertising_count = 0;
-  static uint32_t adv_led_green = 1000;
-  static uint32_t adv_led_blue  = 0;
-  static bool led_flag = false;
-
   s_state.interrupt_flag = true;
 }
 
@@ -227,16 +292,22 @@ int main(void)
 
   rgb_update_led_color(1,0,1000,0);
 
+  thread_instance_init();
+  thread_coap_init();
+
   NRF_LOG_RAW_INFO ("All systems online. \n \n");
 
   while (true)
-    {
-      NRF_LOG_PROCESS();
+  {
+      thread_process();
+
+      if (NRF_LOG_PROCESS() == false)
+      {
+          thread_sleep();
+      }
 
       if(s_state.interrupt_flag)
-        {
-          main_algorithm();
-        }
-    }
+        main_algorithm();
+  }
 }
 /** @} */
