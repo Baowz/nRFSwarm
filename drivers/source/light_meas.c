@@ -8,14 +8,15 @@
 #include "nrf_drv_timer.h"
 #include "nrf_gpio.h"
 #include "nrf_log.h"
-#include "batt_meas.h"
+#include "light_meas.h"
+#include "pca10056.h"
 
 static const nrf_drv_timer_t m_timer = NRF_DRV_TIMER_INSTANCE(4);
 static nrf_saadc_value_t     m_buffer_pool[2][SAMPLES_IN_BUFFER];
 static nrf_ppi_channel_t     m_ppi_channel;
 static uint32_t              m_adc_evt_counter;
 
-static batt_mon_cb_t saadc_cb;
+static light_mon_cb_t saadc_cb;
 
 
 static void timer_handler(nrf_timer_event_t event_type, void * p_context)
@@ -75,7 +76,7 @@ static void saadc_callback(nrf_drv_saadc_evt_t const * p_event)
         uint32_t sum = 0;
         float average = 0;
         float meas_voltage;
-        float batt_voltage;
+        float light_percentage;
 
         ret_code_t err_code;
 
@@ -96,21 +97,20 @@ static void saadc_callback(nrf_drv_saadc_evt_t const * p_event)
         //NRF_LOG_INFO("Average: "NRF_LOG_FLOAT_MARKER"", NRF_LOG_FLOAT(average));
 
         meas_voltage = average / (((1.0f / 6.0f) / 0.6f) * ((float)(1 << 10)));  // average val from buf / (saadc gain / saadc internal voltage ref) * resolution in bits
-        batt_voltage = meas_voltage * VOLTAGE_DIV_COEFF;
-        //NRF_LOG_INFO("Average buf val: "NRF_LOG_FLOAT_MARKER" Battery voltage: "NRF_LOG_FLOAT_MARKER"", NRF_LOG_FLOAT(average), NRF_LOG_FLOAT(batt_voltage));
+        light_percentage = (meas_voltage / 3.3f) * 100.0f;
 
-        saadc_cb(batt_voltage);
+        saadc_cb(light_percentage);
     }
 }
 
 
-static void saadc_init(batt_mon_cb_t callback)
+static void saadc_init(light_mon_cb_t callback)
 {
     ret_code_t err_code;
     saadc_cb = callback;
 
     nrf_saadc_channel_config_t channel_config =
-    NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN6);          // Input on analog pin 6 (P0.30)
+    NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN1);          // Input on analog pin 1 (P0.02)
 
     err_code = nrf_drv_saadc_init(NULL, saadc_callback);
     APP_ERROR_CHECK(err_code);
@@ -126,14 +126,14 @@ static void saadc_init(batt_mon_cb_t callback)
 }
 
 
-void batt_mon_enable(batt_mon_cb_t callback)
+void light_sensor_init(light_mon_cb_t callback)
 {
+    nrf_gpio_cfg_output(ARDUINO_0_PIN);
+    nrf_gpio_pin_clear(ARDUINO_0_PIN);
+    
     saadc_init(callback);
     saadc_sampling_event_init();
     saadc_sampling_event_enable();
 
-    nrf_gpio_cfg_output(BATT_MON_EN); // Configure pin BATT_MON_EN as output
-    nrf_gpio_pin_set(BATT_MON_EN); // Set pin BATT_MON_EN high, enabling battery monitoring
-
-    NRF_LOG_RAW_INFO("[SUCCESS] Battery monitoring enabled. \n")
+    NRF_LOG_RAW_INFO("[SUCCESS] Light sensor monitoring enabled. \n")
 }

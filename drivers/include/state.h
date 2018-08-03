@@ -11,6 +11,7 @@
 #define PRINT_STATE_RSSI_VALUE            0
 #define PRINT_STATE_LED_VALUE             0
 #define PRINT_STATE_VOLTAGE_VALUE         0
+#define PRINT_STATE_LIGHT_VALUE           1
 
 
 
@@ -24,6 +25,7 @@ typedef struct{
   int8_t RSSI_values[10]; // All RSSI values in the network
   uint8_t CRC;
   float voltage;
+  float light_percentage;
 
   bool interrupt_flag;
 
@@ -40,6 +42,7 @@ typedef struct{
   // States used for movement planning
   float heading_ref;
   float speed[2];
+  bool stop_motors;
 
   // States for VL53L0X LIDAR-system
   VL53L0X_RangingMeasurementData_t lidarOne;
@@ -64,5 +67,5 @@ typedef struct{
   int16_t obstacle_pid_two;
   int16_t obstacle_pid_three;
   int16_t obstacle_pid_four;
-  
+
 }state_machine_t;

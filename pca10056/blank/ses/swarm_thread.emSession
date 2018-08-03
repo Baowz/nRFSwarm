@@ -2,8 +2,8 @@
 <session>
  <Bookmarks/>
  <Breakpoints groups="Breakpoints" active_group="Breakpoints">
-  <BreakpointListItem trigger="" line="3004" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../../../drivers/source/inv_mpu.c" useHWbreakpoint="false"/>
-  <BreakpointListItem trigger="" line="153" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../../../drivers/source/pfc.c" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="12" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../../../drivers/source/beeclust.c" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="3004" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="4" filename="../../../drivers/source/inv_mpu.c" useHWbreakpoint="false"/>
  </Breakpoints>
  <ExecutionProfileWindow/>
  <FrameBufferWindow>
@@ -61,30 +61,13 @@
  </TraceWindow>
  <Watch1>
   <Watches active="1" update="Never">
-   <Watchpoint numelements="0" expression="s_state" evalMode="0" name="s_state" radix="10" linenumber="0" filename="../ses" list=""/>
-   <Watchpoint numelements="0" expression="measurement[1]" evalMode="0" name="measurement[1]" radix="-1" linenumber="0" filename="../ses" list=""/>
-   <Watchpoint numelements="0" expression="measurement[0]" evalMode="0" name="measurement[0]" radix="10" linenumber="134" filename="../../../drivers/source/pfc.c" list=""/>
-   <Watchpoint numelements="0" expression="measurement[2]" evalMode="0" name="measurement[2]" radix="-1" linenumber="0" filename="../ses" list=""/>
-   <Watchpoint numelements="0" expression="measurement[3]" evalMode="0" name="measurement[3]" radix="-1" linenumber="0" filename="../ses" list=""/>
-   <Watchpoint numelements="4" expression="obstacle_field_scalar" evalMode="2" name="obstacle_field_scalar" radix="-1" linenumber="134" filename="../../../drivers/source/pfc.c" list=""/>
-   <Watchpoint numelements="4" expression="obstacle_output" evalMode="2" name="obstacle_output" radix="11" linenumber="146" filename="../../../drivers/source/pfc.c" list=""/>
-   <Watchpoint numelements="2" expression="controller_output" evalMode="2" name="controller_output" radix="11" linenumber="153" filename="../../../drivers/source/pfc.c" list=""/>
-   <Watchpoint numelements="0" expression="dt" evalMode="0" name="dt" radix="-1" linenumber="146" filename="../../../drivers/source/pfc.c" list=""/>
-   <Watchpoint numelements="0" expression="current_time" evalMode="0" name="current_time" radix="10" linenumber="53" filename="../../../drivers/source/real_time_clock.c" list=""/>
-   <Watchpoint numelements="0" expression="*prev_time" evalMode="0" name="*prev_time" radix="-1" linenumber="53" filename="../../../drivers/source/real_time_clock.c" list=""/>
-   <Watchpoint numelements="0" expression="delta_time" evalMode="0" name="delta_time" radix="-1" linenumber="57" filename="../../../drivers/source/real_time_clock.c" list=""/>
-   <Watchpoint numelements="0" expression="speed" evalMode="1" name="speed" radix="-1" linenumber="153" filename="../../../drivers/source/pfc.c" list=""/>
-   <Watchpoint numelements="0" expression="speed[0]" evalMode="0" name="speed[0]" radix="10" linenumber="153" filename="../../../drivers/source/pfc.c" list=""/>
-   <Watchpoint numelements="0" expression="speed[1]" evalMode="0" name="speed[1]" radix="-1" linenumber="155" filename="../../../drivers/source/pfc.c" list=""/>
-   <Watchpoint numelements="0" expression="signal_field_scalar" evalMode="0" name="signal_field_scalar" radix="-1" linenumber="118" filename="../../../drivers/source/pfc.c" list=""/>
-   <Watchpoint numelements="50" expression="rssi_vault" evalMode="2" name="rssi_vault" radix="10" linenumber="22" filename="../../../drivers/source/crc_filter.c" list=""/>
-   <Watchpoint numelements="0" expression="RSSI_values" evalMode="1" name="RSSI_values" radix="-1" linenumber="55" filename="../../../drivers/source/crc_filter.c" list=""/>
-   <Watchpoint numelements="0" expression="signal_output" evalMode="0" name="signal_output" radix="-1" linenumber="141" filename="../../../drivers/source/pfc.c" list=""/>
-   <Watchpoint numelements="0" expression="analytical_data[1]" evalMode="0" name="analytical_data[1]" radix="10" linenumber="0" filename="../ses" list=""/>
-   <Watchpoint numelements="0" expression="analytical_data[0]" evalMode="0" name="analytical_data[0]" radix="10" linenumber="200" filename="../../../drivers/source/pfc.c" list=""/>
-   <Watchpoint numelements="0" expression="analytical_data[2]" evalMode="0" name="analytical_data[2]" radix="10" linenumber="0" filename="../ses" list=""/>
-   <Watchpoint numelements="0" expression="analytical_data[3]" evalMode="0" name="analytical_data[3]" radix="10" linenumber="0" filename="../ses" list=""/>
-   <Watchpoint numelements="0" expression="analytical_data[4]" evalMode="0" name="analytical_data[4]" radix="10" linenumber="0" filename="../ses" list=""/>
+   <Watchpoint numelements="0" expression="delta_time" evalMode="0" name="delta_time" radix="10" linenumber="169" filename="../../../main.c" list=""/>
+   <Watchpoint numelements="0" expression="s_state.stop_motors" evalMode="0" name="s_state.stop_motors" radix="-1" linenumber="172" filename="../../../main.c" list=""/>
+   <Watchpoint numelements="0" expression="s_state.light_percentage" evalMode="0" name="s_state.light_percentage" radix="-1" linenumber="169" filename="../../../main.c" list=""/>
+   <Watchpoint numelements="0" expression="delay_pause" evalMode="0" name="delay_pause" radix="-1" linenumber="12" filename="../../../drivers/source/beeclust.c" list=""/>
+   <Watchpoint numelements="0" expression="stop_motors" evalMode="0" name="stop_motors" radix="-1" linenumber="5" filename="../../../drivers/source/beeclust.c" list=""/>
+   <Watchpoint numelements="0" expression="light_percentage" evalMode="0" name="light_percentage" radix="-1" linenumber="5" filename="../../../drivers/source/beeclust.c" list=""/>
+   <Watchpoint numelements="0" expression="wait_time" evalMode="0" name="wait_time" radix="-1" linenumber="7" filename="../../../drivers/source/beeclust.c" list=""/>
   </Watches>
  </Watch1>
  <Watch2>
@@ -97,11 +80,16 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="10" y="614" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" debugPath="../../../main.c" selected="0" top="599" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="143" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/pfc.c" debugPath="../../../drivers/source/pfc.c" selected="1" top="75" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="60" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/pfc.h" debugPath="../../../drivers/include/pfc.h" selected="0" top="31" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="57" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/state.h" debugPath="../../../drivers/include/state.h" selected="0" top="39" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="51" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/app_tof.c" debugPath="../../../drivers/source/app_tof.c" selected="0" top="35" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="169" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" debugPath="../../../main.c" selected="0" top="120" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="129" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/pfc.c" debugPath="../../../drivers/source/pfc.c" selected="0" top="88" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="39" y="50" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/pfc.h" debugPath="../../../drivers/include/pfc.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="43" y="9" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/include/state.h" debugPath="../../../drivers/include/state.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="28" y="76" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/app_tof.c" debugPath="../../../drivers/source/app_tof.c" selected="1" top="89" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="4" y="130" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/light_meas.c" debugPath="../../../drivers/source/light_meas.c" selected="0" top="102" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="148" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/boards/pca10056.h" debugPath="C:/SDKThread/components/boards/pca10056.h" selected="0" top="111" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="3" y="58" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/beeclust.c" debugPath="../../../drivers/source/beeclust.c" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="48" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../drivers/source/real_time_clock.c" debugPath="../../../drivers/source/real_time_clock.c" selected="0" top="0" codecName=""/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="537" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/SDKThread/components/drivers_nrf/hal/nrf_pwm.h" debugPath="C:/SDKThread/components/drivers_nrf/hal/nrf_pwm.h" selected="0" top="489" codecName=""/>
  </Files>
- <ARMCrossStudioWindow activeProject="swarm_thread" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
+ <ARMCrossStudioWindow activeProject="swarm_thread" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3711"/>
 </session>

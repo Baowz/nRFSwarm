@@ -1,7 +1,7 @@
 Output/swarm_thread\ Debug/Obj/system_nrf52840.o: \
  C:/SDKThread/components/toolchain/system_nrf52840.c \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdbool.h \
  C:/SDKThread/components/device/nrf.h \
  C:/SDKThread/components/device/nrf52840.h \
  C:/SDKThread/components/toolchain/cmsis/include/core_cm4.h \

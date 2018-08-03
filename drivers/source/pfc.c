@@ -128,7 +128,7 @@ void update_pfc_controller(motor_t *motor, int8_t RSSI, float heading, float hea
     // Compute scalar value of potential fields
 
     if(!(RSSI == -100))
-      signal_field_scalar    = compute_potential_field_signal_strength(RSSI);
+      signal_field_scalar    = 0; //compute_potential_field_signal_strength(RSSI);
     heading_field_scalar     = 0; //compute_potential_field_heading(heading, heading_ref);
 
     obstacle_field_scalar[0] = compute_potential_field_obstacle(measurement[0]);
@@ -138,7 +138,7 @@ void update_pfc_controller(motor_t *motor, int8_t RSSI, float heading, float hea
 
     // Compute output from PID controller
 
-    signal_output      = update_PID(&PID_signal_field, signal_field_scalar, dt);
+    signal_output      = 0; //update_PID(&PID_signal_field, signal_field_scalar, dt);
     heading_output     = 0; //update_PID(&PID_heading_field, heading_field_scalar, dt);
 
     // To avoid jumping back and forth should the forward and backward output from sensor 1 and 3 be 0 if the measurement ranges are too close

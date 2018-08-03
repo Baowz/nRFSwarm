@@ -1,4 +1,5 @@
-// nRF Swarm rev 0.3 by Henrik Malvik Halvorsen - Master's project
+// nRF Swarm Beeclust rev 0.4 by Henrik Malvik Halvorsen -
+//note: Everything related to Thread is currently commented out
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -18,12 +19,13 @@
 #include "app_mpu.h"
 #include "real_time_clock.h"
 #include "swarm_pcb.h"
-#include "batt_meas.h"
+#include "light_meas.h"
 #include "app_tof.h"
 #include "state.h"
 #include "romano.h"
 #include "ascii_converter.h"
 #include "crc_filter.h"
+#include "beeclust.h"
 
 
 #include "mqttsn_client.h"
@@ -78,7 +80,7 @@ static nrf_drv_timer_t rtc_timer = NRF_DRV_TIMER_INSTANCE(2); // Timer used for 
 ///////////////// Algorithm / Abstraction Layer ////////////////////
 ////////////////////////////////////////////////////////////////////
 
-void connection_check(void)
+/*void connection_check(void)
 {
   if(!m_gateway_found && m_client.client_state != MQTTSN_CLIENT_SEARCHING_GATEWAY) // Sends a gateway search message in which the gateway will respond.
   {
@@ -105,7 +107,7 @@ void connection_check(void)
         m_subscribed = true;
       }
   }
-}
+} */
 
 void state_printing(void)
 {
@@ -140,6 +142,10 @@ void state_printing(void)
   #if PRINT_STATE_VOLTAGE_VALUE
   NRF_LOG_RAW_INFO("Voltage: "NRF_LOG_FLOAT_MARKER" ", NRF_LOG_FLOAT(s_state.voltage));
   #endif
+
+  #if PRINT_STATE_LIGHT_VALUE
+  NRF_LOG_RAW_INFO("Light: "NRF_LOG_FLOAT_MARKER" \n", NRF_LOG_FLOAT(s_state.light_percentage));
+  #endif
 }
 
 void main_algorithm(void)
@@ -151,22 +157,26 @@ void main_algorithm(void)
   static int16_t analytical_data[5] = {0};
 
   // Poll a connection scheme until a subscription to a broker is obtained.
-  if(!m_subscribed) {
+  /*if(!m_subscribed) {
     connection_check();
     s_state.RSSI_pid = 0;
-    }
+  } */
 
-  // Main algorithm goes here, runs after connection with the network is established
-  if(m_subscribed){
-    app_mpu_get_mag(s_state.mag, &s_state.heading);
-    app_tof_get_range_all(&s_state.lidarOne, &s_state.lidarTwo, &s_state.lidarThree, &s_state.lidarFour, range_measurement);
-    delta_time = rtc_get_delta_time_sec(&prev_time);
-    update_pfc_controller(&s_state.motor, s_state.RSSI, s_state.heading, s_state.heading_ref, range_measurement, s_state.speed, delta_time, analytical_data);
-    update_motor_values(&s_state.motor); 
+  // Main algorithm goes here
 
-    // Publishes data over a set time interval
-    if(heartbeat_count % 1 == 0)
-      //romano_pub_heartbeat_msg(); //TODO: Add this
+  app_tof_get_range_all(&s_state.lidarOne, &s_state.lidarTwo, &s_state.lidarThree, &s_state.lidarFour, range_measurement);
+  delta_time = rtc_get_delta_time_sec(&prev_time);
+  s_state.stop_motors = beeclust_check(delta_time, s_state.stop_motors, s_state.light_percentage);
+  update_pfc_controller(&s_state.motor, s_state.RSSI, s_state.heading, s_state.heading_ref, range_measurement, s_state.speed, delta_time, analytical_data);
+
+  if(s_state.stop_motors == 0)
+    update_motor_values(&s_state.motor);
+  else if(s_state.stop_motors == 1)
+    stop_motors();
+
+  // Publishes data over a set time interval
+  if(heartbeat_count % 1 == 0){
+    //romano_pub_heartbeat_msg(); //TODO: Add this
     state_printing();
     heartbeat_count++;
   }
@@ -176,16 +186,9 @@ void main_algorithm(void)
 
 // Callback function for battery voltage reading
 
-void batt_callback(float voltage)
+void light_callback(float voltage)
 {
-  s_state.voltage = voltage;
-   if(s_state.voltage < 3.2f)
-   {
-   uint32_t err_code;
-
-   err_code = sd_power_system_off();
-   APP_ERROR_CHECK(err_code);      //put nRF52 in sleep mode / power off 
- }
+  s_state.light_percentage = voltage;
 }
 
 
@@ -197,25 +200,25 @@ void batt_callback(float voltage)
 // Publish a heartbeat message.
 void romano_pub_heartbeat_msg(void)
 {
-  uint8_t romano_node_message[250];
+  /*uint8_t romano_node_message[250];
   uint8_t buffer[250];
   uint16_t len = 0;
 
   sprintf((char *)&buffer[0], "{ \"MAC\" : \"%02x:%02x:%02x:%02x:%02x:%02x\", \"RSSI\" : %d, \"Range1\" : %d, \"Range2\" : %d, \"Range3\" : %d, \"Range4\" : %d, \"PIDRSSI\" : %d, \"PIDRange1\" : %d, \"PIDRange2\" : %d, \"PIDRange3\" : %d, \"PIDRange4\" : %d, \"CRC\" : %d }\r\n",
               s_state.mac_address[5], s_state.mac_address[4], s_state.mac_address[3], s_state.mac_address[2], s_state.mac_address[1], s_state.mac_address[0],
-              s_state.RSSI, s_state.lidarOne.RangeMilliMeter, s_state.lidarTwo.RangeMilliMeter, s_state.lidarThree.RangeMilliMeter, s_state.lidarFour.RangeMilliMeter, 
+              s_state.RSSI, s_state.lidarOne.RangeMilliMeter, s_state.lidarTwo.RangeMilliMeter, s_state.lidarThree.RangeMilliMeter, s_state.lidarFour.RangeMilliMeter,
               s_state.RSSI_pid, s_state.obstacle_pid_one, s_state.obstacle_pid_two, s_state.obstacle_pid_three, s_state.obstacle_pid_four,
               s_state.CRC);
 
   len = strlen((const char*)&buffer[0]);
   memcpy(romano_node_message, buffer, len);
-  mqttsn_client_publish(&m_client, m_topic_common.topic_id, romano_node_message, len, NULL);
+  mqttsn_client_publish(&m_client, m_topic_common.topic_id, romano_node_message, len, NULL); */
 }
 // Checks data that has been received and acts upon it.
 
 void romano_message_received(uint8_t *p_data)
 {
-  switch(p_data[0])
+  /*switch(p_data[0])
   {
     case NORMAL_DATA:
       NRF_LOG_RAW_INFO("Normal data received: ");
@@ -279,7 +282,7 @@ void romano_message_received(uint8_t *p_data)
     case HEARTBEAT_MESSAGE:
       NRF_LOG_RAW_INFO("Heartbeat message received. \n");
     break;
-  }
+  } */
 }
 
 /**@brief Toggles LED2 based on received LED command. */
@@ -530,7 +533,7 @@ void timer_event_handler(nrf_timer_event_t event_type, void* p_context)
   s_state.interrupt_flag = true;
 
   /// Code here will only be used if the system is not connected to gateway
-
+  /*
   if(m_client.client_state != MQTTSN_CLIENT_CONNECTED)
     {
 
@@ -562,6 +565,7 @@ void timer_event_handler(nrf_timer_event_t event_type, void* p_context)
       }
     }
     advertising_count++;
+    */
 }
 
 //Init function for initiation of the main timer.
@@ -614,7 +618,7 @@ int main(void)
   log_init();
   get_device_address();
 
-  NRF_LOG_RAW_INFO("\n \n nRF Swarm revision 0.3.2 online. \n \n");
+  NRF_LOG_RAW_INFO("\n \n nRF Swarm Beeclust revision 0.4 online. \n \n");
   NRF_LOG_RAW_INFO("The device MAC address is given by: 0x%x%x%x%x%x%x \n", s_state.mac_address[5], s_state.mac_address[4], s_state.mac_address[3], s_state.mac_address[2], s_state.mac_address[1], s_state.mac_address[0]);
   NRF_LOG_RAW_INFO("Initializing all systems in %d ms. \n", BOOT_DELAY_MS);
 
@@ -625,16 +629,16 @@ int main(void)
   pcb_peripherals_init(); // Initializes RGB LEDs and GPIO
 
   rtc_init(&rtc_timer);               // Real time clock used for configuration and timing of the MPU 9250 and additional real time sensitive data
-  mpu_twi_init();                     // Initialize two wire interface used to communicate with the MPU 9250.
-  app_mpu_init();                     // Initialize MPU 9250, flashing DMP firmware to the unit.
+  //mpu_twi_init();                   // Initialize two wire interface used to communicate with the MPU 9250.
+  //app_mpu_init();                   // Initialize MPU 9250, flashing DMP firmware to the unit.
   app_tof_init();                     // Initialize all VL53L0X LIDAR units.
-  batt_mon_enable(batt_callback);     // Battery voltage monitoring.
+  light_sensor_init(light_callback);  // light sensor voltage monitoring.
   motor_pwm_init();                   // PWM used to control the motors of the vessel.
   potential_field_controller_init();  // Potential field controller which makes the vessel move based on sensory input.
   timer_init();                       // Main timer used to run the swarm algorithm.
 
-  thread_instance_init();
-  mqttsn_init();
+  //thread_instance_init();
+  //mqttsn_init();
 
 
   rgb_update_led_color(1,0,1000,0);
@@ -644,13 +648,13 @@ int main(void)
 
   while (true)
     {
-      thread_process();
+      //thread_process();
 
       if (NRF_LOG_PROCESS() == false)
       {
-          nrf_gpio_pin_set(3);
+          /*nrf_gpio_pin_set(3);
           thread_sleep();
-          nrf_gpio_pin_clear(3);
+          nrf_gpio_pin_clear(3);*/
       }
 
       if(s_state.interrupt_flag)
