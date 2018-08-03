@@ -92,6 +92,14 @@ void motor_logic(motor_t *motor)
   }
 }
 
+void stop_motors(void)
+{
+  pwm_values.channel_0 = PWM_TOP_VALUE;
+  pwm_values.channel_1 = PWM_TOP_VALUE;
+
+  motor_start_pwm_sequence();
+}
+
 void update_motor_values(motor_t *motor)
 {
   // Update motor directions

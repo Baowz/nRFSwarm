@@ -7,6 +7,6 @@ Output/swarm_thread\ Debug/Obj/MQTTSNSearchServer.o: \
  C:/SDKThread/external/paho/mqtt-sn/mqttsn_packet/MQTTSNUnsubscribe.h \
  C:/SDKThread/external/paho/mqtt-sn/mqttsn_packet/MQTTSNSearch.h \
  C:/SDKThread/external/paho/mqtt-sn/mqttsn_packet/StackTrace.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/__crossworks.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34a/include/string.h
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 3.34/include/string.h

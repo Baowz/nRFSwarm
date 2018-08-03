@@ -142,13 +142,14 @@
       <file file_name="../../../drivers/source/swarm_pcb.c" />
       <file file_name="../../../drivers/source/app_mpu.c" />
       <file file_name="../../../drivers/source/app_tof.c" />
-      <file file_name="../../../drivers/source/batt_meas.c" />
       <file file_name="../../../drivers/source/eulerconversion.c" />
       <file file_name="../../../drivers/source/inv_mpu.c" />
       <file file_name="../../../drivers/source/ascii_converter.c" />
       <file file_name="../../../drivers/source/pfc.c" />
       <file file_name="../../../drivers/source/pid.c" />
       <file file_name="../../../drivers/source/crc_filter.c" />
+      <file file_name="../../../drivers/source/beeclust.c" />
+      <file file_name="../../../drivers/source/light_meas.c" />
     </folder>
     <configuration Name="Debug" c_preprocessor_definitions="" />
   </project>

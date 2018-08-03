@@ -22,4 +22,5 @@ typedef struct
 }motor_t;
 
 void motor_pwm_init(void);
+void stop_motors(void);
 void update_motor_values(motor_t *motor);
