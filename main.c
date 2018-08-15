@@ -47,6 +47,8 @@ static state_machine_t s_state;
 static const nrf_drv_timer_t application_timer = NRF_DRV_TIMER_INSTANCE(1); // Main timer
 static nrf_drv_timer_t rtc_timer = NRF_DRV_TIMER_INSTANCE(2); // Timer used for real time sensitive data
 
+void thread_send_messsage(uint8_t command);
+
 ////////////////////////////////////////////////////////////////////
 ///////////////// Algorithm / Abstraction Layer ////////////////////
 ////////////////////////////////////////////////////////////////////
@@ -98,13 +100,14 @@ void main_algorithm(void)
   static float prev_time = 0;
   static float range_measurement[4] = {0};
   static int16_t analytical_data[5] = {0};
+  static float static_speed[2] = {500, 500};
 
   // Main algorithm goes here
 
   app_tof_get_range_all(&s_state.lidarOne, &s_state.lidarTwo, &s_state.lidarThree, &s_state.lidarFour, range_measurement);
   delta_time = rtc_get_delta_time_sec(&prev_time);
   s_state.stop_motors = beeclust_check(delta_time, s_state.stop_motors, s_state.light_percentage);
-  update_pfc_controller(&s_state.motor, s_state.RSSI, s_state.heading, s_state.heading_ref, range_measurement, s_state.speed, delta_time, analytical_data);
+  update_pfc_controller(&s_state.motor, s_state.RSSI, s_state.heading, s_state.heading_ref, range_measurement, static_speed, delta_time, analytical_data);
 
   if(s_state.stop_motors == 0)
     update_motor_values(&s_state.motor);
@@ -132,11 +135,33 @@ void light_callback(float voltage)
 /////////////////////////// Thread /////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 
+// Send a multicast data message.
+
+void thread_send_messsage(uint8_t command)
+{
+  thread_coap_utils_multicast_light_request_send(thread_ot_instance_get(),
+                                                 command,
+                                                 THREAD_COAP_UTILS_MULTICAST_REALM_LOCAL);
+}
+
+// Data received callback.
+
 static void thread_data_received_callback(uint8_t data)
 {
-  static uint8_t received_data;
+  static bool led_toggle = true;
 
-  received_data = data;
+  if(led_toggle)
+  {
+    rgb_update_led_color(1,1000,200,333);
+    led_toggle = false;
+  }
+  else
+  {
+    rgb_update_led_color(1,0,1000,0);
+    led_toggle = true;
+  }
+
+  beeclust_data_update(data);
 }
 
 static void thread_state_changed_callback(uint32_t flags, void * p_context)
@@ -167,10 +192,6 @@ static void thread_state_changed_callback(uint32_t flags, void * p_context)
                  flags,
                  otThreadGetDeviceRole(p_context));
 }
-
-/***************************************************************************************************
- * @section Initialization
- **************************************************************************************************/
 
 /**@brief Function for initializing the Thread Stack
  */
@@ -283,12 +304,13 @@ int main(void)
 
   pcb_peripherals_init(); // Initializes RGB LEDs and GPIO
 
-  rtc_init(&rtc_timer);               // Real time clock used for configuration and timing of the MPU 9250 and additional real time sensitive data
-  app_tof_init();                     // Initialize all VL53L0X LIDAR units.
-  light_sensor_init(light_callback);  // Light sensor voltage monitoring.
-  motor_pwm_init();                   // PWM used to control the motors of the vessel.
-  potential_field_controller_init();  // Potential field controller which makes the vessel move based on sensory input.
-  timer_init();                       // Main timer used to run the swarm algorithm.
+  rtc_init(&rtc_timer);                // Real time clock used for configuration and timing of the MPU 9250 and additional real time sensitive data
+  app_tof_init();                      // Initialize all VL53L0X LIDAR units.
+  light_sensor_init(light_callback);   // Light sensor voltage monitoring.
+  motor_pwm_init();                    // PWM used to control the motors of the vessel.
+  potential_field_controller_init();   // Potential field controller which makes the vessel move based on sensory input.
+  beeclust_init(thread_send_messsage); // Initialize the BEECLUST search algorithm.
+  timer_init();                        // Main timer used to run the swarm algorithm.
 
   rgb_update_led_color(1,0,1000,0);
 
@@ -307,7 +329,9 @@ int main(void)
       }
 
       if(s_state.interrupt_flag)
+      {
         main_algorithm();
+      }
   }
 }
 /** @} */

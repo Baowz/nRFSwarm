@@ -150,10 +150,10 @@ void update_pfc_controller(motor_t *motor, int8_t RSSI, float heading, float hea
 
     // Output computed controller signals
 
-    controller_output[0] = speed[0] + signal_output // + heading_output
-                         - obstacle_output[0] - (obstacle_output[0] / obstacle_bleeding_coef + obstacle_output[1]) + obstacle_output[2] + (obstacle_output[0]/obstacle_bleeding_coef + obstacle_output[3]);
-    controller_output[1] = speed[1] + signal_output // - heading_output
-                         - obstacle_output[0] + (obstacle_output[0] / obstacle_bleeding_coef + obstacle_output[1]) + obstacle_output[2] - (obstacle_output[0]/obstacle_bleeding_coef + obstacle_output[3]); //TODO: Test this
+    controller_output[0] = -speed[0] + signal_output // + heading_output
+                         - (5.0f * obstacle_output[0]) - obstacle_output[1] + obstacle_output[2] + obstacle_output[3];
+    controller_output[1] = -speed[1] + signal_output // - heading_output
+                         - obstacle_output[0] + obstacle_output[1] + obstacle_output[2] - obstacle_output[3]; //TODO: Test this
 
     // Make controller output compatible with motor domain
 
