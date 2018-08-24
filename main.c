@@ -1,4 +1,4 @@
-// nRF Swarm rev 0.5 by Henrik Malvik Halvorsen - Continuation master's project, demonstration work
+// nRF Swarm rev 0.5.1 by Henrik Malvik Halvorsen - Continuation master's project, demonstration work
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -127,7 +127,30 @@ void main_algorithm(void)
 
 void light_callback(float voltage)
 {
+  static uint8_t calibration_counter = 0;
+  static bool led_calib_toggle = true;
+  
   s_state.light_percentage = voltage;
+
+
+  //TODO: Local calibration technique which is not in its own function. Fast solution for demo application. Should be collaborative calibration in its own function.
+
+  if(calibration_counter <= 10)
+  {
+    if(led_calib_toggle)
+    {
+      rgb_update_led_color(1,1000,1000,1000);
+      led_calib_toggle = false;
+    }
+    else
+    {
+      rgb_update_led_color(1,0,1000,0);
+      led_calib_toggle = true;
+    }
+        
+    beeclust_update_optimum(voltage);
+    calibration_counter++;
+  }
 }
 
 
@@ -294,7 +317,7 @@ int main(void)
   log_init();
   get_device_address();
 
-  NRF_LOG_RAW_INFO("\n \n nRF Swarm Beeclust revision 0.5 online. \n \n");
+  NRF_LOG_RAW_INFO("\n \n nRF Swarm Beeclust revision 0.5.1 online. \n \n");
   NRF_LOG_RAW_INFO("The device MAC address is given by: 0x%x%x%x%x%x%x \n", s_state.mac_address[5], s_state.mac_address[4], s_state.mac_address[3], s_state.mac_address[2], s_state.mac_address[1], s_state.mac_address[0]);
   NRF_LOG_RAW_INFO("Initializing all systems in %d ms. \n", BOOT_DELAY_MS);
 

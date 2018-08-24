@@ -3,7 +3,7 @@
 #include "beeclust.h"
 #include "nrf_log.h"
 
-static float light_optimum = MAX_LIGHT_VALUE;
+static float light_optimum = MIN_LIGHT_VALUE;
 static float wait_time = 0;
 static float delay_time = 0;
 static bool  delay_pause = 0;
@@ -18,10 +18,15 @@ void beeclust_update_optimum(float new_data)
   static uint8_t update_counter = 0;
   float sum = 0;
 
+  if(new_data <= MIN_LIGHT_VALUE)
+    return;
+
   update_counter++;
 
   if(update_counter >= 10)
     update_counter = 10;
+
+  // Moving average optimum calculation
 
   for(uint8_t i = 0; i < 9; i++)
   {
@@ -36,11 +41,16 @@ void beeclust_update_optimum(float new_data)
   }
 
   light_optimum = sum / update_counter;
+
+  if(light_optimum >= 90.0f)
+  {
+    light_optimum = 90.0f;
+  }
 }
 
 void beeclust_reset_all(void)
 {
-  light_optimum = MAX_LIGHT_VALUE;
+  light_optimum = MIN_LIGHT_VALUE;
   wait_time = 0;
   delay_time = 0;
   delay_pause = 0;
@@ -91,11 +101,11 @@ bool beeclust_check(float delta_time, bool stop_motors, float light_percentage)
     // First perform a check if the motors should be stopped or initiated
    if(stop_motors == 0)
    {
-     if(light_percentage >= light_optimum - LIGHT_TOLERANCE)
+     if(light_percentage >= light_optimum + LIGHT_TOLERANCE)
      {
        // Motors are stopped
-       wait_time = (light_percentage - MAX_LIGHT_VALUE)/2.0f;
-       delay_time = 10.0f/(light_percentage - MAX_LIGHT_VALUE);
+       wait_time = (light_percentage - MIN_LIGHT_VALUE)/2.0f;
+       delay_time = 10.0f/(light_percentage - MIN_LIGHT_VALUE);
        beeclust_update_optimum(light_percentage);
        beeclust_pub_data((uint8_t)light_percentage);
        return 1;
