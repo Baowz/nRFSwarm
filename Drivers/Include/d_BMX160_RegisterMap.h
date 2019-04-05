@@ -100,13 +100,13 @@ enum err_reg_bits {
 	ERR_REG_FATAL_ERR    = 0,
 	ERR_REG_ERROR_CODE 	 = 1,
 	ERR_REG_DROP_CMD_ERR = 6,
-}
+};
 
 enum pmu_status_bits {
 	PMU_STATUS_MAG_IF_PMU_STATUS = 0,
 	PMU_STATUS_GYR_PMU_STATUS 	 = 2,
 	PMU_STATUS_ACC_PMU_STATUS 	 = 4,
-}
+};
 
 enum sensortime_bits {
 	////////SENSORTIME0////////
@@ -118,7 +118,7 @@ enum sensortime_bits {
 	////////SENSORTIME2///////
 	SENSORTIME2_SENSOR_TIME0 = 0,
 	SENSORTIME2_SENSOR_TIME1 = 1,
-}
+};
 
 enum status_bits {
 	STATUS_GYR_SELF_TEST_OK = 1,
@@ -128,7 +128,7 @@ enum status_bits {
 	STATUS_DRDY_MAG			= 5,
 	STATUS_DRDY_GYR			= 6,
 	STATUS_DRDY_ACC			= 7,
-}
+};
 
 enum interrupt_status_bits {
 	////////STATUS0////////
@@ -172,12 +172,12 @@ enum fifo_length_bits {
 	FIFO_LENGTH0_FIFO_BYTE_COUNTER1 = 4,
 	////////FIFO LENGTH 1////////
 	FIFO_LENGTH_FIFO_BYTE_COUNTER0	= 0,
-}
+};
 
 enum fifo_data_bits {
 	FIFO_DATA_FIFO_DATA0 = 0,
 	FIFO_DATA_FIFO_DATA1 = 4,
-}
+};
 
 enum acc_conf_bits {
 	ACC_CONF_ACC_ODR = 0,
@@ -189,7 +189,7 @@ enum acc_conf_bits {
 
 enum acc_range_bits {
 	ACC_RANGE_ACC_RANGE0 = 0,
-}
+};
 
 enum gyr_conf_bits {
 GYR_CONF_GYR_ODR = 0,
@@ -201,18 +201,18 @@ GYR_CONF_GYR_BWP = 4,
 
 enum gyr_range_bits {
 	GYR_RANGE_GYR_RANGE0 = 0,
-}
+};
 
 enum mag_conf_bits {
 	MAG_CONF_MAG_ODR = 0,
-}
+};
 
 enum fifo_downs_bits {
 	FIFO_DOWNS_GYR_FIFO_DOWNS 	  = 0,
 	FIFO_DOWNS_GYR_FIFO_FILT_DATA = 3,
 	FIFO_DOWNS_ACC_FIFO_DOWNS	  = 4,
 	FIFO_DOWNS_ACC_FIFO_FILT_DATA = 7,
-}
+};
 
 enum fifo_conf_bits {
 	////////FIFO CONFIG 0////////
@@ -226,13 +226,13 @@ enum fifo_conf_bits {
 	FIFO_CONF1_FIFO_MAG_EN		= 5,
 	FIFO_CONF1_FIFO_ACC_EN		= 6,
 	FIFO_CONF1_FIFO_GUR_EN		= 7,
-}
+};
 
 enum mag_if_bits {
 	MAG_IF_MAG_RD_BURST  = 0,
 	MAG_IF_MAG_OFFSET	 = 2,
 	MAG_IF_MAG_MANUAL_EN = 7,
-}
+};
 
 enum int_en_bits {
 	////////INT EN 0////////
@@ -256,7 +256,7 @@ enum int_en_bits {
 	INT_EN2_INT_NOMOY_EN	= 1,
 	INT_EN2_INT_NOMOZ_EN    = 2,
 	INT_EN2_INT_STEP_DET_EN = 3,
-}
+};
 
 enum int_out_ctrl_bits {
 	INT_OUT_CTRL_INT1_EDGE_CTRL = 0,
@@ -267,13 +267,13 @@ enum int_out_ctrl_bits {
 	INT_OUT_CTRL_INT2_LVL		= 5,
 	INT_OUT_CTRL_INT2_OD		= 6,
 	INT_OUT_CTRL_INT2_OUTPUT_EN = 7,
-}
+};
 
 enum int_latch_bits {
 	INT_LATCH_RW_LATCHED = 0,
 	INT_LATCH_RW_INT1 	 = 4,
 	INT_LATCH_RW_INT2 	 = 5,
-}
+};
 
 enum int_map_bits {
 	////////INT MAP 0////////
@@ -303,7 +303,7 @@ enum int_map_bits {
 	INT_MAP2_INT2_SNGL_TAP 		 = 5,
 	INT_MAP2_INT2_ORIENT   		 = 6,
 	INT_MAP2_INT2_FLAT	   		 = 7,
-}
+};
 
 enum int_data_bits {
 	////////INT DATA 0////////
@@ -311,7 +311,7 @@ enum int_data_bits {
 	INT_DATA0_INT_LOWHIGH_SRC = 7,
 	////////INT DATA 1////////
 	INT_DATA1_INT_MOTION_SRC  = 7,
-}
+};
 
 enum int_lowhigh_bits {
 	////////INT LOWHIGH 0////////
@@ -330,7 +330,7 @@ enum int_lowhigh_bits {
 	////////INT LOWHIGH 4////////
 	INT_LOWHIGH4_HIGH_TH0	   = 0,
 	INT_LOWHIGH4_HIGH_TH1      = 4,
-}
+};
 
 enum int_motion_bits {
 	////////INT MOTION 0////////
@@ -348,7 +348,7 @@ enum int_motion_bits {
 	INT_MOTION3_INT_SIG_MOT_SEL		= 1,
 	INT_MOTION3_INT_SIG_MOT_SKIP	= 2,
 	INT_MOTION3_INT_SIG_MOT_PROOF	= 4,
-}
+};
 
 enum int_tap_bits {
 	////////INT TAP 0////////
@@ -358,7 +358,7 @@ enum int_tap_bits {
 	////////INT TAP 1////////
 	INT_TAP1_INT_TAP_TH0   = 0,
 	INT_TAP1_INT_TAP_TH1   = 4,
-}
+};
 
 enum int_orient_bits {
 	////////INT ORIENT 0////////
@@ -370,7 +370,7 @@ enum int_orient_bits {
 	INT_ORIENT1_INT_ORIENT_THETA1	= 4,
 	INT_ORIENT1_INT_ORIENT_UD_EN	= 6,
 	INT_ORIENT1_INT_AXES_EX			= 7,
-}
+};
 
 enum int_flat_bits {
 	////////INT FLAT 0////////
@@ -379,22 +379,22 @@ enum int_flat_bits {
 	////////INT FLAT 1////////
 	INT_FLAT1_INT_FLAT_HY	   	 = 0,
 	INT_FLAT1_INT_FLAT_HOLD_TIME = 4,
-}
+};
 
 enum foc_conf_bits {
 	FOC_CONF_FOC_ACC_Z  = 0,
 	FOC_CONF_FOC_ACC_Y  = 2,
 	FOC_CONF_FOC_ACC_X  = 4,
 	FOC_CONF_FOC_GYR_EN = 6,
-}
+};
 
 enum conf_bits {
 	CONF_NVM_PROG_EN = 1,
-}
+};
 
 enum if_conf_bits {
 	IF_CONF_SPI3 = 0,
-}
+};
 
 enum pmu_trigger_bits{
 	PMU_TRIGGER_GYR_SLEEP_TRIGGER 	= 0,
@@ -402,20 +402,20 @@ enum pmu_trigger_bits{
 	PMU_TRIGGER_GYR_WAKEUP_TRIGGER1 = 4,
 	PMU_TRIGGER_GYR_SLEEP_STATE 	= 5,
 	PMU_TRIGGER_WAKEUP_INT			= 6,
-}
+};
 
 enum self_test_bits {
 	SELF_TEST_ACC_SELF_TEST_ENABLE  = 0,
 	SELF_TEST_ACC_SELF_TEST_SIGN	= 2,
 	SELF_TEST_ACC_SELF_TEST_AMP		= 3,
 	SELF_TEST_GYR_SELF_TEST_ENABLE	= 4,
-}
+};
 
 enum nv_conf_bits {
 	NV_CONF_SPI_EN       = 0,
 	NV_CONF_I2C_WDT_SEL0 = 1,
 	NV_CONF_I2C_WDT_SEL1 = 2,
-}
+};
 
 enum offset_bits {
 	////////OFFSET 6////////
@@ -424,7 +424,7 @@ enum offset_bits {
 	OFFSET6_OFF_GYR_Z	= 4,
 	OFFSET6_ACC_OFF_EN  = 6,
 	OFFSET6_GYR_OFF_EN	= 7,
-}
+};
 
 enum step_cnt_bits {
 	////////STEP CNT 0////////
@@ -433,7 +433,7 @@ enum step_cnt_bits {
 	////////STEP CNT 1////////
 	STEP_CNT1_STEP_CNT	= 0,
 	STEP_CNT1_STEP_CNT	= 4,
-}
+};
 
 enum step_conf_bits {
 	////////STEP CONF 0////////
@@ -443,11 +443,11 @@ enum step_conf_bits {
 	STEP_CONF1_STEP_CONF	= 0,
 	STEP_CONF1_STEP_CNT_EN	= 3,
 
-}
+};
 
 enum cmd_bits {
 	CMD_CMD0 = 0,
 	CMD_CMD1 = 4,
-}
+};
 
 #endif
