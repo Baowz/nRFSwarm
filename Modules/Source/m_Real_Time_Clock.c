@@ -5,28 +5,28 @@
 #include "nrf_log.h"
 #include "m_Real_Time_Clock.h"
 
-static nrf_drv_timer_t rtc_timer;
+static nrfx_timer_t rtc_timer;
 
 void rtc_event_handler(nrf_timer_event_t event_type, void* p_context){
 
 }
 
 
-void rtc_init(nrf_drv_timer_t * timer_instance)
+void rtc_init(nrfx_timer_t * timer_instance)
 {
     uint32_t err_code;
     rtc_timer = *timer_instance;
-    static nrf_drv_timer_config_t rtc_cfg =
+    static nrfx_timer_config_t rtc_cfg =
     {
         .frequency = NRF_TIMER_FREQ_16MHz,
         .mode      = NRF_TIMER_MODE_TIMER,
         .bit_width = NRF_TIMER_BIT_WIDTH_32,
     };
 
-    err_code = nrf_drv_timer_init(timer_instance, &rtc_cfg, rtc_event_handler);
+    err_code = nrfx_timer_init(timer_instance, &rtc_cfg, rtc_event_handler);
     APP_ERROR_CHECK(err_code);
 
-    nrf_drv_timer_enable(timer_instance);
+    nrfx_timer_enable(timer_instance);
 
     NRF_LOG_RAW_INFO("[SUCCESS] Real time clock enabled. \n");
     }
@@ -34,7 +34,7 @@ void rtc_init(nrf_drv_timer_t * timer_instance)
 
 uint32_t rtc_get_current_time_ticks(void)
 {
-  return nrf_drv_timer_capture(&rtc_timer, NRF_TIMER_CC_CHANNEL1);
+  return nrfx_timer_capture(&rtc_timer, NRF_TIMER_CC_CHANNEL1);
 }
 
 
