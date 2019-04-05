@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include "nrf_drv_spi.h"
+#include "nrfx_spi.h"
 
 #include "pca10056.h"
 
