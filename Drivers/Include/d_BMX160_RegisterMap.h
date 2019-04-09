@@ -184,28 +184,30 @@ enum acc_conf_bits {
 	ACC_CONF_ACC_BWP = 4,
 	ACC_CONF_ACC_US  = 7,
 };
-
-#define BMX160_ACCEL_FS_SEL_MASK 0x0F
+#define BMX160_ACC_ODR_MASK 0x0F
+#define BMX160_ACC_BWP_MASK 0x07
 
 enum acc_range_bits {
 	ACC_RANGE_ACC_RANGE0 = 0,
 };
+#define BMX160_ACC_RANGE_MASK 0x0F
 
 enum gyr_conf_bits {
 GYR_CONF_GYR_ODR = 0,
 GYR_CONF_GYR_BWP = 4,
 };
-
-#define BMX160_GYRO_FS_SEL_MASK 0x0F
-#define BMX160_GYRO_FCHOICE_MASK 0x0F
+#define BMX160_GYR_ODR_MASK 0x0F
+#define BMX160_GYR_BWP_MASK 0x03
 
 enum gyr_range_bits {
 	GYR_RANGE_GYR_RANGE0 = 0,
 };
+#define BMX160_GYR_RANGE_MASK 0x07
 
 enum mag_conf_bits {
 	MAG_CONF_MAG_ODR = 0,
 };
+#define BMX160_MAG_ODR_MASK 0x0F
 
 enum fifo_downs_bits {
 	FIFO_DOWNS_GYR_FIFO_DOWNS 	  = 0,
@@ -213,11 +215,12 @@ enum fifo_downs_bits {
 	FIFO_DOWNS_ACC_FIFO_DOWNS	  = 4,
 	FIFO_DOWNS_ACC_FIFO_FILT_DATA = 7,
 };
+#define BMX160_GYR_FIFO_DOWNS_MASK 0x07
+#define BMX160_ACC_FIFO_DOWNS_MASK 0x07
 
 enum fifo_conf_bits {
 	////////FIFO CONFIG 0////////
-	FIFO_CONF0_FIFO_WATER_MARK0 = 0,
-	FIFO_CONF0_FIFO_WATER_MARK1 = 4,
+	FIFO_CONF0_FIFO_WATER_MARK = 0,
 	////////FIFO CONFIG 1////////
 	FIFO_CONF1_FIFO_TIME_EN 	= 1,
 	FIFO_CONF1_FIFO_TAG_INT2_EN	= 2,
@@ -233,6 +236,8 @@ enum mag_if_bits {
 	MAG_IF_MAG_OFFSET	 = 2,
 	MAG_IF_MAG_MANUAL_EN = 7,
 };
+#define BMX160_MAG_RD_BURST_MASK 0x03
+#define bmz160_MAG_OFFSET_MASK   0x0F
 
 enum int_en_bits {
 	////////INT EN 0////////
@@ -270,10 +275,11 @@ enum int_out_ctrl_bits {
 };
 
 enum int_latch_bits {
-	INT_LATCH_RW_LATCHED = 0,
-	INT_LATCH_RW_INT1 	 = 4,
-	INT_LATCH_RW_INT2 	 = 5,
+	INT_LATCH_INT_LATCHED 	= 0,
+	INT_LATCH_INT1_INPUT_EN = 4,
+	INT_LATCH_INT2_INPUT_EN = 5,
 };
+#define BMX160_INT_LATCHED_MASK 0x0F
 
 enum int_map_bits {
 	////////INT MAP 0////////
@@ -331,12 +337,13 @@ enum int_lowhigh_bits {
 	INT_LOWHIGH4_HIGH_TH0	   = 0,
 	INT_LOWHIGH4_HIGH_TH1      = 4,
 };
+#define BMX160_INT_LOW_HY_MASK  0x03
+#define BMX160_INT_HIGH_HY_MASK 0x03
 
 enum int_motion_bits {
 	////////INT MOTION 0////////
 	INT_MOTION0_INT_ANYM_DUR 	    = 0,
-	INT_MOTION0_INT_SLO_NO_MOT_DUR0 = 1,
-	INT_MOTION0_INT_SLO_NO_MOT_DUR1 = 4,
+	INT_MOTION0_INT_SLO_NO_MOT_DUR  = 1,
 	////////INT MOTION 1////////
 	INT_MOTION1_INT_ANYM_TH0		= 0,
 	INT_MOTION1_INT_ANYM_TH1		= 4,
@@ -349,6 +356,10 @@ enum int_motion_bits {
 	INT_MOTION3_INT_SIG_MOT_SKIP	= 2,
 	INT_MOTION3_INT_SIG_MOT_PROOF	= 4,
 };
+#define BMX160_INT_ANYM_DUR_MASK	 	0x03
+#define BMX160_INT_SLO_NO_MOT_DUR_MASK 	0x3F
+#define BMX160_INT_SIG_MOT_SKIP_MASK	0x03
+#define BMX160_INT_SIG_MOT_PROOF_MASK	0x03
 
 enum int_tap_bits {
 	////////INT TAP 0////////
@@ -356,9 +367,11 @@ enum int_tap_bits {
 	INT_TAP0_INT_TAP_SHOCK = 6,
 	INT_TAP0_INT_TAP_QUIET = 7,
 	////////INT TAP 1////////
-	INT_TAP1_INT_TAP_TH0   = 0,
-	INT_TAP1_INT_TAP_TH1   = 4,
+	INT_TAP1_INT_TAP_TH0   = 0
 };
+#define BMX160_INT_TAP_DUR_MASK 0x07
+#define BMX160_INT_TAP_TH_MASK	0x1F
+
 
 enum int_orient_bits {
 	////////INT ORIENT 0////////
@@ -366,20 +379,26 @@ enum int_orient_bits {
 	INT_ORIENT0_INT_ORIENT_BLOCKING = 2,
 	INT_ORIENT0_INT_ORIENT_HYST     = 4,
 	////////INT ORIENT 1////////
-	INT_ORIENT1_INT_ORIENT_THETA0	= 0,
-	INT_ORIENT1_INT_ORIENT_THETA1	= 4,
+	INT_ORIENT1_INT_ORIENT_THETA	= 0,
 	INT_ORIENT1_INT_ORIENT_UD_EN	= 6,
 	INT_ORIENT1_INT_AXES_EX			= 7,
 };
+#define BMX160_INT_ORIENT_MODE_MASK		0x03
+#define BMX160_INT_ORIENT_BLOCKING_MASK	0x03
+#define BMX160_INT_ORIENT_HYST_MASK		0x0f
+#define BMX160_INT_ORIENT_THETA_MASK	0x3F
+
 
 enum int_flat_bits {
 	////////INT FLAT 0////////
-	INT_FLAT0_INT_FLAT_THETA0	 = 0,
-	INT_FLAT0_INT_FLAT_THETA1	 = 4,
+	INT_FLAT0_INT_FLAT_THETA 	 = 0,
 	////////INT FLAT 1////////
 	INT_FLAT1_INT_FLAT_HY	   	 = 0,
 	INT_FLAT1_INT_FLAT_HOLD_TIME = 4,
 };
+#define BMX160_INT_FLAT_THETA_MASK		0x3F
+#define BMX160_INT_FLAT_HY_MASK			0x0F
+#define BMX160_INT_FLAT_HOLD_TIME_MASK	0x03
 
 enum foc_conf_bits {
 	FOC_CONF_FOC_ACC_Z  = 0,
@@ -387,6 +406,9 @@ enum foc_conf_bits {
 	FOC_CONF_FOC_ACC_X  = 4,
 	FOC_CONF_FOC_GYR_EN = 6,
 };
+#define BMX160_FOC_ACC_Z_MASK 0x03
+#define BMX160_FOC_ACC_Y_MASK 0x03
+#define BMX160_FOC_ACC_X_MASK 0x03
 
 enum conf_bits {
 	CONF_NVM_PROG_EN = 1,
@@ -398,11 +420,12 @@ enum if_conf_bits {
 
 enum pmu_trigger_bits{
 	PMU_TRIGGER_GYR_SLEEP_TRIGGER 	= 0,
-	PMU_TRIGGER_GYR_WAKEUP_TRIGGER0 = 3,
-	PMU_TRIGGER_GYR_WAKEUP_TRIGGER1 = 4,
+	PMU_TRIGGER_GYR_WAKEUP_TRIGGER  = 3,
 	PMU_TRIGGER_GYR_SLEEP_STATE 	= 5,
 	PMU_TRIGGER_WAKEUP_INT			= 6,
 };
+#define BMX160_GYR_SLEEP_TRIGGER_MASK  0x07
+#define BMX160_GYR_WAKEUP_TRIGGER_MASK 0x03
 
 enum self_test_bits {
 	SELF_TEST_ACC_SELF_TEST_ENABLE  = 0,
@@ -425,29 +448,28 @@ enum offset_bits {
 	OFFSET6_ACC_OFF_EN  = 6,
 	OFFSET6_GYR_OFF_EN	= 7,
 };
+#define BMX160_OFF_GYR_X_MASK 0x03
+#define BMX160_OFF_GYR_Y_MASK 0x03
+#define BMX160_OFF_GYR_Z_MASK 0x03
 
 enum step_cnt_bits {
 	////////STEP CNT 0////////
-	STEP_CNT0_STEP_CNT0	= 0,
-	STEP_CNT0_STEP_CNT1 = 4,
+	STEP_CNT0_STEP_CNT	= 0,
 	////////STEP CNT 1////////
 	STEP_CNT1_STEP_CNT	= 0,
-	STEP_CNT1_STEP_CNT	= 4,
 };
 
 enum step_conf_bits {
 	////////STEP CONF 0////////
-	STEP_CONF0_STEP_CONF0	= 0,
-	STEP_CONF0_STEP_CONF1	= 4,
+	STEP_CONF0_STEP_CONF	= 0,
 	////////STEP CONF 1////////
-	STEP_CONF1_STEP_CONF	= 0,
+	STEP_CONF1_STEP_CONF_10_8	= 0,
 	STEP_CONF1_STEP_CNT_EN	= 3,
-
 };
+#define BMX160_STEP_CONF_10_8_MASK 0x07
 
 enum cmd_bits {
 	CMD_CMD0 = 0,
-	CMD_CMD1 = 4,
 };
 
 #endif
