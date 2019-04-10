@@ -58,28 +58,29 @@ void MOTOR_INIT(void)
 }
 void MOTOR_RUN(void)
 {
-     if motor_values.MOTOR0DIR == FORWARD{
-       nrf_gpio_pin_set(Motor_PIN_OA);
-       nrf_gpio_pin_clear(Motor_PIN_OB);
+     if motor_values.motor0dir == FORWARD{
+       nrf_gpio_pin_set(MOTOR_PIN_OA);
+       nrf_gpio_pin_clear(MOTOR_PIN_OB);
      }
      else {
-       nrf_gpio_pin_set(Motor_PIN_OA);
-       nrf_gpio_pin_clear(Motor_PIN_OB);
+       nrf_gpio_pin_set(MOTOR_PIN_OA);
+       nrf_gpio_pin_clear(MOTOR_PIN_OB);
      }
-     if motor_values.MOTOR1DIR == FORWARD{
-       nrf_gpio_pin_set(Motor_PIN_1A);
-       nrf_gpio_pin_clear(Motor_PIN_1B);
+     if motor_values.motor1dir == FORWARD{
+       nrf_gpio_pin_set(MOTOR_PIN_1A);
+       nrf_gpio_pin_clear(MOTOR_PIN_1B);
      }
      else {
-       nrf_gpio_pin_set(Motor_PIN_OA);
-       nrf_gpio_pin_clear(Motor_PIN_OB);
+       nrf_gpio_pin_set(MOTOR_PIN_1A);
+       nrf_gpio_pin_clear(MOTOR_PIN_1B);
      }
-
-}
-
-static nrf_pwm_values_individual_t Throttle_values[] =
+    static nrf_pwm_values_individual_t Throttle_values[] =
     {
-        0, 200, 400, 600, 800, 1000
+        motor_values_t.motor0throttle,
+        motor_values_t.motor1throttle,
+        0,
+        0
+
     };
     nrf_pwm_sequence_t const seq =
     {
@@ -90,6 +91,9 @@ static nrf_pwm_values_individual_t Throttle_values[] =
     };
 }
 
+
+}
+
 int main(void)
 {
     APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
@@ -98,9 +102,17 @@ int main(void)
     init_bsp();
 
     NRF_LOG_INFO("PWM example started.");
+    
+    motor_values motors  
+    {
+    uint8_t motor0throttle = 20;
+    uint8_t motor1throttle = 20;
 
-    // Start with Demo 1, then switch to another one when the user presses
-    // button 1 or button 2 (see the 'bsp_evt_handler' function).
+    char motor0dir = FORWARD; 
+    char motor1dir = FORWARD;
+    };
+    
+
     demo1();
 
     for (;;)
