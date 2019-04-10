@@ -32,10 +32,10 @@ void MOTOR_INIT(void)
     {
         .output_pins =
         {
-            PWM_PIN_0 | NRFX_PWM_PIN_INVERTED, // channel 0
-            PWM_PIN_1 | NRFX_PWM_PIN_INVERTED, // channel 1
-            NRFX_PWM_PIN_NOT_USED, // channel 2
-            NRFX_PWM_PIN_NOT_USED  // channel 3
+            PWM_PIN_0 | NRFX_PWM_PIN_INVERTED,  // Motor 0 
+            PWM_PIN_1 | NRFX_PWM_PIN_INVERTED,  // Motor 1 
+            NRFX_PWM_PIN_NOT_USED,              // Channel 2 Not in use
+            NRFX_PWM_PIN_NOT_USED               // Channel 3 Not in use
         },
         .irq_priority = APP_IRQ_PRIORITY_LOWEST,
         .base_clock   = PWM_PRESCALER_PRESCALER_DIV_16, //1MHz
@@ -56,9 +56,26 @@ void MOTOR_INIT(void)
     nrf_gpio_cfg_pin_output(Motor_PIN_1A);
     nrf_gpio_cfg_pin_output(Motor_PIN_1B);
 }
-void MOTOR_RUN(char &MOTOR0DIR, static uint8_t &MOTOR0THROTTLE, char &MOTOR1DIR, static uint8_t &MOTOR1THROTTLE)
+void MOTOR_RUN(void)
 {
-     if 
+     if motor_values.MOTOR0DIR == FORWARD{
+       nrf_gpio_pin_set(Motor_PIN_OA);
+       nrf_gpio_pin_clear(Motor_PIN_OB);
+     }
+     else {
+       nrf_gpio_pin_set(Motor_PIN_OA);
+       nrf_gpio_pin_clear(Motor_PIN_OB);
+     }
+     if motor_values.MOTOR1DIR == FORWARD{
+       nrf_gpio_pin_set(Motor_PIN_1A);
+       nrf_gpio_pin_clear(Motor_PIN_1B);
+     }
+     else {
+       nrf_gpio_pin_set(Motor_PIN_OA);
+       nrf_gpio_pin_clear(Motor_PIN_OB);
+     }
+
+}
 
 static nrf_pwm_values_individual_t Throttle_values[] =
     {

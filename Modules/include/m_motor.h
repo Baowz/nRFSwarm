@@ -12,12 +12,12 @@
 
 typedef struct
 {
-  float output_motor_a;
-  float output_motor_b;
+  uint8_t MOTOR0THROTTLE;
+  uint8_t MOTOR1THROTTLE;
 
-  bool direction_motor_a; // TRUE = CW, FALSE = CCW
-  bool direction_motor_b; // TRUE = CW, FALSE = CCW
+  char MOTOR0DIR; // TRUE = CW, FALSE = CCW
+  char MOTOR1DIR; // TRUE = CW, FALSE = CCW
 }motor_values;
 
-void motor_pwm_init(void);
+void MOTOR_INIT(void);
 void update_motor_values(motor_t *motor);
