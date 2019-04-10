@@ -40,9 +40,6 @@
  </Watch4>
  <Files>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="46" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="0" top="32" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../integration/nrfx/legacy/nrf_drv_clock.c" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../modules/nrfx/drivers/src/nrfx_pwm.c" selected="0" top="26" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="125" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../components/libraries/pwm/app_pwm.c" selected="0" top="102" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="107" useTextEdit="1" useBinaryEdit="0" left="0" path="../config/sdk_config.h" selected="1" top="0" codecName="Default"/>
  </Files>
  <ARMCrossStudioWindow activeProject="template_pca10056" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Release" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>

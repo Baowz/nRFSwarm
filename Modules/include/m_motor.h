@@ -2,14 +2,13 @@
 #include <stdint.h>
 #include <string.h>
 
-#define MOTOR_A_PWM_OUTPUT_PIN nrf_gpio_pin_map(0.23)
-#define MOTOR_B_PWM_OUTPUT_PIN nrf_gpio_pin_map(0.25)
-#define MOTOR_AIN1             nrf_gpio_pin_map(0.20)
-#define MOTOR_AIN2             nrf_gpio_pin_map(1.10)
-#define MOTOR_BIN1             nrf_gpio_pin_map(1.04)
-#define MOTOR_BIN2             nrf_gpio_pin_map(1.03)
-#define PWM_TOP_VALUE 1000 // Counting to 1000, 16kHz
-#define PRINT_PWM 0
+// Define Pin for PWM motor control
+#define PWM_PIN_0               NRF_GPIO_PIN_MAP(0,04)    // Pin P0.04 Selected
+#define PWM_PIN_1               NRF_GPIO_PIN_MAP(0,07)    // Pin P0.04 Selected
+#define Motor_PIN_OA            NRF_GPIO_PIN_MAP(0,05)    // Pin P0.04 Selected
+#define Motor_PIN_OB            NRF_GPIO_PIN_MAP(0,06)    // Pin P0.04 Selected
+#define Motor_PIN_1A            NRF_GPIO_PIN_MAP(0,08)    // Pin P0.04 Selected
+#define Motor_PIN_1B            NRF_GPIO_PIN_MAP(0,09)    // Pin P0.04 Selected
 
 typedef struct
 {
@@ -18,7 +17,7 @@ typedef struct
 
   bool direction_motor_a; // TRUE = CW, FALSE = CCW
   bool direction_motor_b; // TRUE = CW, FALSE = CCW
-}motor_t;
+}motor_values;
 
 void motor_pwm_init(void);
 void update_motor_values(motor_t *motor);

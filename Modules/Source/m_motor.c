@@ -1,107 +1,103 @@
-#include <stdbool.h>
-#include <stdint.h>
+#include <stdio.h>
 #include <string.h>
-
 #include "nrf_drv_pwm.h"
+#include "nrfx_pwm.h"
+#include "app_util_platform.h"
+#include "app_error.h"
+#include "boards.h"
+#include "bsp.h"
+#include "app_timer.h"
+#include "nrf_drv_clock.h"
 #include "nrf_gpio.h"
+#include "nrfx_gpiote.h"
+
+
 #include "nrf_log.h"
+#include "nrf_log_ctrl.h"
+#include "nrf_log_default_backends.h"
 
-#include "m_motor.h"
+static nrfx_pwm_t MOTOR_PWM = NRFX_PWM_INSTANCE(0);
 
-static nrf_drv_pwm_t motor_pwm = NRF_DRV_PWM_INSTANCE(0);
-static nrf_pwm_values_individual_t pwm_values;
-
-static void pwm_event_handler(nrf_drv_pwm_evt_type_t event_type)
+static void pwm_event_handler(nrfx_pwm_evt_type_t event_type)
 {
-
 }
 
-void motor_pwm_init(void)
+void MOTOR_INIT(void)
 {
-  ret_code_t err_code;
-  nrf_drv_pwm_config_t const pwm_config =
-  {
-    .output_pins =
-      {
-        MOTOR_A_PWM_OUTPUT_PIN, // Motor A PWM output
-        MOTOR_B_PWM_OUTPUT_PIN, // Motor B PWM output
-        NRF_DRV_PWM_PIN_NOT_USED,
-        NRF_DRV_PWM_PIN_NOT_USED,
-      },
-      .base_clock  = NRF_PWM_CLK_16MHz,
-      .count_mode  = NRF_PWM_MODE_UP,
-      .top_value   = PWM_TOP_VALUE,
-      .load_mode   = NRF_PWM_LOAD_INDIVIDUAL,
-      .step_mode   = NRF_PWM_STEP_AUTO
-  };
+    NRF_LOG_INFO("Motor Driver");
 
-  nrf_gpio_cfg_output(MOTOR_AIN1);
-  nrf_gpio_cfg_output(MOTOR_AIN2);
-  nrf_gpio_cfg_output(MOTOR_BIN1);
-  nrf_gpio_cfg_output(MOTOR_BIN2);
 
-  err_code = nrf_drv_pwm_init(&motor_pwm, &pwm_config, pwm_event_handler);
-  APP_ERROR_CHECK(err_code);
 
-  pwm_values.channel_0 = 0; // Initial values for the PWM channels
-  pwm_values.channel_1 = 0;
-  pwm_values.channel_2 = 0;
-  pwm_values.channel_3 = 0;
+    nrfx_pwm_config_t const Motor_config =
+    {
+        .output_pins =
+        {
+            PWM_PIN_0 | NRFX_PWM_PIN_INVERTED, // channel 0
+            PWM_PIN_1 | NRFX_PWM_PIN_INVERTED, // channel 1
+            NRFX_PWM_PIN_NOT_USED, // channel 2
+            NRFX_PWM_PIN_NOT_USED  // channel 3
+        },
+        .irq_priority = APP_IRQ_PRIORITY_LOWEST,
+        .base_clock   = PWM_PRESCALER_PRESCALER_DIV_16, //1MHz
+        .count_mode   = PWM_MODE_UPDOWN_Up,             // Up counter, edge-aligned PWM duty cycle
+        .top_value    = 50,                             //  1Mhz / 50 = 20kHz
+        .load_mode    = PWM_DECODER_LOAD_Individual,    
+        .step_mode    = PWM_DECODER_MODE_RefreshCount
+    };
+    APP_ERROR_CHECK(nrfx_pwm_config_t(&MOTOR_PWM, &Motor_config, pwm_event_handler));
 
-	NRF_LOG_RAW_INFO("[SUCCESS] Motor PWM initiated. \n");
+    Throttle_values.channel_0 = 0;
+    Throttle_values.channel_1 = 0;
+    Throttle_values.channel_2 = 0;
+    Throttle_values.channel_3 = 0;
+
+    nrf_gpio_cfg_pin_output(Motor_PIN_OA);
+    nrf_gpio_cfg_pin_output(Motor_PIN_OB);
+    nrf_gpio_cfg_pin_output(Motor_PIN_1A);
+    nrf_gpio_cfg_pin_output(Motor_PIN_1B);
+}
+void MOTOR_RUN(char &MOTOR0DIR, static uint8_t &MOTOR0THROTTLE, char &MOTOR1DIR, static uint8_t &MOTOR1THROTTLE)
+{
+     if 
+
+static nrf_pwm_values_individual_t Throttle_values[] =
+    {
+        0, 200, 400, 600, 800, 1000
+    };
+    nrf_pwm_sequence_t const seq =
+    {
+        .values.p_individual = &Throttle_values,
+        .length          = NRF_PWM_VALUES_LENGTH(Throttle_values),
+        .repeats         = 0,
+        .end_delay       = 0
+    };
 }
 
-void motor_start_pwm_sequence(void)
+int main(void)
 {
-  nrf_pwm_sequence_t const seq =
-  {
-    .values.p_individual = &pwm_values,
-    .length          		 = NRF_PWM_VALUES_LENGTH(pwm_values),
-    .repeats         		 = 0,
-    .end_delay       		 = 0,
-  };
+    APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
+    NRF_LOG_DEFAULT_BACKENDS_INIT();
 
-	#if PRINT_PWM
-		NRF_LOG_RAW_INFO("PWM values updated. PWMA: %d - PWMB: %d \n", pwm_values.channel_0, pwm_values.channel_1);
-  #endif
-	nrf_drv_pwm_simple_playback(&motor_pwm, &seq, 1, NRF_DRV_PWM_FLAG_LOOP);
+    init_bsp();
+
+    NRF_LOG_INFO("PWM example started.");
+
+    // Start with Demo 1, then switch to another one when the user presses
+    // button 1 or button 2 (see the 'bsp_evt_handler' function).
+    demo1();
+
+    for (;;)
+    {
+        // Wait for an event.
+        __WFE();
+
+        // Clear the event register.
+        __SEV();
+        __WFE();
+
+        NRF_LOG_FLUSH();
+    }
 }
 
-void motor_logic(motor_t *motor)
-{
-  if(motor->direction_motor_a)
-  {
-    nrf_gpio_pin_clear(MOTOR_AIN1);
-    nrf_gpio_pin_set(MOTOR_AIN2);
-  }
-  else
-  {
-    nrf_gpio_pin_set(MOTOR_AIN1);
-    nrf_gpio_pin_clear(MOTOR_AIN2);
-  }
 
-  if(motor->direction_motor_b)
-  {
-    nrf_gpio_pin_set(MOTOR_BIN1);
-    nrf_gpio_pin_clear(MOTOR_BIN2);
-  }
-  else
-  {
-    nrf_gpio_pin_clear(MOTOR_BIN1);
-    nrf_gpio_pin_set(MOTOR_BIN2);
-  }
-}
-
-void update_motor_values(motor_t *motor)
-{
-  // Update motor directions
-
-  motor_logic(motor);
-
-  // Update outputted pwm values
-
-  pwm_values.channel_0 = PWM_TOP_VALUE - (uint16_t)motor->output_motor_a;
-  pwm_values.channel_1 = PWM_TOP_VALUE - (uint16_t)motor->output_motor_b;
-
-  motor_start_pwm_sequence();
-}
+/** @} */
