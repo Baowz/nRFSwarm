@@ -32,8 +32,8 @@ void MOTOR_INIT(void)
     {
         .output_pins =
         {
-            PWM_PIN_0 | NRFX_PWM_PIN_INVERTED,  // Motor 0 
-            PWM_PIN_1 | NRFX_PWM_PIN_INVERTED,  // Motor 1 
+            PWM_PIN_0 | NRFX_PWM_PIN_INVERTED,  // Motor 0
+            PWM_PIN_1 | NRFX_PWM_PIN_INVERTED,  // Motor 1
             NRFX_PWM_PIN_NOT_USED,              // Channel 2 Not in use
             NRFX_PWM_PIN_NOT_USED               // Channel 3 Not in use
         },
@@ -41,7 +41,7 @@ void MOTOR_INIT(void)
         .base_clock   = PWM_PRESCALER_PRESCALER_DIV_8, // 2MHz
         .count_mode   = PWM_MODE_UPDOWN_Up,             // Up counter, edge-aligned PWM duty cycle
         .top_value    = 100,                             //  2Mhz / 100 = 20kHz
-        .load_mode    = PWM_DECODER_LOAD_Individual,    
+        .load_mode    = PWM_DECODER_LOAD_Individual,
         .step_mode    = PWM_DECODER_MODE_RefreshCount
     };
     APP_ERROR_CHECK(nrfx_pwm_config_t(&MOTOR_PWM, &Motor_config, pwm_event_handler));
@@ -102,16 +102,16 @@ int main(void)
     init_bsp();
 
     NRF_LOG_INFO("PWM example started.");
-    
-    motor_values motors  
+
+    motor_values motors
     {
     uint8_t motor0throttle = 20;
     uint8_t motor1throttle = 20;
 
-    char motor0dir = FORWARD; 
+    char motor0dir = FORWARD;
     char motor1dir = FORWARD;
     };
-    
+
 
     demo1();
 
