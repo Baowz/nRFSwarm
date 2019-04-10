@@ -38,9 +38,9 @@ void MOTOR_INIT(void)
             NRFX_PWM_PIN_NOT_USED               // Channel 3 Not in use
         },
         .irq_priority = APP_IRQ_PRIORITY_LOWEST,
-        .base_clock   = PWM_PRESCALER_PRESCALER_DIV_16, //1MHz
+        .base_clock   = PWM_PRESCALER_PRESCALER_DIV_8, // 2MHz
         .count_mode   = PWM_MODE_UPDOWN_Up,             // Up counter, edge-aligned PWM duty cycle
-        .top_value    = 50,                             //  1Mhz / 50 = 20kHz
+        .top_value    = 100,                             //  2Mhz / 100 = 20kHz
         .load_mode    = PWM_DECODER_LOAD_Individual,    
         .step_mode    = PWM_DECODER_MODE_RefreshCount
     };
