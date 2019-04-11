@@ -30,8 +30,8 @@ typedef struct
 
 typedef struct
 {
-  bool SpeedA; 
-  bool SpeedB;
+  uint16_t speedA; 
+  uint16_t speedB;
 }motor_speed_t;
 
 void motor_direction(motor_direction_t *direction);

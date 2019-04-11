@@ -7,6 +7,7 @@
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
 
+
 static nrfx_pwm_t MOTOR_PWM = NRFX_PWM_INSTANCE(0);     //Start motor pwm instance
 
 static void pwm_event_handler(nrfx_pwm_evt_type_t event_type);
@@ -27,18 +28,18 @@ void init_motor_pwm(void)
     {
         .output_pins =
         {
-            //PWM_PIN_0 | NRFX_PWM_PIN_INVERTED,                          // Motor 0
-            PWM_PIN_0,
+            PWM_PIN_0 | NRFX_PWM_PIN_INVERTED,                          // Motor 0
+            //PWM_PIN_0,
             PWM_PIN_1 | NRFX_PWM_PIN_INVERTED,                          // Motor 1
             NRFX_PWM_PIN_NOT_USED,              // Channel 2 Not in use
             NRFX_PWM_PIN_NOT_USED               // Channel 3 Not in use
         },
         .irq_priority = APP_IRQ_PRIORITY_LOWEST,
-        .base_clock   = NRF_PWM_CLK_1MHz, // 2MHz
-        .count_mode   = NRF_PWM_MODE_UP,             // Up counter, edge-aligned PWM duty cycle
+        .base_clock   = PWM_PRESCALER_PRESCALER_DIV_8, // 2MHz
+        .count_mode   = PWM_MODE_UPDOWN_Up,             // Up counter, edge-aligned PWM duty cycle
         .top_value    = 100,                             //  2Mhz / 100 = 20kHz
-        .load_mode    = NRF_PWM_LOAD_INDIVIDUAL,
-        .step_mode    = NRF_PWM_STEP_AUTO
+        .load_mode    = PWM_DECODER_LOAD_Individual,
+        .step_mode    = PWM_DECODER_MODE_RefreshCount
     };
     APP_ERROR_CHECK(nrfx_pwm_init(&MOTOR_PWM, &motor_pwm_config, NULL));
 
@@ -82,8 +83,9 @@ void motor_direction(motor_direction_t *direction)
 
 void motor_speed(motor_speed_t *speed)
 {
-    Throttle_values.channel_0 = 1 -(uint16_t)speed->SpeedA;
-    Throttle_values.channel_1 = 100 -(uint16_t)speed->SpeedB;
+      //Throttle_values.channel_0 = 100 -(uint16_t)speed->speedA;
+      Throttle_values.channel_0 = 100 - (uint16_t)speed->speedA;
+      Throttle_values.channel_1 = 100 - (uint16_t)speed->speedB;
 }
 
 void motor_run(void)
