@@ -1,10 +1,5 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdbool.h>
-
-#include "nrfx_pwm.h"
 #include "m_motor.h"
-#include "nrf_gpio.h"
+#include "nrf_drv_pwm.h"
 
 #include "app_error.h"
 
@@ -12,43 +7,22 @@
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
 
-
-//
-
-//
-
-
-
 static nrfx_pwm_t MOTOR_PWM = NRFX_PWM_INSTANCE(0);     //Start motor pwm instance
 
 static void pwm_event_handler(nrfx_pwm_evt_type_t event_type);
 
-//Create struct named motor and insert values
-    motor_values_t motors =
-    {
-    .motor0throttle = 20,
-    .motor1throttle = 20,
 
-    .motor0forward = 1,
-    .motor1forward = 1
-    };
 
-  static nrf_pwm_values_individual_t Throttle_values; // Struct for Throttle Values
-  //nrf_pwm_values_individual_t Throttle_values =
-  //{
-  //.channel_0 = motors.motor0throttle,
-  //.channel_1 = motors.motor1throttle,
-  //.channel_0 = 0,
-  //.channel_0 = 0,
-  //};
+  //static nrf_pwm_values_individual_t Throttle_values; // Struct for Throttle Values
+  static nrf_pwm_values_individual_t Throttle_values =
+  {
+  .channel_0 = 0,
+  .channel_1 = 0,
+  .channel_0 = 0,
+  .channel_0 = 0,
+  };
 
-      nrf_pwm_sequence_t const seq =
-    {
-        .values.p_individual = &Throttle_values,
-        .length          = NRF_PWM_VALUES_LENGTH(Throttle_values),
-        .repeats         = 0,
-        .end_delay       = 0
-    };
+
 
 void init_motor_pwm(void)
 {
@@ -88,8 +62,8 @@ void init_motor_pwm(void)
 void MOTOR_DIRECTION(motor_values_t *motors)
 {
      if (motors->motor0forward){
-       nrf_gpio_pin_set(MOTOR_PIN_OA);
-       nrf_gpio_pin_clear(MOTOR_PIN_OB);
+       nrf_gpio_pin_clear(MOTOR_PIN_OA);
+       nrf_gpio_pin_set(MOTOR_PIN_OB);
      }
      else {
        nrf_gpio_pin_set(MOTOR_PIN_OA);
@@ -105,27 +79,14 @@ void MOTOR_DIRECTION(motor_values_t *motors)
      }
 }
 
-int main(void)
+void motor_run(void)
 {
-    APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
-    init_motor_pwm();
-   
-  
-
-
-
-   
-
-    for (;;) // Neverending loop
-   {
-      nrfx_pwm_simple_playback(&MOTOR_PWM, &seq, 1, NRFX_PWM_FLAG_STOP);
-        // Wait for an event.
-        //__WFE();
-
-        // Clear the event register.
-        //__SEV();
-        //__WFE();
-
-     //   NRF_LOG_FLUSH();
-   }
+      nrf_pwm_sequence_t const seq =
+    {
+        .values.p_individual = &Throttle_values,
+        .length          = NRF_PWM_VALUES_LENGTH(Throttle_values),
+        .repeats         = 0,
+        .end_delay       = 0
+    };
+    nrfx_pwm_simple_playback(&MOTOR_PWM, &seq, 1, NRFX_PWM_FLAG_LOOP);
 }
