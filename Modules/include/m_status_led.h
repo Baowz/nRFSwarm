@@ -4,34 +4,26 @@
  *
  */
 #include "config.h"
-
-typedef struct {
-    int r;
-    int g;
-    int b;
-    int r_pin;
-    int g_pin;
-    int b_pin;
-}status_led_t;
-
-void status_led_init(status_led_t *status_led, int address_r, int address_g, int address_b);
-
-#if DUAL_CHIP_ENABLE
-#if SECONDARY_CHIP
-
-    status_led_t status_led_1;
-    status_led_t status_led_2;
-
-#else
-
-    status_led_t status_led;
-
-
+#include "stdint.h"
+// default configuration
+#ifndef STATUS_LED_PWM_TOP_VALUE
+    #define STATUS_LED_PWM_TOP_VALUE 200
 #endif
-#else
-
-    status_led_t status_led;
-
-
+#ifndef STATUS_LED_PWM_CLOCK_SPEED
+    #define STATUS_LED_PWM_CLOCK_SPEED NRF_PWM_CLK_250kHz
 #endif
 
+#define DUTY_CYCLE_CONVERSION(_input, _topvalue) ((_input) / (100) * _topvalue)
+
+typedef struct
+{
+    uint16_t duty_cycle_r;
+    uint16_t duty_cycle_g;
+    uint16_t duty_cycle_b;
+} status_led_t;
+
+
+
+void status_led_init(void);
+
+void change_color(uint8_t _r, uint8_t _g, uint8_t _b);
