@@ -27,3 +27,7 @@ typedef struct
 void status_led_init(void);
 
 void change_color(uint8_t _r, uint8_t _g, uint8_t _b);
+void optn_change_color(uint8_t _r, uint8_t _g, uint8_t _b);
+
+void status_led_mode(uint8_t _led_mode);
+void optn_status_led_mode(uint8_t _led_mode);

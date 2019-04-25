@@ -65,6 +65,28 @@ void optn_change_color(uint8_t _r, uint8_t _g, uint8_t _b)
     change_duty_cycle(_r, _g, _b, &optn_status_led, &optn_seq_values);
 }
 
+void optn_status_led_mode(uint8_t _led_mode){
+    switch (_led_mode)
+    {
+        case 0:
+            change_color(100,0,0);
+            break;
+        case 1:
+            change_color(50,50,0);
+            break;
+        case 2:
+            change_color(0,100,0);
+            break;
+        case 3:
+            change_color(0,50,50);
+            break;
+        case 4:
+            change_color(0,0,100);
+            break;
+        default:
+            break;
+    }
+}
 #else
 status_led_t status_led = {
     .duty_cycle_r = 0,
@@ -150,4 +172,28 @@ void update_duty_cycle(status_led_t *_status_led, nrf_pwm_values_individual_t *_
     _seq_values->channel_0 = _status_led->duty_cycle_r;
     _seq_values->channel_1 = _status_led->duty_cycle_g;
     _seq_values->channel_2 = _status_led->duty_cycle_b;
+}
+
+
+void status_led_mode(uint8_t _led_mode){
+    switch (_led_mode)
+    {
+        case 0:
+            change_color(100,0,0);
+            break;
+        case 1:
+            change_color(50,50,0);
+            break;
+        case 2:
+            change_color(0,100,0);
+            break;
+        case 3:
+            change_color(0,50,50);
+            break;
+        case 4:
+            change_color(0,0,100);
+            break;
+        default:
+            break;
+    }
 }
