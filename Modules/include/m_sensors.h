@@ -1,0 +1,6 @@
+
+
+#define BMX160_ADDR 0x68
+#define CCS811_ADDR 0x5A
+#define HTS221_ADDR 0xBE
+#define LPS22HB_ADDR 0xB8
