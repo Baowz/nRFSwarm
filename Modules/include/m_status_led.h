@@ -22,8 +22,7 @@ typedef struct
     uint16_t duty_cycle_b;
 } status_led_t;
 
-
-
+ 
 void status_led_init(void);
 
 void change_color(uint8_t _r, uint8_t _g, uint8_t _b);

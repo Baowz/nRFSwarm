@@ -9,7 +9,7 @@
 
 // Define Pin for PWM motor control
 #define PWM_PIN_0               NRF_GPIO_PIN_MAP(0,03)    // Pin P0.04 Selected
-//#define PWM_PIN_0               NRF_GPIO_PIN_MAP(0,13)    // Switch to led 
+//#define PWM_PIN_0               NRF_GPIO_PIN_MAP(0,13)    // Switch to led
 #define PWM_PIN_1               NRF_GPIO_PIN_MAP(0,04)    // Pin P0.04 Selected
 #define MOTOR_PIN_OA            NRF_GPIO_PIN_MAP(0,28)    // Pin P0.04 Selected
 #define MOTOR_PIN_OB            NRF_GPIO_PIN_MAP(0,29)    // Pin P0.04 Selected
@@ -24,13 +24,13 @@
 
 typedef struct
 {
-  bool motor0forward; 
+  bool motor0forward;
   bool motor1forward;
 }motor_direction_t;
 
 typedef struct
 {
-  uint16_t speedA; 
+  uint16_t speedA;
   uint16_t speedB;
 }motor_speed_t;
 
