@@ -1,6 +1,8 @@
 #include <stdint.h>
 
+#include "d_twi.h"
 #include "d_BMX160_twi.h"
+#include "config.h"
 
 #include "m_sensors.h"
 
@@ -33,6 +35,13 @@ static struct
     uint8_t z_low_data;
     uint8_t z_high_data;
 }gyr_data;
+
+void sensors_init(void){
+    twi_init();
+    #if BMX160_ENABLE
+    BMX160_init();
+    #endif
+}
 
 void update_mag_data(void){
     if (BMX160_chipfound) {
