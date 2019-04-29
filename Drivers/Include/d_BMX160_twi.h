@@ -1,14 +1,12 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define BMX160_WRITE_BIT    0x00
-#define BMX160_READ_BIT     0x01
-#define BMX160_ADDR         0x68
 
-#define BMX160_CHIPID_HEX   0b11011000
+#define BMX160_ADDR (0x68 >> 1)
 
-#define BMX160_WRITE_ADDR   BMX160_ADDR|BMX160_WRITE_BIT
-#define BMX160_READ_ADDR    BMX160_ADDR|BMX160_READ_BIT
+#define BMX160_CHIPID_HEX 0b11011000
+
+
 
 void BMX160_init(void);
 

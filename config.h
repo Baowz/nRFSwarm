@@ -10,7 +10,7 @@
 #define STATUS_LED_PWM_CLOCK_SPEED STATUS_LED_PWM_CLOCK_SPEED_DEFAULT
 
 #define BMX160_ENABLE true
-
+#define LPS22HB_ENABLE true
 
 
 ////////////////////////////////////////////////////////////////

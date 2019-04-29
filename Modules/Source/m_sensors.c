@@ -6,6 +6,20 @@
 
 #include "m_sensors.h"
 
+void sensors_init(void){
+    twi_init();
+
+    #if BMX160_ENABLE
+    BMX160_init();
+    #endif
+
+    #if LPS22HB_ENABLE
+    LPS22HB_init();
+    #endif
+}
+
+#if BMX160_ENABLE
+#pragma region
 static struct
 {
     uint8_t x_low_data;
@@ -36,12 +50,7 @@ static struct
     uint8_t z_high_data;
 }gyr_data;
 
-void sensors_init(void){
-    twi_init();
-    #if BMX160_ENABLE
-    BMX160_init();
-    #endif
-}
+
 
 void update_mag_data(void){
     if (BMX160_chipfound) {
@@ -75,3 +84,11 @@ void update_gyr_data(void){
         get_gyr_z_data_high(&gyr_data.z_high_data);
     }
 }
+#pragma endregion
+#endif
+
+#if LPS22HB_ENABLE
+#pragma region
+
+#pragma endregion
+#endif
