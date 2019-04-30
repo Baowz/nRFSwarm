@@ -22,11 +22,12 @@ typedef struct
     uint16_t duty_cycle_b;
 } status_led_t;
 
- 
 void status_led_init(void);
 
 void change_color(uint8_t _r, uint8_t _g, uint8_t _b);
-void optn_change_color(uint8_t _r, uint8_t _g, uint8_t _b);
-
 void status_led_mode(uint8_t _led_mode);
+
+#if SECONDARY_CHIP
+void optn_change_color(uint8_t _r, uint8_t _g, uint8_t _b);
 void optn_status_led_mode(uint8_t _led_mode);
+#endif

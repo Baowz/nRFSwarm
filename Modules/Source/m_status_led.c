@@ -15,14 +15,8 @@ static nrf_pwm_values_individual_t duty_cycle;
 
 nrfx_pwm_t m_pwm1 = NRFX_PWM_INSTANCE(1);
 
-#if DUAL_CHIP_ENABLE
 #if SECONDARY_CHIP
 status_led_t optn_status_led = {
-    .duty_cycle_r = 0,
-    .duty_cycle_g = 0,
-    .duty_cycle_b = 0,
-};
-status_led_t status_led = {
     .duty_cycle_r = 0,
     .duty_cycle_g = 0,
     .duty_cycle_b = 0,
@@ -87,21 +81,16 @@ void optn_status_led_mode(uint8_t _led_mode){
             break;
     }
 }
-#else
-status_led_t status_led = {
-    .duty_cycle_r = 0,
-    .duty_cycle_g = 0,
-    .duty_cycle_b = 0,
-};
+
 
 #endif
-#else
+
+
 status_led_t status_led = {
     .duty_cycle_r = 0,
     .duty_cycle_g = 0,
     .duty_cycle_b = 0,
 };
-#endif
 
 nrfx_pwm_config_t const status_led_config = {
     .output_pins = {
