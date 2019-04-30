@@ -11,10 +11,10 @@
 #define SENSORY_SPI_MISO_PIN    ARDUINO_2_PIN
 #define SENSORY_SPI_CS_PIN      ARDUINO_4_PIN
 
-#define SHIELD_SPI_SCK_PIN      27
-#define SHIELD_SPI_MOSI_PIN     5
-#define SHIELD_SPI_MISO_PIN     7
-#define SHIELD_SPI_CS_PIN       ARDUINO_7_PIN //TODO: Check if I could just number this with 30 something instead. This is not pretty.
+#define SHIELD_SPI_SCK_PIN      NRF_GPIO_PIN_MAP(0,27)
+#define SHIELD_SPI_MOSI_PIN     NRF_GPIO_PIN_MAP(0,2)
+#define SHIELD_SPI_MISO_PIN     NRF_GPIO_PIN_MAP(0,26)
+#define SHIELD_SPI_CS_PIN       NRF_GPIO_PIN_MAP(1,13)
 
 // Prototypes used externally by other parts of the program
 

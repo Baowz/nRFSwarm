@@ -28,9 +28,9 @@ void init_motor_pwm(void)
     {
         .output_pins =
         {
-            PWM_PIN_0 | NRFX_PWM_PIN_INVERTED,                          // Motor 0
+            PWM_PIN_A | NRFX_PWM_PIN_INVERTED,                          // Motor 0
             //PWM_PIN_0,
-            PWM_PIN_1 | NRFX_PWM_PIN_INVERTED,                          // Motor 1
+            PWM_PIN_B | NRFX_PWM_PIN_INVERTED,                          // Motor 1
             NRFX_PWM_PIN_NOT_USED,              // Channel 2 Not in use
             NRFX_PWM_PIN_NOT_USED               // Channel 3 Not in use
         },
@@ -60,24 +60,24 @@ void init_motor_pwm(void)
 void motor_direction(motor_direction_t *direction)
 {
      if (direction->motor0forward){
-       nrf_gpio_pin_clear(MOTOR_PIN_OA);
+       nrf_gpio_pin_clear(MOTOR_PIN_A1);
        nrf_gpio_pin_clear(LED_3);
-       nrf_gpio_pin_set(MOTOR_PIN_OB);
+       nrf_gpio_pin_set(MOTOR_PIN_A2);
        nrf_gpio_pin_set(LED_4);
      }
      else {
-       nrf_gpio_pin_set(MOTOR_PIN_OA);
+       nrf_gpio_pin_set(MOTOR_PIN_A1);
        nrf_gpio_pin_set(LED_3);
-       nrf_gpio_pin_clear(MOTOR_PIN_OB);
+       nrf_gpio_pin_clear(MOTOR_PIN_A2);
        nrf_gpio_pin_clear(LED_4);
      }
      if (direction->motor1forward){
-       nrf_gpio_pin_clear(MOTOR_PIN_1A);
-       nrf_gpio_pin_set(MOTOR_PIN_1B);
+       nrf_gpio_pin_clear(MOTOR_PIN_B1);
+       nrf_gpio_pin_set(MOTOR_PIN_B2);
      }
      else {
-       nrf_gpio_pin_set(MOTOR_PIN_1A);
-       nrf_gpio_pin_clear(MOTOR_PIN_1B);
+       nrf_gpio_pin_set(MOTOR_PIN_B1);
+       nrf_gpio_pin_clear(MOTOR_PIN_B2);
      }
 }
 

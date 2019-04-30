@@ -8,13 +8,13 @@
 
 
 // Define Pin for PWM motor control
-#define PWM_PIN_0               NRF_GPIO_PIN_MAP(0,03)    // Pin P0.04 Selected
+#define PWM_PIN_A               NRF_GPIO_PIN_MAP(0,03)    // Pin P0.04 Selected
 //#define PWM_PIN_0               NRF_GPIO_PIN_MAP(0,13)    // Switch to led
-#define PWM_PIN_1               NRF_GPIO_PIN_MAP(0,04)    // Pin P0.04 Selected
-#define MOTOR_PIN_OA            NRF_GPIO_PIN_MAP(0,28)    // Pin P0.04 Selected
-#define MOTOR_PIN_OB            NRF_GPIO_PIN_MAP(0,29)    // Pin P0.04 Selected
-#define MOTOR_PIN_1A            NRF_GPIO_PIN_MAP(0,30)    // Pin P0.04 Selected
-#define MOTOR_PIN_1B            NRF_GPIO_PIN_MAP(0,31)    // Pin P0.04 Selected
+#define PWM_PIN_B               NRF_GPIO_PIN_MAP(0,04)    // Pin P0.04 Selected
+#define MOTOR_PIN_A1            NRF_GPIO_PIN_MAP(0,28)    // Pin P0.04 Selected
+#define MOTOR_PIN_A2            NRF_GPIO_PIN_MAP(0,29)    // Pin P0.04 Selected
+#define MOTOR_PIN_B1            NRF_GPIO_PIN_MAP(0,30)    // Pin P0.04 Selected
+#define MOTOR_PIN_B2            NRF_GPIO_PIN_MAP(0,31)    // Pin P0.04 Selected
 
 //#define LED_1          NRF_GPIO_PIN_MAP(0,13)
 #define LED_3          NRF_GPIO_PIN_MAP(0,15)
