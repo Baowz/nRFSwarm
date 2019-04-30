@@ -10,7 +10,7 @@
 
 #include "m_spi.h"
 
-//static const nrf_drv_spi_t spi_sensory = NRF_DRV_SPI_INSTANCE(1);
+
 static const nrfx_spi_t spi_shield  = NRFX_SPI_INSTANCE(0);
 
 void spi_transfer(nrfx_spi_t *spi_instance, uint8_t tx_data, uint8_t rx_data)
@@ -21,18 +21,6 @@ void spi_transfer(nrfx_spi_t *spi_instance, uint8_t tx_data, uint8_t rx_data)
 void spi_init(void)
 {
   ret_code_t err_code;
-
-  /*nrf_drv_spi_config_t sensory_config = {
-    .sck_pin  = SENSORY_SPI_SCK_PIN,
-    .mosi_pin = SENSORY_SPI_MOSI_PIN,
-    .miso_pin = SENSORY_SPI_MISO_PIN,
-    .ss_pin   = SENSORY_SPI_CS_PIN,
-    .irq_priority = SPI_DEFAULT_CONFIG_IRQ_PRIORITY,
-    .orc = 0xFF,
-    .frequency = NRF_DRV_SPI_FREQ_4M,
-    .mode = NRF_DRV_SPI_MODE_0,
-    .bit_order = NRF_DRV_SPI_BIT_ORDER_MSB_FIRST,
-  }; */
 
   nrfx_spi_config_t shield_config = {
     .sck_pin  = SHIELD_SPI_SCK_PIN,
@@ -45,9 +33,6 @@ void spi_init(void)
     .mode = NRF_SPI_MODE_0,
     .bit_order = NRF_SPI_BIT_ORDER_MSB_FIRST,
   };
-
-  /*err_code = nrf_drv_spi_init(&spi_sensory, &sensory_config, NULL, NULL);
-  APP_ERROR_CHECK(err_code);*/
 
   err_code = nrfx_spi_init(&spi_shield, &shield_config, NULL, NULL);
   APP_ERROR_CHECK(err_code);
