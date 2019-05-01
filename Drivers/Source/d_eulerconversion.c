@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <math.h>
 
-#include "eulerconversion.h"
+#include "d_eulerconversion.h"
 
 float qToFloat(long number, unsigned char q)
 {
@@ -49,9 +49,9 @@ void compute_euler(long* quat, float* rpy)
 
     // yaw (z-axis rotation)
     float t3 = +2.0f * (dqw * dqz + dqx * dqy);
-    float t4 = +1.0f - 2.0f * (ysqr + dqz * dqz);  
+    float t4 = +1.0f - 2.0f * (ysqr + dqz * dqz);
     yaw = atan2(t3, t4);
-    
+
     pitch *= (180.0f / M_PI);
     roll *= (180.0f / M_PI);
     yaw *= (180.0f / M_PI);
@@ -62,5 +62,5 @@ void compute_euler(long* quat, float* rpy)
     rpy[0] = pitch;		// Roll and pitch swapped in order to coincide with the PCA63539 motor shield.
     rpy[1] = roll;
     rpy[2] = yaw;
-	
+
 }
