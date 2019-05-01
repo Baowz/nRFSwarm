@@ -31,6 +31,6 @@ void get_gyr_y_data_high(uint8_t * p_buffer);
 void get_gyr_z_data_low(uint8_t * p_buffer);
 void get_gyr_z_data_high(uint8_t * p_buffer);
 
-static bool BMX160_chipfound;
+static bool BMX160_chipfound = false;
 
 ///////// configs ////////////

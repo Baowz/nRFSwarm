@@ -39,7 +39,7 @@ void twi_tx(uint8_t _addr, uint8_t * p_data, bool _no_stop){
     while(m_xfer_done == false);
 }
 
-void twi_rx(uint8_t _addr, uint8_t * p_buffer, uint8_t _buffer_size){
+void twi_rx(uint8_t _addr, uint8_t * p_buffer, size_t _buffer_size){
     m_xfer_done = false;
     APP_ERROR_CHECK(nrfx_twim_rx(&twi_0, _addr, &p_buffer, _buffer_size));
     while(m_xfer_done == false);
@@ -56,7 +56,7 @@ void twi_txtx(uint8_t _addr, uint8_t _sec_addr, uint8_t data){
     while(m_xfer_done == false);
 }
 
-void twi_txrx(uint8_t _addr, uint8_t _sec_addr, uint8_t * p_buffer, uint8_t buffer_size){
+void twi_txrx(uint8_t _addr, uint8_t _sec_addr, uint8_t * p_buffer, size_t buffer_size){
     m_xfer_done = false;
     nrfx_err_t err;
     err = nrfx_twim_tx(&twi_0, _addr, _sec_addr, 1, true);

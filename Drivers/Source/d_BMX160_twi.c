@@ -10,7 +10,7 @@
 
 #include "nrf_log.h"
 
-BMX160_chipfound = false;
+
 
 
 void BMX160_init(void){
