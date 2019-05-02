@@ -16,7 +16,9 @@
 #define ENCODERB_RIGHT MOTOR_ENCODER_B2_PIN
 
 nrf_gpio_cfg_input(ENCODERA_LEFT);
+nrf_gpio_cfg_input(ENCODERB_LEFT);
 nrf_gpio_cfg_input(ENCODERA_RIGHT);
+nrf_gpio_cfg_input(ENCODERB_RIGHT);
 
 
-void drone_distance(ENCODERA_LEFT, ENCODERB_RIGHT);
+void count_ticks(ENCODERA_LEFT, ENCODERA_RIGHT);
