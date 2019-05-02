@@ -119,10 +119,10 @@ void tof_init()
     nrf_gpio_pin_clear(XSHUT_PIN_2);
     nrf_gpio_pin_clear(XSHUT_PIN_3);
     nrf_gpio_pin_clear(XSHUT_PIN_4);
-    nrf_gpio_pin_clear(XSHUT_PIN_1);
-    nrf_gpio_pin_clear(XSHUT_PIN_2);
-    nrf_gpio_pin_clear(XSHUT_PIN_3);
-    nrf_gpio_pin_clear(XSHUT_PIN_4);
+    nrf_gpio_pin_clear(XSHUT_PIN_5);
+    nrf_gpio_pin_clear(XSHUT_PIN_6);
+    nrf_gpio_pin_clear(XSHUT_PIN_7);
+    nrf_gpio_pin_clear(XSHUT_PIN_8);
 
     VL53L0X_i2c_init();
 
