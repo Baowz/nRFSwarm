@@ -15,13 +15,6 @@
 
 #define DUTY_CYCLE_CONVERSION(_input, _topvalue) ((_input) / (100) * _topvalue)
 
-typedef struct
-{
-    uint16_t duty_cycle_r;
-    uint16_t duty_cycle_g;
-    uint16_t duty_cycle_b;
-} status_led_t;
-
 void status_led_init(void);
 
 void change_color(uint8_t _r, uint8_t _g, uint8_t _b);

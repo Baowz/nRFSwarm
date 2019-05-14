@@ -9,7 +9,7 @@
 #include "d_twi.h"
 
 
-
+/*
 nrfx_twim_t twi_0 = NRFX_TWIM_INSTANCE(0);
 
 static volatile bool m_xfer_done = false;

@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "min_max.h"
+#include "m_min_max.h"
 
 float check_lower_upper_range(float value, float lower, float upper)
 {

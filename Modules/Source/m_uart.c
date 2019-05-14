@@ -36,12 +36,11 @@ void uart_init(void)
     };
 #endif
     APP_ERROR_CHECK(nrfx_uarte_init(&uarte_0_inst, &uarte_config, NULL));
-   
 }
 
 void uart_rx(uint8_t *data)
 {
-    APP_ERROR_CHECK(nrfx_uarte_rx(&uarte_0_inst, data, 4);
+    APP_ERROR_CHECK(nrfx_uarte_rx(&uarte_0_inst, data, 4));
 }
 
 void uart_tx(uint8_t *data)

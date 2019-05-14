@@ -53,6 +53,7 @@
 /**
  * @brief Function for application main entry.
  */
+
 int main(void)
 {
     while (true)
