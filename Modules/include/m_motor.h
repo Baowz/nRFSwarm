@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "nrf_gpio.h"
-#include "nrf_drv_pwm.h"
+
 #include "d_swarm_board.h"
 
 #define PWM_PIN_A MOTOR_PWM_A_PIN

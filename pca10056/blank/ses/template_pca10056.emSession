@@ -14,15 +14,10 @@
   <ProjectSessionItem path="template_pca10056"/>
   <ProjectSessionItem path="template_pca10056;template_pca10056"/>
   <ProjectSessionItem path="template_pca10056;template_pca10056;Application"/>
-  <ProjectSessionItem path="template_pca10056;template_pca10056;Drivers"/>
-  <ProjectSessionItem path="template_pca10056;template_pca10056;Drivers;bitmaps"/>
-  <ProjectSessionItem path="template_pca10056;template_pca10056;Drivers;inc"/>
-  <ProjectSessionItem path="template_pca10056;template_pca10056;Drivers;src"/>
-  <ProjectSessionItem path="template_pca10056;template_pca10056;Modules"/>
-  <ProjectSessionItem path="template_pca10056;template_pca10056;Modules;inc"/>
-  <ProjectSessionItem path="template_pca10056;template_pca10056;Modules;src"/>
   <ProjectSessionItem path="template_pca10056;template_pca10056;None"/>
   <ProjectSessionItem path="template_pca10056;template_pca10056;nRF_Drivers"/>
+  <ProjectSessionItem path="template_pca10056;template_pca10056;nRF_micro-ecc"/>
+  <ProjectSessionItem path="template_pca10056;template_pca10056;nRF_TLS"/>
  </Project>
  <Register1/>
  <Register2/>
@@ -47,19 +42,13 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="27" y="5170" useTextEdit="1" useBinaryEdit="0" left="0" path="../config/sdk_config.h" selected="0" top="5143" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="25" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../Modules/Source/m_JSON.c" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="19" y="24" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../external/cJSON/cJSON.h" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="131" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../modules/nrfx/drivers/src/nrfx_twim.c" selected="0" top="108" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="54" useTextEdit="1" useBinaryEdit="0" left="0" path="E:/random programvare/segger/include/string.h" selected="0" top="31" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="19" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../Modules/Source/m_motor.c" selected="0" top="17" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="4" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../Modules/Source/m_ascii_converter.c" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="12" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../Modules/Source/m_status_led.c" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="72" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../modules/nrfx/drivers/include/nrfx_twim.h" selected="0" top="33" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="9" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../Drivers/Include/d_swarm_board.h" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="36" y="74" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../modules/nrfx/hal/nrf_gpio.h" selected="1" top="56" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="14" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../Drivers/Include/d_encoder.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="60" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="0" top="40" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="19" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../VL53L0X_api/inc/Adafruit_VL53L0X.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="19" y="10" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../Modules/Source/m_mqtt.c" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="39" y="9" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../Modules/include/m_thread.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="1" y="25" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../Modules/Source/m_JSON.c" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="342" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../modules/nrfx/drivers/src/nrfx_rtc.c" selected="0" top="310" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="86" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../external/mbedtls/library/sha256.c" selected="1" top="47" codecName="Default"/>
  </Files>
- <ARMCrossStudioWindow activeProject="template_pca10056" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Release" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
+ <ARMCrossStudioWindow activeProject="template_pca10056" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>

@@ -99,9 +99,9 @@
     <folder Name="Application">
       <file file_name="../../../main.c" />
       <file file_name="../config/sdk_config.h" />
-    </folder>
-    <folder Name="Board Support">
-      <file file_name="../../../../../../components/libraries/bsp/bsp.c" />
+      <folder Name="Board Support">
+        <file file_name="../../../../../../components/libraries/bsp/bsp.c" />
+      </folder>
     </folder>
     <folder Name="nRF_Crypto backend nRF HW">
       <file file_name="../../../../../../components/libraries/crypto/backend/nrf_hw/nrf_hw_backend_init.c" />
@@ -113,7 +113,7 @@
     </folder>
     <folder Name="nRF_micro-ecc">
       <file file_name="../../../../../../external/micro-ecc/nrf52hf_armgcc/armgcc/micro_ecc_lib_nrf52.a">
-        <configuration Name="Release" build_exclude_from_build="Yes" />
+        <configuration Name="Debug" build_exclude_from_build="Yes" />
       </file>
     </folder>
     <folder Name="nRF_Crypto backend CC310">
@@ -149,6 +149,9 @@
       <file file_name="../../../../../../components/libraries/crypto/backend/mbedtls/mbedtls_backend_hash.c" />
       <file file_name="../../../../../../components/libraries/crypto/backend/mbedtls/mbedtls_backend_hmac.c" />
       <file file_name="../../../../../../components/libraries/crypto/backend/mbedtls/mbedtls_backend_init.c" />
+    </folder>
+    <folder Name="nRF_Oberon_Crypto">
+      <file file_name="../../../../../../external/nrf_oberon/lib/cortex-m4/hard-float/liboberon_2.0.7.a" />
     </folder>
     <folder Name="nRF_TLS">
       <file file_name="../../../../../../external/mbedtls/library/aes.c" />
@@ -313,75 +316,122 @@
       <file file_name="../../../../../../modules/nrfx/mdk/ses_startup_nrf52840.s" />
       <file file_name="../../../../../../modules/nrfx/mdk/ses_startup_nrf_common.s" />
       <file file_name="../../../../../../modules/nrfx/mdk/system_nrf52840.c" />
-      <file file_name="../../../../../../external/cJSON/cJSON.c" />
+      <file file_name="../../../VL53L0X_api/src/vl53l0x_api_core.c" />
+      <file file_name="../../../VL53L0X_api/src/vl53l0x_api_ranging.c" />
+      <file file_name="../../../VL53L0X_api/src/vl53l0x_api_strings.c" />
+      <file file_name="../../../VL53L0X_api/src/vl53l0x_i2c_comms.c" />
+      <file file_name="../../../VL53L0X_api/src/vl53l0x_platform.c" />
+      <file file_name="../../../VL53L0X_api/src/Adafruit_VL53L0X.cpp">
+        <configuration Name="Debug" build_exclude_from_build="Yes" />
+      </file>
+      <file file_name="../../../VL53L0X_api/src/vl53l0x_api.c" />
+      <file file_name="../../../VL53L0X_api/src/vl53l0x_api_calibration.c" />
+      <file file_name="../../../VL53L0X_api/inc/vl53l0x_api_strings.h" />
+      <file file_name="../../../VL53L0X_api/inc/vl53l0x_def.h" />
+      <file file_name="../../../VL53L0X_api/inc/vl53l0x_device.h" />
+      <file file_name="../../../VL53L0X_api/inc/vl53l0x_i2c_platform.h" />
+      <file file_name="../../../VL53L0X_api/inc/vl53l0x_interrupt_threshold_settings.h" />
+      <file file_name="../../../VL53L0X_api/inc/vl53l0x_platform.h" />
+      <file file_name="../../../VL53L0X_api/inc/vl53l0x_platform_log.h" />
+      <file file_name="../../../VL53L0X_api/inc/vl53l0x_tuning.h" />
+      <file file_name="../../../VL53L0X_api/inc/vl53l0x_types.h" />
+      <file file_name="../../../VL53L0X_api/inc/Adafruit_VL53L0X.h">
+        <configuration Name="Debug" build_exclude_from_build="Yes" />
+      </file>
+      <file file_name="../../../VL53L0X_api/inc/vl53l0x_api.h" />
+      <file file_name="../../../VL53L0X_api/inc/vl53l0x_api_calibration.h" />
+      <file file_name="../../../VL53L0X_api/inc/vl53l0x_api_core.h" />
+      <file file_name="../../../VL53L0X_api/inc/vl53l0x_api_ranging.h" />
+      <file file_name="../../../Drivers/Include/d_encoder.h" />
+      <file file_name="../../../Drivers/Include/d_eulerconversion.h" />
+      <file file_name="../../../Drivers/Include/d_LPS22HB_twi.h" />
+      <file file_name="../../../Drivers/Include/d_swarm_board.h" />
+      <file file_name="../../../Drivers/Include/d_twi.h" />
+      <file file_name="../../../Drivers/Include/d_BMX160_twi.h" />
+      <file file_name="../../../Drivers/registermaps/d_HTS221_RegisterMap.h" />
+      <file file_name="../../../Drivers/registermaps/d_IS31FL3737_RegisterMap.h" />
+      <file file_name="../../../Drivers/registermaps/d_LPS22HB_RegisterMap.h" />
+      <file file_name="../../../Drivers/registermaps/d_BMX160_RegisterMap.h" />
+      <file file_name="../../../Drivers/registermaps/d_CCS811_RegisterMap.h" />
+      <file file_name="../../../Drivers/Source/d_BMX160_twi.c" />
+      <file file_name="../../../Drivers/Source/d_encoder.c" />
+      <file file_name="../../../Drivers/Source/d_eulerconversion.c" />
+      <file file_name="../../../Drivers/Source/d_LPS22HB_twi.c" />
+      <file file_name="../../../Drivers/Source/d_swarm_board.c" />
+      <file file_name="../../../Drivers/Source/d_twi.c" />
+      <file file_name="../../../Modules/include/m_Real_Time_Clock.h" />
+      <file file_name="../../../Modules/include/m_sensors.h" />
+      <file file_name="../../../Modules/include/m_SPI.h" />
+      <file file_name="../../../Modules/include/m_status_led.h" />
+      <file file_name="../../../Modules/include/m_thread.h" />
+      <file file_name="../../../Modules/include/m_tof.h" />
+      <file file_name="../../../Modules/include/m_uart.h" />
+      <file file_name="../../../Modules/include/m_ascii_converter.h" />
+      <file file_name="../../../Modules/include/m_batt_meas.h" />
+      <file file_name="../../../Modules/include/m_JSON.h" />
+      <file file_name="../../../Modules/include/m_min_max.h" />
+      <file file_name="../../../Modules/include/m_motor.h" />
+      <file file_name="../../../Modules/include/m_mqtt.h" />
+      <file file_name="../../../Modules/Source/m_mqtt.c" />
+      <file file_name="../../../Modules/Source/m_Real_Time_Clock.c" />
+      <file file_name="../../../Modules/Source/m_sensors.c" />
+      <file file_name="../../../Modules/Source/m_SPI.c" />
+      <file file_name="../../../Modules/Source/m_status_led.c" />
+      <file file_name="../../../Modules/Source/m_thread.c" />
+      <file file_name="../../../Modules/Source/m_tof.c" />
+      <file file_name="../../../Modules/Source/m_uart.c" />
+      <file file_name="../../../Modules/Source/m_ascii_converter.c" />
+      <file file_name="../../../Modules/Source/m_batt_meas.c" />
+      <file file_name="../../../Modules/Source/m_JSON.c" />
+      <file file_name="../../../Modules/Source/m_min_max.c" />
+      <file file_name="../../../Modules/Source/m_motor.c" />
+      <file file_name="../../../../../../external/openthread/lib/nrf52840/gcc/libmbedcrypto.a" />
+      <file file_name="../../../../../../external/openthread/lib/nrf52840/gcc/libnordicsemi-nrf52840-radio-driver.a" />
+      <file file_name="../../../../../../external/openthread/lib/nrf52840/gcc/libopenthread-cli-ftd.a" />
+      <file file_name="../../../../../../external/openthread/lib/nrf52840/gcc/libopenthread-diag.a" />
+      <file file_name="../../../../../../external/openthread/lib/nrf52840/gcc/libopenthread-ftd.a" />
+      <file file_name="../../../../../../external/openthread/lib/nrf52840/gcc/libopenthread-nrf52840-sdk.a" />
+      <file file_name="../../../../../../external/openthread/lib/nrf52840/gcc/libopenthread-platform-utils.a" />
       <file file_name="../../../../../../external/cJSON/cJSON.h" />
       <file file_name="../../../../../../external/cJSON/cJSON_iot_hooks.c" />
       <file file_name="../../../../../../external/cJSON/cJSON_iot_hooks.h" />
-      <file file_name="../../../../../../external/cJSON/LICENSE" />
-      <file file_name="../../../../../../external/cJSON/README" />
+      <file file_name="../../../../../../external/cJSON/cJSON.c" />
+      <file file_name="../../../../../../components/thread/mqtt_sn/mqtt_sn_client/mqttsn_packet_receiver.c" />
+      <file file_name="../../../../../../components/thread/mqtt_sn/mqtt_sn_client/mqttsn_packet_sender.c" />
+      <file file_name="../../../../../../components/thread/mqtt_sn/mqtt_sn_client/mqttsn_platform.c" />
+      <file file_name="../../../../../../components/thread/mqtt_sn/mqtt_sn_client/mqttsn_platform.h" />
+      <file file_name="../../../../../../components/thread/mqtt_sn/mqtt_sn_client/mqttsn_transport.h" />
+      <file file_name="../../../../../../components/thread/mqtt_sn/mqtt_sn_client/mqttsn_transport_ot.c" />
+      <file file_name="../../../../../../components/thread/mqtt_sn/mqtt_sn_client/mqttsn_client.c" />
+      <file file_name="../../../../../../components/thread/mqtt_sn/mqtt_sn_client/mqttsn_client.h" />
+      <file file_name="../../../../../../components/thread/mqtt_sn/mqtt_sn_client/mqttsn_gateway_discovery.c" />
+      <file file_name="../../../../../../components/thread/mqtt_sn/mqtt_sn_client/mqttsn_packet_fifo.c" />
+      <file file_name="../../../../../../components/thread/mqtt_sn/mqtt_sn_client/mqttsn_packet_internal.h" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/MQTTSNSearch.h" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/MQTTSNSearchClient.c" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/MQTTSNSearchServer.c" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/MQTTSNSerializePublish.c" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/MQTTSNSubscribe.h" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/MQTTSNSubscribeClient.c" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/MQTTSNSubscribeServer.c" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/MQTTSNUnsubscribe.h" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/MQTTSNUnsubscribeClient.c" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/MQTTSNUnsubscribeServer.c" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/StackTrace.h" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/MQTTSNConnect.h" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/MQTTSNConnectClient.c" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/MQTTSNConnectServer.c" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/MQTTSNDeserializePublish.c" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/MQTTSNPacket.c" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/MQTTSNPacket.h" />
+      <file file_name="../../../../../../external/paho/mqtt-sn/mqttsn_packet/MQTTSNPublish.h" />
     </folder>
     <folder Name="UTF8/UTF16 converter">
       <file file_name="../../../../../../external/utf_converter/utf.c" />
     </folder>
-    <folder Name="nRF_Oberon_Crypto">
-      <file file_name="../../../../../../external/nrf_oberon/lib/cortex-m4/hard-float/liboberon_2.0.7.a" />
-    </folder>
     <configuration
-      Name="Release"
-      c_user_include_directories="C:\\nordic\\SDKTZ3\\examples\\peripheral\\nRFSwarm\\VL53L0X_api\\inc;C:\\nordic\\SDKTZ3\\examples\\peripheral\\nRFSwarm\\VL53L0X_api\\src;C:\\nordic\\SDKTZ3\\examples\\peripheral\\nRFSwarm\\Drivers\\Include;C:\\nordic\\SDKTZ3\\examples\\peripheral\\nRFSwarm\\Drivers\\registermaps;C:\\nordic\\SDKTZ3\\examples\\peripheral\\nRFSwarm\\Drivers\\Source;C:\\nordic\\SDKTZ3\\examples\\peripheral\\nRFSwarm\\Modules\\include;C:\\nordic\\SDKTZ3\\examples\\peripheral\\nRFSwarm\\Modules\\Source;C:\\nordic\\SDKTZ3\\external\\cJSON" />
-    <folder Name="Modules">
-      <folder Name="src">
-        <file file_name="../../../Modules/Source/m_JSON.c" />
-        <file file_name="../../../Modules/Source/m_motor.c" />
-        <file file_name="../../../Modules/Source/m_Real_Time_Clock.c" />
-        <file file_name="../../../Modules/Source/m_sensors.c" />
-        <file file_name="../../../Modules/Source/m_SPI.c" />
-        <file file_name="../../../Modules/Source/m_status_led.c" />
-        <file file_name="../../../Modules/Source/m_tof.c" />
-        <file file_name="../../../Modules/Source/m_uart.c" />
-        <file file_name="../../../Modules/Source/m_ascii_converter.c" />
-        <file file_name="../../../Modules/Source/m_batt_meas.c" />
-        <file file_name="../../../Modules/Source/m_min_max.c" />
-      </folder>
-      <folder Name="inc">
-        <file file_name="../../../Modules/include/m_tof.h" />
-        <file file_name="../../../Modules/include/m_uart.h" />
-        <file file_name="../../../Modules/include/m_batt_meas.h" />
-        <file file_name="../../../Modules/include/m_JSON.h" />
-        <file file_name="../../../Modules/include/m_motor.h" />
-        <file file_name="../../../Modules/include/m_Real_Time_Clock.h" />
-        <file file_name="../../../Modules/include/m_sensors.h" />
-        <file file_name="../../../Modules/include/m_SPI.h" />
-        <file file_name="../../../Modules/include/m_status_led.h" />
-        <file file_name="../../../Modules/include/m_min_max.h" />
-        <file file_name="../../../Modules/include/m_ascii_converter.h" />
-      </folder>
-    </folder>
-    <folder Name="Drivers">
-      <folder Name="src">
-        <file file_name="../../../Drivers/Source/d_eulerconversion.c" />
-        <file file_name="../../../Drivers/Source/d_LPS22HB_twi.c" />
-        <file file_name="../../../Drivers/Source/d_swarm_board.c" />
-        <file file_name="../../../Drivers/Source/d_twi.c" />
-        <file file_name="../../../Drivers/Source/d_BMX160_twi.c" />
-        <file file_name="../../../Drivers/Source/d_encoder.c" />
-      </folder>
-      <folder Name="inc">
-        <file file_name="../../../Drivers/Include/d_eulerconversion.h" />
-        <file file_name="../../../Drivers/Include/d_LPS22HB_twi.h" />
-        <file file_name="../../../Drivers/Include/d_swarm_board.h" />
-        <file file_name="../../../Drivers/Include/d_twi.h" />
-        <file file_name="../../../Drivers/Include/d_BMX160_twi.h" />
-        <file file_name="../../../Drivers/Include/d_encoder.h" />
-      </folder>
-      <folder Name="bitmaps">
-        <file file_name="../../../Drivers/registermaps/d_CCS811_RegisterMap.h" />
-        <file file_name="../../../Drivers/registermaps/d_HTS221_RegisterMap.h" />
-        <file file_name="../../../Drivers/registermaps/d_IS31FL3737_RegisterMap.h" />
-        <file file_name="../../../Drivers/registermaps/d_LPS22HB_RegisterMap.h" />
-        <file file_name="../../../Drivers/registermaps/d_BMX160_RegisterMap.h" />
-      </folder>
-    </folder>
+      Name="Debug"
+      c_user_include_directories="C:\\nordic\\SDKTZ3\\examples\\peripheral\\nRFSwarm\\Modules\\include;C:\\nordic\\SDKTZ3\\examples\\peripheral\\nRFSwarm\\Modules\\Source;C:\\nordic\\SDKTZ3\\examples\\peripheral\\nRFSwarm\\Drivers\\Include;C:\\nordic\\SDKTZ3\\examples\\peripheral\\nRFSwarm\\Drivers\\registermaps;C:\\nordic\\SDKTZ3\\examples\\peripheral\\nRFSwarm\\Drivers\\Source;C:\\nordic\\SDKTZ3\\examples\\peripheral\\nRFSwarm\\VL53L0X_api\\inc;C:\\nordic\\SDKTZ3\\examples\\peripheral\\nRFSwarm\\VL53L0X_api\\src;C:\\nordic\\SDKTZ3\\components\\thread\\mqtt_sn\\mqtt_sn_client;C:\\nordic\\SDKTZ3\\external\\paho\\mqtt-sn\\mqttsn_packet;C:\\nordic\\SDKTZ3\\external\\openthread\\lib\\nrf52840\\gcc;C:\\nordic\\SDKTZ3\\external\\openthread\\include;C:\\nordic\\SDKTZ3\\external\\openthread\\include\\mbedtls;C:\\nordic\\SDKTZ3\\external\\openthread\\include\\openthread;C:\\nordic\\SDKTZ3\\external\\paho\\mqtt-sn\\mqttsn_packet;C:\\nordic\\SDKTZ3\\components\\thread\\mqtt_sn\\mqtt_sn_client;C:\\nordic\\SDKTZ3\\components\\thread\\utils;C:\\nordic\\SDKTZ3\\external\\cJSON;C:\\nordic\\SDKTZ3\\external\\openthread\\lib\\nrf52840\\gcc" />
   </project>
   <configuration
     Name="Release"

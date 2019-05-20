@@ -29,3 +29,7 @@
 #define TOF_NUMBER_OF_SENSORS 4
 
 #define WAKE_UP_TIME 10
+
+
+void tof_init(void);
+void app_tof_get_range(VL53L0X_RangingMeasurementData_t *RangingMeasurementData, uint8_t sensor);
