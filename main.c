@@ -49,15 +49,43 @@
 #include "nrf.h"
 #include "nordic_common.h"
 #include "boards.h"
+#include "d_encoder.h"
+#include "nrf_gpio.h"
+#include "nrf_delay.h"
+#include "m_tof.h"
+#include "vl53l0x_def.h"
+#include "m_mqtt.h"
+#include "nrf_log.h"
+#include "nrf_log_ctrl.h"
+#include "nrf_log_default_backends.h"
+
+#define NELEMS(x) (sizeof(x) / sizeof((x)[0]))
 
 /**
  * @brief Function for application main entry.
  */
+
+static uint8_t data[] = "hello";
+
+uint16_t len = NELEMS(data);
+
+static void log_init(void)
+{
+  ret_code_t err_code = NRF_LOG_INIT(NULL);
+  APP_ERROR_CHECK(err_code);
+}
+
 int main(void)
 {
-    while (true)
-    {
-        // Do nothing.
-    }
+  log_init();
+
+  nrf_gpio_cfg_output(13);
+  mqttsn_init();
+  while (true)
+  {
+    mqttsn_publish(data, len);
+    nrf_delay_ms(1000);
+    nrf_gpio_pin_set(13);
+  }
 }
 /** @} */

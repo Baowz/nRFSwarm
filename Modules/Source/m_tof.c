@@ -1,10 +1,13 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "nrf_delay.h"
 #include "d_swarm_board.h"
+
 #include "vl53l0x_api.h"
 #include "vl53l0x_platform.h"
-#include "nrf_delay.h"
+#include "vl53l0x_i2c_platform.h"
+
 
 #include "m_tof.h"
 
@@ -26,20 +29,52 @@ static VL53L0X_DeviceInfo_t tof_info_6;
 static VL53L0X_DeviceInfo_t tof_info_7;
 static VL53L0X_DeviceInfo_t tof_info_8;
 
-void tof_get_range(VL53L0X_RangingMeasurementData_t *RangingMeasurementData, VL53L0X_Dev_t *sensor)
+void app_tof_get_range(VL53L0X_RangingMeasurementData_t *RangingMeasurementData, uint8_t sensor)
 {
-    VL53L0X_PerformSingleRangingMeasurement(&sensor, RangingMeasurementData);
+  switch(sensor) {
+    case 1:
+      VL53L0X_PerformSingleRangingMeasurement(&tof_sensor_1, RangingMeasurementData);
+    break;
+    case 2:
+      VL53L0X_PerformSingleRangingMeasurement(&tof_sensor_2, RangingMeasurementData);
+    break;
+    case 3:
+      VL53L0X_PerformSingleRangingMeasurement(&tof_sensor_3, RangingMeasurementData);
+    break;
+    case 4:
+      VL53L0X_PerformSingleRangingMeasurement(&tof_sensor_4, RangingMeasurementData);
+    break;
+  }
 }
+/*
+void app_tof_get_range_all(VL53L0X_RangingMeasurementData_t *sensor_one, VL53L0X_RangingMeasurementData_t *sensor_two, VL53L0X_RangingMeasurementData_t *sensor_three, VL53L0X_RangingMeasurementData_t *sensor_four, float *range_array)
+{
+  app_tof_get_range(sensor_one, 1);
+  app_tof_get_range(sensor_two, 2);
+  app_tof_get_range(sensor_three, 3);
+  app_tof_get_range(sensor_four, 4);
 
-void tof_get_range_all()
-{
-}
+  range_array[0] = (float)sensor_one->RangeMilliMeter;
+  range_array[1] = (float)sensor_two->RangeMilliMeter;
+  range_array[2] = (float)sensor_three->RangeMilliMeter;
+  range_array[3] = (float)sensor_four->RangeMilliMeter;
+
+  // Compute indicator value for nearest obstacle, to be indicated on LED 2.
+  float red_obstacle_value_percentage   = (float)(((min(min(min(sensor_one->RangeMilliMeter, sensor_two->RangeMilliMeter), sensor_three->RangeMilliMeter), sensor_four->RangeMilliMeter))-20.0f)/(RED_INDICATION_RANGE)); // 100% if no obstacle within range
+  float green_obstacle_value_percentage = (float)(((min(min(min(sensor_one->RangeMilliMeter, sensor_two->RangeMilliMeter), sensor_three->RangeMilliMeter), sensor_four->RangeMilliMeter))-20.0f)/(GREEN_INDICATION_RANGE)); // 100% if no obstacle within range
+
+  uint16_t red_obstacle_value    = (uint16_t)(1000.0f * (1.0f - check_lower_upper_range(red_obstacle_value_percentage, 0.0f, 1.0f)));
+  uint16_t green_obstacle_value  = (uint16_t)(1000.0f * (1.0f - check_lower_upper_range(green_obstacle_value_percentage, 0.0f, 1.0f)));
+
+  //TODO: Move this somewhere else to ensure modularity
+  rgb_update_led_color(2, red_obstacle_value, green_obstacle_value - red_obstacle_value, 0);
+}*/
 
 void tof_setAddress(VL53L0X_Dev_t *device, uint8_t newAddr)
 {
     newAddr &= 0x7F;
 
-    VL53L0X_SetDeviceAddress(device, newAddr * 2); // 7-8bit
+    VL53L0X_SetDeviceAddress(device, newAddr * 2); // 7->8 bit
 
     device->I2cDevAddr = newAddr;
 }
@@ -76,8 +111,68 @@ void init_sensor(VL53L0X_Dev_t *device, VL53L0X_DeviceInfo_t *info, uint8_t i2cA
     VL53L0X_SetLimitCheckValue(device, VL53L0X_CHECKENABLE_RANGE_IGNORE_THRESHOLD, (FixPoint1616_t)(1.5 * 0.023 * 65536));
 }
 
-void tof_init()
+void tof_init(void)
 {
+    VL53L0X_Dev_t sensor[] = {tof_sensor_1,
+                              tof_sensor_2,
+                              tof_sensor_3,
+                              tof_sensor_4,
+                              tof_sensor_5,
+                              tof_sensor_6,
+                              tof_sensor_7,
+                              tof_sensor_8};
+
+    uint8_t sensor_xshut[] = {XSHUT_PIN_1,
+                              XSHUT_PIN_2,
+                              XSHUT_PIN_3,
+                              XSHUT_PIN_4,
+                              XSHUT_PIN_5,
+                              XSHUT_PIN_6,
+                              XSHUT_PIN_7,
+                              XSHUT_PIN_8};
+
+    uint8_t sensor_addr[] = {VL53L0X_TWI_ADDRESS_1,
+                             VL53L0X_TWI_ADDRESS_2,
+                             VL53L0X_TWI_ADDRESS_3,
+                             VL53L0X_TWI_ADDRESS_4,
+                             VL53L0X_TWI_ADDRESS_5,
+                             VL53L0X_TWI_ADDRESS_6,
+                             VL53L0X_TWI_ADDRESS_7,
+                             VL53L0X_TWI_ADDRESS_8};
+
+    VL53L0X_DeviceInfo_t sensor_info[] = {tof_info_1,
+                                          tof_info_2,
+                                          tof_info_3,
+                                          tof_info_4,
+                                          tof_info_5,
+                                          tof_info_6,
+                                          tof_info_7,
+                                          tof_info_8};
+
+    for (uint8_t i = 0; i < TOF_NUMBER_OF_SENSORS; i++)
+    {
+        sensor[i].I2cDevAddr = VL53L0X_TWI_ADDRESS_DEFAULT;
+        sensor[i].comms_type = 1;
+        sensor[i].comms_speed_khz = 400;
+    }
+
+    for (uint8_t i = 0; i < TOF_NUMBER_OF_SENSORS; i++)
+    {
+        nrf_gpio_cfg_output(sensor_xshut[i]);
+        nrf_gpio_pin_clear(sensor_xshut[i]);
+    }
+
+    VL53L0X_i2c_init();
+
+    for (uint8_t i = 0; i < TOF_NUMBER_OF_SENSORS; i++)
+    {
+        nrf_gpio_pin_set(sensor_xshut[i]); // Wake up sensor
+        nrf_delay_ms(WAKE_UP_TIME);
+        init_sensor(&sensor[i], &sensor_info[i], sensor_addr[i]);
+    }
+
+    /*
+    //BACKUP
     tof_sensor_1.I2cDevAddr = VL53L0X_TWI_ADDRESS_DEFAULT;
     tof_sensor_2.I2cDevAddr = VL53L0X_TWI_ADDRESS_DEFAULT;
     tof_sensor_3.I2cDevAddr = VL53L0X_TWI_ADDRESS_DEFAULT;
@@ -164,5 +259,5 @@ void tof_init()
     // Init sensor 8
     nrf_gpio_pin_set(XSHUT_PIN_8); // Wake up sensor 8
     nrf_delay_ms(WAKE_UP_TIME);
-    init_sensor(&tof_sensor_8, &tof_info_8, VL53L0X_TWI_ADDRESS_8);
+    init_sensor(&tof_sensor_8, &tof_info_8, VL53L0X_TWI_ADDRESS_8);*/
 }

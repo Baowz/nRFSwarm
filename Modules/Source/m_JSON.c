@@ -20,7 +20,7 @@ void data_parser(uint16_t _address, char _data_type, uint16_t _data, char *p_out
 {
     cJSON *root = cJSON_CreateObject();
     cJSON_AddNumberToObject(root, "addr", _address);
-    cJSON_AddNumberToObject(root, _data_type, _data);
+    cJSON_AddNumberToObject(root, &_data_type, _data);
     p_out = cJSON_Print(root);
     cJSON_Delete(root);
 }

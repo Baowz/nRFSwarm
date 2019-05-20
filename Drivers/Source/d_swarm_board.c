@@ -10,6 +10,6 @@ void board_init(void){
 
     #else
     nrf_gpio_cfg_output(BAT_MON_ENABLE_PIN);
-    nrf_gpio_cfg_input(BAT_MON_PIN, NRF_GPIO_PIN_NOPULL);
+    nrf_gpio_cfg_input(BAT_STAT_PIN, NRF_GPIO_PIN_NOPULL);
     #endif
 }
